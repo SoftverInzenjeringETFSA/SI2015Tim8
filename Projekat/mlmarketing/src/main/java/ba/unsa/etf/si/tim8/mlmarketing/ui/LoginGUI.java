@@ -1,5 +1,6 @@
 package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
+import ba.unsa.etf.si.tim8.mlmarketing.models.*;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +12,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+
 
 public class LoginGUI {
 
@@ -86,6 +92,11 @@ public class LoginGUI {
 				}
 			}
 		});
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction t=session.beginTransaction();
+		Korisnik k = (Korisnik) session.get(Korisnik.class, 1);
+		JOptionPane.showMessageDialog(null, k.getIme());
+		t.commit();
 	}
 
 }
