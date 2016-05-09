@@ -1,5 +1,8 @@
 package ba.unsa.etf.si.tim8.mlmarketing.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -32,9 +35,27 @@ public class RegijaServis {
 		Regija r = new Regija();
 		r.setIme(nova.getIme());
 		r.setDrzava(nova.getDrzava());
-
+		
 		s.save(r);
 		t.commit();
 		return true;
 	}
+	
+	public boolean obrisi(int id){
+		Transaction t = s.beginTransaction();
+		
+		
+		Regija zaBrisanje = s.get(Regija.class,id);
+		if(zaBrisanje!=null)s.delete(zaBrisanje);
+		
+		t.commit();
+		
+		return true;
+	}
+	
+	public ArrayList<Regija> dajRegije(){
+		List<Regija> r = s.createCriteria(Regija.class).list();
+		return new ArrayList<Regija>(r);
+	}
+	
 }

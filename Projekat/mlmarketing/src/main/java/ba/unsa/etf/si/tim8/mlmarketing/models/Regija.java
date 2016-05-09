@@ -79,5 +79,10 @@ public class Regija implements java.io.Serializable {
 	public void setAkterprodajes(Set<Akterprodaje> akterprodajes) {
 		this.akterprodajes = akterprodajes;
 	}
+	
+	@Override
+	public String toString() {
+		return this.ime;
+	}
 
 }

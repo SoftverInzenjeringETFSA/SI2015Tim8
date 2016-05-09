@@ -4,9 +4,11 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -16,9 +18,13 @@ import javax.swing.table.DefaultTableModel;
 
 import org.hibernate.Session;
 
+import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
+import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;
+
 public class SefProdajeMainGUI {
 	
 	private Session s;
+	private RegijaServis rs;
 	private JFrame frmSefProdaje;
 	private JTable table;
 	private JTable table_1;
@@ -49,6 +55,7 @@ public class SefProdajeMainGUI {
 	 */
 	public SefProdajeMainGUI(Session s) {
 		this.s=s;
+		this.rs = new RegijaServis(s);
 		initialize();
 	}
 
@@ -123,7 +130,7 @@ public class SefProdajeMainGUI {
 		btnDodajMenadzera.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				RegMenadzerDodajIzmjeniGUI rmdodaj = new RegMenadzerDodajIzmjeniGUI("dodaj");
+				RegMenadzerDodajIzmjeniGUI rmdodaj = new RegMenadzerDodajIzmjeniGUI("dodaj",s);
 				rmdodaj.main("dodaj");
 				
 			}
@@ -139,7 +146,7 @@ public class SefProdajeMainGUI {
 		btnIzmijeni.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				RegMenadzerDodajIzmjeniGUI rmdodaj = new RegMenadzerDodajIzmjeniGUI("izmjeni");
+				RegMenadzerDodajIzmjeniGUI rmdodaj = new RegMenadzerDodajIzmjeniGUI("izmjeni",s);
 				rmdodaj.main("izmjeni");
 				
 			}
@@ -334,20 +341,22 @@ public class SefProdajeMainGUI {
 		tabbedPane.addTab("Regije", null, panel_4, null);
 		panel_4.setLayout(null);
 		
+		
+		
 		JScrollPane scrollPane_4 = new JScrollPane();
 		scrollPane_4.setBounds(12, 13, 587, 190);
 		panel_4.add(scrollPane_4);
 		
 		table_4 = new JTable();
 		table_4.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
+			new Object[][]{},
 			new String[] {
-				"Regija", "Dr\u017Eava"
+				"Regija", "Dr\u017Eava",""
 			}
 		));
 		table_4.getColumnModel().getColumn(0).setPreferredWidth(117);
 		table_4.getColumnModel().getColumn(1).setPreferredWidth(108);
+		
 		scrollPane_4.setViewportView(table_4);
 		
 		JButton btnDodajRegiju = new JButton("Dodaj");
@@ -362,9 +371,17 @@ public class SefProdajeMainGUI {
 			}
 		});
 		
-		JButton button_1 = new JButton("Obri\u0161i");
-		button_1.setBounds(502, 216, 97, 25);
-		panel_4.add(button_1);
+		JButton btnObrisiRegiju = new JButton("Obri\u0161i");
+		btnObrisiRegiju.setBounds(502, 216, 97, 25);
+		panel_4.add(btnObrisiRegiju);
+		btnObrisiRegiju.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				JOptionPane.showMessageDialog(null, table_4.getModel().getValueAt(table_4.getSelectedRow(), 2));
+				rs.obrisi((Integer)table_4.getModel().getValueAt(table_4.getSelectedRow(), 2));
+				refreshajTabelu();
+			}
+		});
 		
 		JPanel panel_5 = new JPanel();
 		panel_5.setBackground(Color.WHITE);
@@ -420,6 +437,22 @@ public class SefProdajeMainGUI {
 		panel_7.setBackground(Color.WHITE);
 		tabbedPane.addTab("Izvje\u0161taji", null, panel_7, null);
 		panel_7.setLayout(null);
+		
+		refreshajTabelu();
+	}
+	
+	private void refreshajTabelu(){
+		ArrayList<Regija> regije = rs.dajRegije();
+		Object[][] data= new Object[regije.size()][];
+		for(int i = 0; i<regije.size();i++) data[i]= new Object[]{regije.get(i).getIme(),regije.get(i).getDrzava(),regije.get(i).getId()};
+		
+		table_4.setModel(new DefaultTableModel(
+				data,
+				new String[] {
+					"Regija", "Dr\u017Eava",""
+				}
+			));
+		table_4.getColumnModel().removeColumn(table_4.getColumnModel().getColumn(2));
 	}
 
 }

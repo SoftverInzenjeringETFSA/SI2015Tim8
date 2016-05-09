@@ -1,16 +1,28 @@
 package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-public class RegMenadzerDodajIzmjeniGUI {
+import org.hibernate.Session;
 
+import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
+import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;
+
+public class RegMenadzerDodajIzmjeniGUI {
+	
+	private Session s;
+	private RegijaServis rs;
 	private JFrame frmDodajizmijeni;
 	private JTextField textField;
 	private JTextField textField_1;
@@ -20,11 +32,11 @@ public class RegMenadzerDodajIzmjeniGUI {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(final String what) {
+	public void main(final String what) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RegMenadzerDodajIzmjeniGUI window = new RegMenadzerDodajIzmjeniGUI(what);
+					RegMenadzerDodajIzmjeniGUI window = new RegMenadzerDodajIzmjeniGUI(what,s);
 					window.frmDodajizmijeni.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -36,7 +48,9 @@ public class RegMenadzerDodajIzmjeniGUI {
 	/**
 	 * Create the application.
 	 */
-	public RegMenadzerDodajIzmjeniGUI(String what) {
+	public RegMenadzerDodajIzmjeniGUI(String what,Session s) {
+		this.s=s;
+		this.rs= new RegijaServis(s);
 		initialize(what);
 	}
 
@@ -96,15 +110,26 @@ public class RegMenadzerDodajIzmjeniGUI {
 		frmDodajizmijeni.getContentPane().add(textField_3);
 		textField_3.setColumns(10);
 		
-		JComboBox comboBox = new JComboBox();
+		final JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(140, 157, 129, 20);
 		frmDodajizmijeni.getContentPane().add(comboBox);
+		ArrayList<Regija> regije = rs.dajRegije();
+		for(int i = 0; i<regije.size();i++) comboBox.addItem(regije.get(i));
 		
 		JButton btnDodajIzmjeni;
 		if(what=="dodaj") btnDodajIzmjeni = new JButton("Dodaj");
 		else btnDodajIzmjeni = new JButton("Izmijeni");
 		btnDodajIzmjeni.setBounds(180, 188, 89, 23);
 		frmDodajizmijeni.getContentPane().add(btnDodajIzmjeni);
+		btnDodajIzmjeni.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				Regija r = (Regija)comboBox.getSelectedItem();
+				JOptionPane.showMessageDialog(null, r.getDrzava());
+				
+				
+			}
+		});
 	}
 
 }
