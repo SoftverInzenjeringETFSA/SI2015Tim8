@@ -16,18 +16,22 @@ import javax.swing.SwingConstants;
 
 import org.hibernate.Session;
 
+import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
+import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;
 
 public class RegMenadzerDodajIzmjeniGUI {
 	
 	private Session s;
 	private RegijaServis rs;
+	private AkterServis aks;
 	private JFrame frmDodajizmijeni;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField textFieldIme;
+	private JTextField textFieldBrojTelefona;
+	private JTextField textFieldAdresa;
+	private JTextField textFieldEmail;
+	private JTextField textFieldPrezime;
 
 	/**
 	 * Launch the application.
@@ -51,6 +55,7 @@ public class RegMenadzerDodajIzmjeniGUI {
 	public RegMenadzerDodajIzmjeniGUI(String what,Session s) {
 		this.s=s;
 		this.rs= new RegijaServis(s);
+		this.aks=new AkterServis(s);
 		initialize(what);
 	}
 
@@ -65,9 +70,9 @@ public class RegMenadzerDodajIzmjeniGUI {
 		frmDodajizmijeni.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmDodajizmijeni.getContentPane().setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Ime i prezime:");
+		JLabel lblNewLabel = new JLabel("Ime:");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel.setBounds(46, 60, 84, 14);
+		lblNewLabel.setBounds(46, 33, 84, 14);
 		frmDodajizmijeni.getContentPane().add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Broj telefona:");
@@ -90,25 +95,25 @@ public class RegMenadzerDodajIzmjeniGUI {
 		lblNewLabel_4.setBounds(46, 160, 84, 14);
 		frmDodajizmijeni.getContentPane().add(lblNewLabel_4);
 		
-		textField = new JTextField();
-		textField.setBounds(140, 57, 129, 20);
-		frmDodajizmijeni.getContentPane().add(textField);
-		textField.setColumns(10);
+		textFieldIme = new JTextField();
+		textFieldIme.setBounds(140, 30, 129, 20);
+		frmDodajizmijeni.getContentPane().add(textFieldIme);
+		textFieldIme.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(140, 82, 129, 20);
-		frmDodajizmijeni.getContentPane().add(textField_1);
-		textField_1.setColumns(10);
+		textFieldBrojTelefona = new JTextField();
+		textFieldBrojTelefona.setBounds(140, 82, 129, 20);
+		frmDodajizmijeni.getContentPane().add(textFieldBrojTelefona);
+		textFieldBrojTelefona.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(140, 107, 129, 20);
-		frmDodajizmijeni.getContentPane().add(textField_2);
-		textField_2.setColumns(10);
+		textFieldAdresa = new JTextField();
+		textFieldAdresa.setBounds(140, 107, 129, 20);
+		frmDodajizmijeni.getContentPane().add(textFieldAdresa);
+		textFieldAdresa.setColumns(10);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(140, 132, 129, 20);
-		frmDodajizmijeni.getContentPane().add(textField_3);
-		textField_3.setColumns(10);
+		textFieldEmail = new JTextField();
+		textFieldEmail.setBounds(140, 132, 129, 20);
+		frmDodajizmijeni.getContentPane().add(textFieldEmail);
+		textFieldEmail.setColumns(10);
 		
 		final JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(140, 157, 129, 20);
@@ -120,7 +125,33 @@ public class RegMenadzerDodajIzmjeniGUI {
 		if(what=="dodaj") btnDodajIzmjeni = new JButton("Dodaj");
 		else btnDodajIzmjeni = new JButton("Izmijeni");
 		btnDodajIzmjeni.setBounds(180, 188, 89, 23);
+		btnDodajIzmjeni.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				Akterprodaje a = new Akterprodaje();
+				a.setIme(textFieldIme.getText());
+				a.setPrezime(textFieldPrezime.getText());
+				a.setAdresa(textFieldAdresa.getText());
+				a.setBrojtelefona(textFieldBrojTelefona.getText());
+				a.setEmail(textFieldEmail.getText());
+				a.setTip("regmen");
+				a.setRegija((Regija)comboBox.getSelectedItem());
+				aks.kreirajAktera(a);
+				
+			}
+		});
 		frmDodajizmijeni.getContentPane().add(btnDodajIzmjeni);
+		
+		
+		textFieldPrezime = new JTextField();
+		textFieldPrezime.setBounds(140, 58, 129, 20);
+		frmDodajizmijeni.getContentPane().add(textFieldPrezime);
+		textFieldPrezime.setColumns(10);
+		
+		JLabel lblPrezime = new JLabel("Prezime:");
+		lblPrezime.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblPrezime.setBounds(84, 60, 46, 14);
+		frmDodajizmijeni.getContentPane().add(lblPrezime);
 		btnDodajIzmjeni.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
@@ -131,5 +162,4 @@ public class RegMenadzerDodajIzmjeniGUI {
 			}
 		});
 	}
-
 }

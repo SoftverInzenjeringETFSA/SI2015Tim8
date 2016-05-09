@@ -11,14 +11,23 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import org.hibernate.Session;
+
+import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
+import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
+
 public class PrikazRegionalniMenadzerGUI {
 
+	private Session s;
+	private AkterServis aks;
+	private int id;
+
 	private JFrame frmPregledMenadera;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
+	private JTextField textFieldimePrezime;
+	private JTextField textFieldBrojTelefona;
+	private JTextField textFieldAdresa;
+	private JTextField textFieldEmail;
+	private JTextField textFieldRegija;
 	private JTable table;
 	private JLabel lblNadleanZa;
 	private JButton btnOk;
@@ -26,11 +35,11 @@ public class PrikazRegionalniMenadzerGUI {
 	/**
 	 * Launch the application.
 	 */
-	public static void startPrikazMenadzer() {
+	public void startPrikazMenadzer() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PrikazRegionalniMenadzerGUI window = new PrikazRegionalniMenadzerGUI();
+					PrikazRegionalniMenadzerGUI window = new PrikazRegionalniMenadzerGUI(s,id);
 					window.frmPregledMenadera.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -42,7 +51,10 @@ public class PrikazRegionalniMenadzerGUI {
 	/**
 	 * Create the application.
 	 */
-	public PrikazRegionalniMenadzerGUI() {
+	public PrikazRegionalniMenadzerGUI(Session s, int id) {
+		this.s = s;
+		this.id = id;
+		aks= new AkterServis(s);
 		initialize();
 	}
 
@@ -76,40 +88,40 @@ public class PrikazRegionalniMenadzerGUI {
 		lblEmail.setBounds(81, 130, 46, 14);
 		frmPregledMenadera.getContentPane().add(lblEmail);
 		
-		textField = new JTextField();
-		textField.setEditable(false);
-		textField.setBounds(134, 37, 130, 20);
-		frmPregledMenadera.getContentPane().add(textField);
-		textField.setColumns(10);
+		textFieldimePrezime = new JTextField();
+		textFieldimePrezime.setEditable(false);
+		textFieldimePrezime.setBounds(134, 37, 130, 20);
+		frmPregledMenadera.getContentPane().add(textFieldimePrezime);
+		textFieldimePrezime.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setEditable(false);
-		textField_1.setBounds(134, 68, 130, 20);
-		frmPregledMenadera.getContentPane().add(textField_1);
-		textField_1.setColumns(10);
+		textFieldBrojTelefona = new JTextField();
+		textFieldBrojTelefona.setEditable(false);
+		textFieldBrojTelefona.setBounds(134, 68, 130, 20);
+		frmPregledMenadera.getContentPane().add(textFieldBrojTelefona);
+		textFieldBrojTelefona.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setEditable(false);
-		textField_2.setBounds(134, 99, 130, 20);
-		frmPregledMenadera.getContentPane().add(textField_2);
-		textField_2.setColumns(10);
+		textFieldAdresa = new JTextField();
+		textFieldAdresa.setEditable(false);
+		textFieldAdresa.setBounds(134, 99, 130, 20);
+		frmPregledMenadera.getContentPane().add(textFieldAdresa);
+		textFieldAdresa.setColumns(10);
 		
-		textField_3 = new JTextField();
-		textField_3.setEditable(false);
-		textField_3.setBounds(134, 127, 130, 20);
-		frmPregledMenadera.getContentPane().add(textField_3);
-		textField_3.setColumns(10);
+		textFieldEmail = new JTextField();
+		textFieldEmail.setEditable(false);
+		textFieldEmail.setBounds(134, 127, 130, 20);
+		frmPregledMenadera.getContentPane().add(textFieldEmail);
+		textFieldEmail.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("Regija:");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel.setBounds(81, 161, 46, 14);
 		frmPregledMenadera.getContentPane().add(lblNewLabel);
 		
-		textField_4 = new JTextField();
-		textField_4.setEditable(false);
-		textField_4.setBounds(134, 158, 130, 20);
-		frmPregledMenadera.getContentPane().add(textField_4);
-		textField_4.setColumns(10);
+		textFieldRegija = new JTextField();
+		textFieldRegija.setEditable(false);
+		textFieldRegija.setBounds(134, 158, 130, 20);
+		frmPregledMenadera.getContentPane().add(textFieldRegija);
+		textFieldRegija.setColumns(10);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(274, 55, 365, 125);
@@ -136,6 +148,20 @@ public class PrikazRegionalniMenadzerGUI {
 		btnOk = new JButton("OK");
 		btnOk.setBounds(550, 326, 89, 23);
 		frmPregledMenadera.getContentPane().add(btnOk);
+		prikaziPodatke();
+	}
+	
+	private void prikaziPodatke(){
+		Akterprodaje prikaz=aks.dajAktera(id);
+		if(prikaz != null)
+		{
+			textFieldimePrezime.setText(prikaz.getIme() + " " + prikaz.getPrezime());
+			textFieldAdresa.setText(prikaz.getAdresa());
+			textFieldEmail.setText(prikaz.getEmail());
+			textFieldBrojTelefona.setText(prikaz.getBrojtelefona());
+			textFieldRegija.setText(prikaz.getRegija().getIme());
+		}
+			
 	}
 
 }

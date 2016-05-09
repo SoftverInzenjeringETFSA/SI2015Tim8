@@ -18,19 +18,22 @@ import javax.swing.table.DefaultTableModel;
 
 import org.hibernate.Session;
 
+import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
+import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;
 
 public class SefProdajeMainGUI {
 	
 	private Session s;
 	private RegijaServis rs;
+	private AkterServis aks;
 	private JFrame frmSefProdaje;
 	private JTable table;
-	private JTable table_1;
+	private JTable tableMenadzeri;
 	private JTable table_2;
 	private JTable table_3;
-	private JTable table_4;
+	private JTable tableRegije;
 	private JTable table_5;
 	private JTable table_6;
 
@@ -56,6 +59,7 @@ public class SefProdajeMainGUI {
 	public SefProdajeMainGUI(Session s) {
 		this.s=s;
 		this.rs = new RegijaServis(s);
+		this.aks = new AkterServis(s);
 		initialize();
 	}
 
@@ -136,9 +140,19 @@ public class SefProdajeMainGUI {
 			}
 		});
 		
-		JButton btnNewButton_4 = new JButton("Obri\u0161i ");
-		btnNewButton_4.setBounds(403, 146, 94, 23);
-		panel_1.add(btnNewButton_4);
+		JButton btnObrisiMenadzera = new JButton("Obri\u0161i ");
+		btnObrisiMenadzera.setBounds(403, 146, 94, 23);
+		btnObrisiMenadzera.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int id = (Integer)tableMenadzeri.getModel().getValueAt(tableMenadzeri.getSelectedRow(), 5);
+				aks.izbrisiAktera(id);
+				refreshajTabeluMenadzeri();
+				
+			}
+		});
+		panel_1.add(btnObrisiMenadzera);
 		
 		JButton btnIzmijeni = new JButton("Izmijeni");
 		btnIzmijeni.setBounds(507, 146, 94, 23);
@@ -163,8 +177,8 @@ public class SefProdajeMainGUI {
 		
 
 		
-		table_1 = new JTable();
-		table_1.setModel(new DefaultTableModel(
+		tableMenadzeri = new JTable();
+		tableMenadzeri.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -175,8 +189,8 @@ public class SefProdajeMainGUI {
 				"Regija"
 				}
 		));
-		scrollPane.setViewportView(table_1);
-		table_1.setBackground(Color.LIGHT_GRAY);
+		scrollPane.setViewportView(tableMenadzeri);
+		tableMenadzeri.setBackground(Color.LIGHT_GRAY);
 		
 		JButton btnPregledMenadzera = new JButton("Prika\u017Ei aktera");
 		btnPregledMenadzera.setBounds(10, 146, 113, 23);
@@ -184,7 +198,8 @@ public class SefProdajeMainGUI {
 		btnPregledMenadzera.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				PrikazRegionalniMenadzerGUI rmprikaz = new PrikazRegionalniMenadzerGUI();
+				int id = (Integer)tableMenadzeri.getModel().getValueAt(tableMenadzeri.getSelectedRow(), 5);
+				PrikazRegionalniMenadzerGUI rmprikaz = new PrikazRegionalniMenadzerGUI(s,id);
 				rmprikaz.startPrikazMenadzer();				
 			}
 		});
@@ -347,17 +362,17 @@ public class SefProdajeMainGUI {
 		scrollPane_4.setBounds(12, 13, 587, 190);
 		panel_4.add(scrollPane_4);
 		
-		table_4 = new JTable();
-		table_4.setModel(new DefaultTableModel(
+		tableRegije = new JTable();
+		tableRegije.setModel(new DefaultTableModel(
 			new Object[][]{},
 			new String[] {
 				"Regija", "Dr\u017Eava",""
 			}
 		));
-		table_4.getColumnModel().getColumn(0).setPreferredWidth(117);
-		table_4.getColumnModel().getColumn(1).setPreferredWidth(108);
+		tableRegije.getColumnModel().getColumn(0).setPreferredWidth(117);
+		tableRegije.getColumnModel().getColumn(1).setPreferredWidth(108);
 		
-		scrollPane_4.setViewportView(table_4);
+		scrollPane_4.setViewportView(tableRegije);
 		
 		JButton btnDodajRegiju = new JButton("Dodaj");
 		btnDodajRegiju.setBounds(393, 216, 97, 25);
@@ -377,9 +392,9 @@ public class SefProdajeMainGUI {
 		btnObrisiRegiju.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(null, table_4.getModel().getValueAt(table_4.getSelectedRow(), 2));
-				rs.obrisi((Integer)table_4.getModel().getValueAt(table_4.getSelectedRow(), 2));
-				refreshajTabelu();
+				JOptionPane.showMessageDialog(null, tableRegije.getModel().getValueAt(tableRegije.getSelectedRow(), 2));
+				rs.obrisi((Integer)tableRegije.getModel().getValueAt(tableRegije.getSelectedRow(), 2));
+				refreshajTabeluRegije();
 			}
 		});
 		
@@ -438,21 +453,45 @@ public class SefProdajeMainGUI {
 		tabbedPane.addTab("Izvje\u0161taji", null, panel_7, null);
 		panel_7.setLayout(null);
 		
-		refreshajTabelu();
+		refreshajTabeluRegije();
+		refreshajTabeluMenadzeri();
 	}
 	
-	private void refreshajTabelu(){
+	private void refreshajTabeluRegije(){
 		ArrayList<Regija> regije = rs.dajRegije();
 		Object[][] data= new Object[regije.size()][];
 		for(int i = 0; i<regije.size();i++) data[i]= new Object[]{regije.get(i).getIme(),regije.get(i).getDrzava(),regije.get(i).getId()};
 		
-		table_4.setModel(new DefaultTableModel(
+		tableRegije.setModel(new DefaultTableModel(
 				data,
 				new String[] {
 					"Regija", "Dr\u017Eava",""
 				}
 			));
-		table_4.getColumnModel().removeColumn(table_4.getColumnModel().getColumn(2));
+		tableRegije.getColumnModel().removeColumn(tableRegije.getColumnModel().getColumn(2));
+	}
+	
+	private void refreshajTabeluMenadzeri(){
+		ArrayList<Akterprodaje> akteri = aks.dajSveAkterePoTipu("regmen");
+		Object[][] data = new Object[akteri.size()][];
+		for(int i = 0; i<akteri.size();i++) data[i]= new Object[]{akteri.get(i).getIme()+" "+akteri.get(i).getPrezime(),
+				akteri.get(i).getBrojtelefona(), akteri.get(i).getAdresa(), akteri.get(i).getEmail(),
+				akteri.get(i).getRegija().getIme(), akteri.get(i).getId()
+				};
+		
+		tableMenadzeri.setModel(new DefaultTableModel(
+				data ,
+				new String[] {
+					"Ime i prezime", 
+					"Broj telefona",
+					"Adresa",
+					"Email",
+					"Regija",
+					"ID"
+					}
+			));
+		
+		tableMenadzeri.getColumnModel().removeColumn(tableMenadzeri.getColumnModel().getColumn(5));
 	}
 
 }
