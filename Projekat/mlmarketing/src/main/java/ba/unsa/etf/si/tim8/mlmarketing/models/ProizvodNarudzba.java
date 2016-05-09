@@ -1,5 +1,7 @@
 package ba.unsa.etf.si.tim8.mlmarketing.models;
-// Generated May 8, 2016 6:21:50 PM by Hibernate Tools 5.0.0.Alpha3
+
+// default package
+// Generated May 9, 2016 2:18:54 AM by Hibernate Tools 5.0.0.Alpha3
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,12 +23,12 @@ public class ProizvodNarudzba implements java.io.Serializable {
 	private Integer id;
 	private Narudzba narudzba;
 	private Proizvod proizvod;
-	private String kolicina;
+	private int kolicina;
 
 	public ProizvodNarudzba() {
 	}
 
-	public ProizvodNarudzba(Narudzba narudzba, Proizvod proizvod, String kolicina) {
+	public ProizvodNarudzba(Narudzba narudzba, Proizvod proizvod, int kolicina) {
 		this.narudzba = narudzba;
 		this.proizvod = proizvod;
 		this.kolicina = kolicina;
@@ -64,12 +66,12 @@ public class ProizvodNarudzba implements java.io.Serializable {
 		this.proizvod = proizvod;
 	}
 
-	@Column(name = "kolicina", nullable = false, length = 45)
-	public String getKolicina() {
+	@Column(name = "kolicina", nullable = false)
+	public int getKolicina() {
 		return this.kolicina;
 	}
 
-	public void setKolicina(String kolicina) {
+	public void setKolicina(int kolicina) {
 		this.kolicina = kolicina;
 	}
 

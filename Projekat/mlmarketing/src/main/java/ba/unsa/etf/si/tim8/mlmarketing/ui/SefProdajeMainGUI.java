@@ -14,8 +14,11 @@ import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
-public class SefProdajeMainGUI {
+import org.hibernate.Session;
 
+public class SefProdajeMainGUI {
+	
+	private Session s;
 	private JFrame frmSefProdaje;
 	private JTable table;
 	private JTable table_1;
@@ -28,11 +31,11 @@ public class SefProdajeMainGUI {
 	/**
 	 * Launch the application.
 	 */
-	public static void startSefProdajeMain() {
+	public void startSefProdajeMain() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SefProdajeMainGUI window = new SefProdajeMainGUI();
+					SefProdajeMainGUI window = new SefProdajeMainGUI(s);
 					window.frmSefProdaje.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -44,7 +47,8 @@ public class SefProdajeMainGUI {
 	/**
 	 * Create the application.
 	 */
-	public SefProdajeMainGUI() {
+	public SefProdajeMainGUI(Session s) {
+		this.s=s;
 		initialize();
 	}
 
@@ -352,7 +356,7 @@ public class SefProdajeMainGUI {
 		btnDodajRegiju.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				DodavanjeRegijeGUI dodavanjeRegije = new DodavanjeRegijeGUI();
+				DodavanjeRegijeGUI dodavanjeRegije = new DodavanjeRegijeGUI(s);
 				dodavanjeRegije.startDodavanjeRegije();
 				
 			}

@@ -1,6 +1,8 @@
 package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.*;
+import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
+
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,15 +25,16 @@ public class LoginGUI {
 	private JFrame frmLogin;
 	private JTextField txtUsername;
 	private JPasswordField passwordField;
+	private Session s;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void startLogin() {
+	public void startLogin() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					LoginGUI window = new LoginGUI();
+					LoginGUI window = new LoginGUI(s);
 					window.frmLogin.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -43,7 +46,8 @@ public class LoginGUI {
 	/**
 	 * Create the application.
 	 */
-	public LoginGUI() {
+	public LoginGUI(Session s) {
+		this.s=s;
 		initialize();
 	}
 
@@ -87,16 +91,21 @@ public class LoginGUI {
 					komercijalistamg.startKomercijalistaMain();
 				}
 				else{
-					SefProdajeMainGUI sefmg= new SefProdajeMainGUI();
-					sefmg.startSefProdajeMain();
+					SesijaServis sesija= new SesijaServis(s);
+					if(sesija.prijava(txtUsername.getText(),passwordField.getText())){
+						if(sesija.dajKorisnika().getTip().equals("sef")){
+							SefProdajeMainGUI sefmg= new SefProdajeMainGUI(s);
+							sefmg.startSefProdajeMain();}
+					} 
+					
 				}
 			}
-		});
+		});/*
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction t=session.beginTransaction();
 		Korisnik k = (Korisnik) session.get(Korisnik.class, 1);
 		JOptionPane.showMessageDialog(null, k.getIme());
-		t.commit();
+		t.commit();*/
 	}
 
 }

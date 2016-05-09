@@ -2,14 +2,24 @@ package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.hibernate.Session;
+
+import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
+import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;
+
 public class DodavanjeRegijeGUI {
+	
+	Session s;
 
 	private JFrame frmDodavanjeRegije;
 	private JTextField textField;
@@ -18,11 +28,11 @@ public class DodavanjeRegijeGUI {
 	/**
 	 * Launch the application.
 	 */
-	public static void startDodavanjeRegije() {
+	public void startDodavanjeRegije() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DodavanjeRegijeGUI window = new DodavanjeRegijeGUI();
+					DodavanjeRegijeGUI window = new DodavanjeRegijeGUI(s);
 					window.frmDodavanjeRegije.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -34,7 +44,8 @@ public class DodavanjeRegijeGUI {
 	/**
 	 * Create the application.
 	 */
-	public DodavanjeRegijeGUI() {
+	public DodavanjeRegijeGUI(Session s) {
+		this.s=s;
 		initialize();
 	}
 
@@ -71,6 +82,21 @@ public class DodavanjeRegijeGUI {
 		
 		JButton btnNewButton = new JButton("Dodaj");
 		btnNewButton.setBounds(147, 170, 116, 25);
+		btnNewButton.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				if(!textField.getText().equals("") && !textField_1.getText().equals("")){
+					JOptionPane.showMessageDialog(null, "My Goodness, this is so concise");
+					RegijaServis r= new RegijaServis(s);
+					Regija nova = new Regija();
+					nova.setIme(textField.getText());
+					nova.setDrzava(textField_1.getText());
+					JOptionPane.showMessageDialog(null, nova.getDrzava());
+					r.dodajRegiju(nova);
+				}
+				
+			}
+		});
 		frmDodavanjeRegije.getContentPane().add(btnNewButton);
 	}
 

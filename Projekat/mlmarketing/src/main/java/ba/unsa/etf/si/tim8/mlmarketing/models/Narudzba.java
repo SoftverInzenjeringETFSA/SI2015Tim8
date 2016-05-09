@@ -1,5 +1,7 @@
 package ba.unsa.etf.si.tim8.mlmarketing.models;
-// Generated May 8, 2016 6:21:50 PM by Hibernate Tools 5.0.0.Alpha3
+
+// default package
+// Generated May 9, 2016 2:18:54 AM by Hibernate Tools 5.0.0.Alpha3
 
 import java.util.Date;
 import java.util.HashSet;

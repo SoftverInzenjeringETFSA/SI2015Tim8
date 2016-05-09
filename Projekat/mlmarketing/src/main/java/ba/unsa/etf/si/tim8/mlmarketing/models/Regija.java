@@ -1,5 +1,7 @@
 package ba.unsa.etf.si.tim8.mlmarketing.models;
-// Generated May 8, 2016 6:21:50 PM by Hibernate Tools 5.0.0.Alpha3
+
+// default package
+// Generated May 9, 2016 2:18:54 AM by Hibernate Tools 5.0.0.Alpha3
 
 import java.util.HashSet;
 import java.util.Set;
@@ -51,7 +53,7 @@ public class Regija implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "ime", unique = true, nullable = false, length = 45)
+	@Column(name = "ime", unique = true, nullable = false, length = 90)
 	public String getIme() {
 		return this.ime;
 	}
@@ -60,7 +62,7 @@ public class Regija implements java.io.Serializable {
 		this.ime = ime;
 	}
 
-	@Column(name = "drzava", nullable = false, length = 45)
+	@Column(name = "drzava", nullable = false, length = 90)
 	public String getDrzava() {
 		return this.drzava;
 	}
