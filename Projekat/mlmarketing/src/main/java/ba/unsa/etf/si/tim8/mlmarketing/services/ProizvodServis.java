@@ -39,5 +39,10 @@ public class ProizvodServis {
 		return new ArrayList<Proizvod>(proizvodi);
 	}
 	
-	
+	public boolean obrisiProizvod(Proizvod p){
+		Transaction t = s.beginTransaction();
+		s.delete(p);
+		t.commit();
+		return true;
+	}
 }
