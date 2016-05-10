@@ -36,6 +36,18 @@ public class AkterServis {
 		return true;
 	}
 	
+	public boolean izmjeniAktera(Akterprodaje a)
+	{
+		s.flush();
+		s.clear();
+		Transaction t = s.beginTransaction();
+		s.update(a);
+		t.commit();
+		s.flush();
+		return true;
+	}
+	
+	
 	public boolean izbrisiAktera(int id)
 	{
 		Transaction t = s.beginTransaction();

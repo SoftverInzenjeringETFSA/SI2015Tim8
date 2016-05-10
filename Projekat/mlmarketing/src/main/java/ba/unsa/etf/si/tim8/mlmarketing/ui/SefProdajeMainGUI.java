@@ -110,7 +110,7 @@ public class SefProdajeMainGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(tableKorisnici.getSelectedRow()!=-1){
-					int id =(Integer)tableKorisnici.getModel().getValueAt(tableKorisnici.getSelectedRow(),5);
+					int id = odaberiIdKolonu(tableKorisnici, 5);
 					ns.obrisiNalog(id);
 					refreshajTabeluKorisnici();
 				}
@@ -151,8 +151,7 @@ public class SefProdajeMainGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				RegMenadzerDodajIzmjeniGUI rmdodaj = new RegMenadzerDodajIzmjeniGUI("dodaj",s,ref);
-				rmdodaj.main("dodaj");
-				
+				rmdodaj.pokreniRegMenDodajIzmjeni("dodaj");
 			}
 		});
 		
@@ -176,8 +175,9 @@ public class SefProdajeMainGUI {
 		btnIzmijeni.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				RegMenadzerDodajIzmjeniGUI rmdodaj = new RegMenadzerDodajIzmjeniGUI("izmjeni",s,ref);
-				rmdodaj.main("izmjeni");
+				int id= odaberiIdKolonu(tableMenadzeri, 5);
+				RegMenadzerDodajIzmjeniGUI rmdodaj = new RegMenadzerDodajIzmjeniGUI("izmjeni",s,ref,id);
+				rmdodaj.pokreniRegMenDodajIzmjeni("izmjeni");
 				
 			}
 		});
@@ -526,6 +526,11 @@ public class SefProdajeMainGUI {
 			));
 		
 		tableKorisnici.getColumnModel().removeColumn(tableKorisnici.getColumnModel().getColumn(5));
+	}
+	
+	public int odaberiIdKolonu(JTable tabela,int brojKolone){
+		int id = (Integer)tabela.getModel().getValueAt(tabela.getSelectedRow(),brojKolone);
+		return id;
 	}
 
 }

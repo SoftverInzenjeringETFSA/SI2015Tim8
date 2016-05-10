@@ -26,6 +26,8 @@ public class RegMenadzerDodajIzmjeniGUI {
 	private Session s;
 	private RegijaServis rs;
 	private AkterServis aks;
+	private int id=-1;
+	
 	private SefProdajeMainGUI refreshableRoditelj;
 	private JFrame frmDodajizmijeni;
 	private JTextField textFieldIme;
@@ -37,11 +39,13 @@ public class RegMenadzerDodajIzmjeniGUI {
 	/**
 	 * Launch the application.
 	 */
-	public void main(final String what) {
+	public void pokreniRegMenDodajIzmjeni(final String what) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RegMenadzerDodajIzmjeniGUI window = new RegMenadzerDodajIzmjeniGUI(what,s,refreshableRoditelj);
+					RegMenadzerDodajIzmjeniGUI window;
+					if(id==-1)window = new RegMenadzerDodajIzmjeniGUI(what,s,refreshableRoditelj);
+					else window = new RegMenadzerDodajIzmjeniGUI(what,s,refreshableRoditelj,id);
 					window.frmDodajizmijeni.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -59,6 +63,22 @@ public class RegMenadzerDodajIzmjeniGUI {
 		this.aks=new AkterServis(s);
 		this.refreshableRoditelj=roditelj;
 		initialize(what);
+		JOptionPane.showMessageDialog(null, refreshableRoditelj!=null);
+	}
+	
+	public RegMenadzerDodajIzmjeniGUI(String what,Session s,SefProdajeMainGUI roditelj, int id) {
+		this.s=s;
+		this.rs= new RegijaServis(s);
+		this.aks=new AkterServis(s);
+		this.refreshableRoditelj=roditelj;
+		this.id=id;
+		initialize(what);
+		Akterprodaje trenutni = aks.dajAktera(id);
+		textFieldIme.setText(trenutni.getIme());
+		textFieldPrezime.setText(trenutni.getPrezime());
+		textFieldAdresa.setText(trenutni.getAdresa());
+		textFieldBrojTelefona.setText(trenutni.getBrojtelefona());
+		textFieldEmail.setText(trenutni.getEmail());
 		JOptionPane.showMessageDialog(null, refreshableRoditelj!=null);
 	}
 
@@ -131,15 +151,35 @@ public class RegMenadzerDodajIzmjeniGUI {
 		btnDodajIzmjeni.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				Akterprodaje a = new Akterprodaje();
-				a.setIme(textFieldIme.getText());
-				a.setPrezime(textFieldPrezime.getText());
-				a.setAdresa(textFieldAdresa.getText());
-				a.setBrojtelefona(textFieldBrojTelefona.getText());
-				a.setEmail(textFieldEmail.getText());
-				a.setTip("regmen");
-				a.setRegija((Regija)comboBox.getSelectedItem());
-				aks.kreirajAktera(a);
+				if(id==-1){
+					Akterprodaje a = new Akterprodaje();
+					a.setIme(textFieldIme.getText());
+					a.setPrezime(textFieldPrezime.getText());
+					a.setAdresa(textFieldAdresa.getText());
+					a.setBrojtelefona(textFieldBrojTelefona.getText());
+					a.setEmail(textFieldEmail.getText());
+					a.setTip("regmen");
+					a.setRegija((Regija)comboBox.getSelectedItem());
+					aks.kreirajAktera(a);
+				}
+				else{
+					Akterprodaje a = aks.dajAktera(id);
+					a.setIme(textFieldIme.getText());
+					a.setPrezime(textFieldPrezime.getText());
+					a.setAdresa(textFieldAdresa.getText());
+					a.setBrojtelefona(textFieldBrojTelefona.getText());
+					a.setEmail(textFieldEmail.getText());
+					a.setTip("regmen");
+					/*
+					int pozicija=-1;
+					
+					for(int i = 0; i < comboBox.getModel().getSize();i++){
+						
+					}*/
+					
+					//comboBox.setSelectedIndex(pozicija);
+					aks.izmjeniAktera(a);
+				}
 				refreshableRoditelj.refreshajTabeluMenadzeri();
 			}
 		});
@@ -160,8 +200,6 @@ public class RegMenadzerDodajIzmjeniGUI {
 			public void actionPerformed(ActionEvent arg0) {
 				Regija r = (Regija)comboBox.getSelectedItem();
 				JOptionPane.showMessageDialog(null, r.getDrzava());
-				
-				
 			}
 		});
 	}
