@@ -163,10 +163,7 @@ public class PrikazRegionalniMenadzerGUI {
 			textFieldBrojTelefona.setText(prikaz.getBrojtelefona());
 			textFieldRegija.setText(prikaz.getRegija().getIme());
 				 
-			
-			
-			
-			 Akterprodaje[]akteri = prikaz.getAkterprodajes().toArray(new Akterprodaje[prikaz.getAkterprodajes().size()]);
+			Akterprodaje[]akteri = prikaz.getAkterprodajes().toArray(new Akterprodaje[prikaz.getAkterprodajes().size()]);
 			
 			Object[][] data = new Object[akteri.length][];
 			for(int i = 0; i < akteri.length; i++)

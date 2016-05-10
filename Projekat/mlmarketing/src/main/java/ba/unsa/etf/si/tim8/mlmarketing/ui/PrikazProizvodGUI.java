@@ -9,22 +9,31 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.hibernate.Session;
+
+import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
+import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
+
 public class PrikazProizvodGUI {
+	
+	private int id;
+	private Session s;
+	private ProizvodServis ps;
 
 	private JFrame frmProizvod;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField textFieldNaziv;
+	private JTextField textFieldNabavnaCijena;
+	private JTextField textFieldProdajnaCijena;
+	private JTextField textFieldStanjeNaSkladistu;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void startPrikazProizvod() {
+	public void startPrikazProizvod() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PrikazProizvodGUI window = new PrikazProizvodGUI();
+					PrikazProizvodGUI window = new PrikazProizvodGUI(s,id);
 					window.frmProizvod.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -36,7 +45,10 @@ public class PrikazProizvodGUI {
 	/**
 	 * Create the application.
 	 */
-	public PrikazProizvodGUI() {
+	public PrikazProizvodGUI(Session s,int id) {
+		this.s=s;
+		this.id=id;
+		this.ps= new ProizvodServis(s);
 		initialize();
 	}
 
@@ -70,32 +82,41 @@ public class PrikazProizvodGUI {
 		lblStanjeNaSkladitu.setBounds(68, 216, 116, 16);
 		frmProizvod.getContentPane().add(lblStanjeNaSkladitu);
 		
-		textField = new JTextField();
-		textField.setEditable(false);
-		textField.setBounds(209, 73, 116, 22);
-		frmProizvod.getContentPane().add(textField);
-		textField.setColumns(10);
+		textFieldNaziv = new JTextField();
+		textFieldNaziv.setEditable(false);
+		textFieldNaziv.setBounds(209, 73, 116, 22);
+		frmProizvod.getContentPane().add(textFieldNaziv);
+		textFieldNaziv.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setEditable(false);
-		textField_1.setColumns(10);
-		textField_1.setBounds(209, 120, 116, 22);
-		frmProizvod.getContentPane().add(textField_1);
+		textFieldNabavnaCijena = new JTextField();
+		textFieldNabavnaCijena.setEditable(false);
+		textFieldNabavnaCijena.setColumns(10);
+		textFieldNabavnaCijena.setBounds(209, 120, 116, 22);
+		frmProizvod.getContentPane().add(textFieldNabavnaCijena);
 		
-		textField_2 = new JTextField();
-		textField_2.setEditable(false);
-		textField_2.setColumns(10);
-		textField_2.setBounds(209, 168, 116, 22);
-		frmProizvod.getContentPane().add(textField_2);
+		textFieldProdajnaCijena = new JTextField();
+		textFieldProdajnaCijena.setEditable(false);
+		textFieldProdajnaCijena.setColumns(10);
+		textFieldProdajnaCijena.setBounds(209, 168, 116, 22);
+		frmProizvod.getContentPane().add(textFieldProdajnaCijena);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(209, 213, 116, 22);
-		frmProizvod.getContentPane().add(textField_3);
-		textField_3.setColumns(10);
+		textFieldStanjeNaSkladistu = new JTextField();
+		textFieldStanjeNaSkladistu.setBounds(209, 213, 116, 22);
+		frmProizvod.getContentPane().add(textFieldStanjeNaSkladistu);
+		textFieldStanjeNaSkladistu.setColumns(10);
 		
 		JButton btnNewButton = new JButton("Potvrdi promjenu stanja");
 		btnNewButton.setBounds(94, 269, 231, 25);
 		frmProizvod.getContentPane().add(btnNewButton);
+		prikaziPodatkeZaProizvod();
+	}
+	
+	public void prikaziPodatkeZaProizvod(){
+		Proizvod p = ps.dajProizvod(id);
+		textFieldNaziv.setText(p.getNaziv());
+		textFieldNabavnaCijena.setText(Double.toString(p.getNabavnacijena()));
+		textFieldProdajnaCijena.setText(Double.toString(p.getProdajnacijena()));
+		textFieldStanjeNaSkladistu.setText(Integer.toString(p.getKolicina()));
 	}
 
 }

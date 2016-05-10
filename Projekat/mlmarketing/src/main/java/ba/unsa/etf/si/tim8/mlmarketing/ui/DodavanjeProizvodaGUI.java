@@ -1,6 +1,8 @@
 package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -8,22 +10,34 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-public class DodavanjeProizvodaGUI {
+import org.hibernate.Session;
 
+import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
+import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
+
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+
+public class DodavanjeProizvodaGUI {
+	
+	private Session s;
+	private ProizvodServis ps;
+	private SefProdajeMainGUI refreshableRoditelj;
+	
 	private JFrame frmDodajProizvod;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField textFieldNaziv;
+	private JTextField textFieldNabavnaCijena;
+	private JTextField textFieldProdajnaCijena;
+	private JTextField textFieldStanjeNaSkladistu;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void startDodavanjeProizvoda() {
+	public void startDodavanjeProizvoda() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DodavanjeProizvodaGUI window = new DodavanjeProizvodaGUI();
+					DodavanjeProizvodaGUI window = new DodavanjeProizvodaGUI(s,refreshableRoditelj);
 					window.frmDodajProizvod.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -35,7 +49,10 @@ public class DodavanjeProizvodaGUI {
 	/**
 	 * Create the application.
 	 */
-	public DodavanjeProizvodaGUI() {
+	public DodavanjeProizvodaGUI(Session s,SefProdajeMainGUI roditelj) {
+		this.s=s;
+		this.ps= new ProizvodServis(s);
+		this.refreshableRoditelj=roditelj;
 		initialize();
 	}
 
@@ -69,29 +86,46 @@ public class DodavanjeProizvodaGUI {
 		lblStanjeNaSkladitu.setBounds(12, 121, 138, 14);
 		frmDodajProizvod.getContentPane().add(lblStanjeNaSkladitu);
 		
-		textField = new JTextField();
-		textField.setBounds(160, 43, 146, 20);
-		frmDodajProizvod.getContentPane().add(textField);
-		textField.setColumns(10);
+		textFieldNaziv = new JTextField();
+		textFieldNaziv.setBounds(160, 43, 146, 20);
+		frmDodajProizvod.getContentPane().add(textFieldNaziv);
+		textFieldNaziv.setColumns(10);
 		
 		JButton btnDodajProizvod = new JButton("Dodaj proizvod");
 		btnDodajProizvod.setBounds(190, 164, 116, 23);
+		btnDodajProizvod.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				Proizvod p= new Proizvod();
+				p.setNaziv(textFieldNaziv.getText());
+				p.setKolicina(Integer.parseInt(textFieldStanjeNaSkladistu.getText()));
+				p.setNabavnacijena(Double.parseDouble(textFieldNabavnaCijena.getText()));
+				p.setProdajnacijena(Double.parseDouble(textFieldProdajnaCijena.getText()));
+				ps.kreirajProizvod(p);
+				refreshableRoditelj.refreshajTabeluProizvodi();
+				
+			}
+		});
 		frmDodajProizvod.getContentPane().add(btnDodajProizvod);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(160, 68, 146, 20);
-		frmDodajProizvod.getContentPane().add(textField_1);
-		textField_1.setColumns(10);
+		textFieldNabavnaCijena = new JTextField();
+		textFieldNabavnaCijena.setBounds(160, 68, 146, 20);
+		frmDodajProizvod.getContentPane().add(textFieldNabavnaCijena);
+		textFieldNabavnaCijena.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(160, 93, 146, 20);
-		frmDodajProizvod.getContentPane().add(textField_2);
-		textField_2.setColumns(10);
+		textFieldProdajnaCijena = new JTextField();
+		textFieldProdajnaCijena.setBounds(160, 93, 146, 20);
+		frmDodajProizvod.getContentPane().add(textFieldProdajnaCijena);
+		textFieldProdajnaCijena.setColumns(10);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(160, 118, 146, 20);
-		frmDodajProizvod.getContentPane().add(textField_3);
-		textField_3.setColumns(10);
+		textFieldStanjeNaSkladistu = new JTextField();
+		textFieldStanjeNaSkladistu.setBounds(160, 118, 146, 20);
+		frmDodajProizvod.getContentPane().add(textFieldStanjeNaSkladistu);
+		textFieldStanjeNaSkladistu.setColumns(10);
+		
+		JSpinner spinner = new JSpinner();
+		spinner.setModel(new SpinnerNumberModel(new Integer(0), null, null, new Integer(1)));
+		spinner.setBounds(41, 178, 61, 20);
+		frmDodajProizvod.getContentPane().add(spinner);
 	}
-
 }

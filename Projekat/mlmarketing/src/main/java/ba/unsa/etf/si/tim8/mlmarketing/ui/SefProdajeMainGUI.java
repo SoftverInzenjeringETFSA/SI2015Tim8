@@ -20,9 +20,11 @@ import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
+import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NaloziServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;
 
 public class SefProdajeMainGUI {
@@ -31,11 +33,13 @@ public class SefProdajeMainGUI {
 	private RegijaServis rs;
 	private AkterServis aks;
 	private NaloziServis ns;
+	private ProizvodServis ps;
+	
 	private JFrame frmSefProdaje;
 	private JTable tableKorisnici;
 	private JTable tableMenadzeri;
 	private JTable tableProdavaci;
-	private JTable table_3;
+	private JTable tableProizvodi;
 	private JTable tableRegije;
 	private JTable table_5;
 	private JTable table_6;
@@ -64,6 +68,7 @@ public class SefProdajeMainGUI {
 		this.rs = new RegijaServis(s);
 		this.aks = new AkterServis(s);
 		this.ns = new NaloziServis(s);
+		this.ps = new ProizvodServis(s);
 		initialize();
 	}
 
@@ -135,10 +140,7 @@ public class SefProdajeMainGUI {
 			}
 		));
 			
-				
-				
-		//tableKorisnici.setBackground(Color.LIGHT_GRAY);
-		
+
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.WHITE);
 		tabbedPane.addTab("Regionalni menadžeri", null, panel_1, null);
@@ -206,7 +208,6 @@ public class SefProdajeMainGUI {
 				}
 		));
 		scrollPane.setViewportView(tableMenadzeri);
-		//tableMenadzeri.setBackground(Color.LIGHT_GRAY);
 		
 		JButton btnPregledMenadzera = new JButton("Prika\u017Ei aktera");
 		btnPregledMenadzera.setBounds(10, 146, 113, 23);
@@ -244,14 +245,9 @@ public class SefProdajeMainGUI {
 		btnObrisiProdavaca.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
-				
-				
 					int id = odaberiIdKolonu(tableProdavaci, 6);
 					aks.izbrisiAktera(id);
 					refreshajTabeluProdavaci();
-				
-				
-				
 			}
 		});
 		
@@ -301,7 +297,6 @@ public class SefProdajeMainGUI {
 			}
 		));
 		scrollPane_1.setViewportView(tableProdavaci);
-		tableProdavaci.setBackground(Color.LIGHT_GRAY);
 		
 		JButton btnPregledAktera = new JButton("Prika\u017Ei aktera");
 		btnPregledAktera.setBounds(10, 146, 127, 23);
@@ -325,8 +320,8 @@ public class SefProdajeMainGUI {
 		scrollPane_3.setBounds(10, 11, 591, 124);
 		panel_3.add(scrollPane_3);
 		
-		table_3 = new JTable();
-		table_3.setModel(new DefaultTableModel(
+		tableProizvodi = new JTable();
+		tableProizvodi.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -336,7 +331,7 @@ public class SefProdajeMainGUI {
 				"Stanje na skladištu"
 			}
 		));
-		scrollPane_3.setViewportView(table_3);
+		scrollPane_3.setViewportView(tableProizvodi);
 		
 	
 		
@@ -353,9 +348,18 @@ public class SefProdajeMainGUI {
 			}
 		});
 		
-		JButton btnNewButton_9 = new JButton("Obri\u0161i");
-		btnNewButton_9.setBounds(478, 142, 123, 23);
-		panel_3.add(btnNewButton_9);
+		JButton btnObrisiProizvod = new JButton("Obri\u0161i");
+		btnObrisiProizvod.setBounds(478, 142, 123, 23);
+		btnObrisiProizvod.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				int id = odaberiIdKolonu(tableProizvodi, 4);
+				Proizvod p = ps.dajProizvod(id);
+				ps.obrisiProizvod(p);
+				refreshajTabeluProizvodi();
+			}
+		});
+		panel_3.add(btnObrisiProizvod);
 		
 		JButton btnDodajProizvod = new JButton("Dodaj");
 		btnDodajProizvod.setBounds(225, 142, 115, 23);
@@ -363,7 +367,7 @@ public class SefProdajeMainGUI {
 		btnDodajProizvod.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				DodavanjeProizvodaGUI dodavanjeProizvoda = new DodavanjeProizvodaGUI();
+				DodavanjeProizvodaGUI dodavanjeProizvoda = new DodavanjeProizvodaGUI(s,ref);
 				dodavanjeProizvoda.startDodavanjeProizvoda();
 				
 			}
@@ -375,9 +379,9 @@ public class SefProdajeMainGUI {
 		btnProizvodPrikaz.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				PrikazProizvodGUI pprikaz = new PrikazProizvodGUI();
+				int id = odaberiIdKolonu(tableProizvodi, 4);
+				PrikazProizvodGUI pprikaz = new PrikazProizvodGUI(s,id);
 				pprikaz.startPrikazProizvod();
-				
 			}
 		});
 		
@@ -487,6 +491,7 @@ public class SefProdajeMainGUI {
 		refreshajTabeluMenadzeri();
 		refreshajTabeluKorisnici();
 		refreshajTabeluProdavaci();
+		refreshajTabeluProizvodi();
 	}
 	
 	public void refreshajTabeluRegije(){
@@ -573,6 +578,26 @@ public class SefProdajeMainGUI {
 			));
 		
 		tableKorisnici.getColumnModel().removeColumn(tableKorisnici.getColumnModel().getColumn(5));
+	}
+	
+	public void refreshajTabeluProizvodi(){
+		ArrayList<Proizvod> proizvodi = ps.dajSveProizvode();
+		Object[][] data = new Object[proizvodi.size()][];
+		for(int i = 0; i<proizvodi.size();i++){
+			data[i]= new Object[]{proizvodi.get(i).getNaziv(),proizvodi.get(i).getNabavnacijena(),
+					proizvodi.get(i).getProdajnacijena(),proizvodi.get(i).getKolicina(),proizvodi.get(i).getId()
+			};
+		}
+		tableProizvodi.setModel(new DefaultTableModel(
+				data,
+				new String[] {
+					"Naziv proizvoda",
+					"Nabavna cijena",
+					"Prodajna cijena",
+					"Stanje na skladištu",
+					"ID"
+				}));
+		tableProizvodi.getColumnModel().removeColumn(tableProizvodi.getColumnModel().getColumn(4));
 	}
 	
 
