@@ -21,8 +21,8 @@ import ba.unsa.etf.si.tim8.mlmarketing.services.NaloziServis;
 public class KreiranjeKorisnickogRacunaGUI {
 	
 	private Session s;
-	
 	private NaloziServis ns;
+	private SefProdajeMainGUI refreshableRoditelj;
 
 	private JFrame frmDodajKorisnika;
 	private JTextField textFieldKorisnickoIme;
@@ -41,7 +41,7 @@ public class KreiranjeKorisnickogRacunaGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					KreiranjeKorisnickogRacunaGUI window = new KreiranjeKorisnickogRacunaGUI(s);
+					KreiranjeKorisnickogRacunaGUI window = new KreiranjeKorisnickogRacunaGUI(s,refreshableRoditelj);
 					window.frmDodajKorisnika.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,8 +53,9 @@ public class KreiranjeKorisnickogRacunaGUI {
 	/**
 	 * Create the application.
 	 */
-	public KreiranjeKorisnickogRacunaGUI(Session s) {
+	public KreiranjeKorisnickogRacunaGUI(Session s,SefProdajeMainGUI roditelj) {
 		this.s=s;
+		this.refreshableRoditelj=roditelj;
 		ns= new NaloziServis(s);
 		initialize();
 	}
@@ -141,10 +142,8 @@ public class KreiranjeKorisnickogRacunaGUI {
 					k.setEmail(textFieldEmail.getText());
 					k.setPassword(passwordFieldSifra.getText());
 					ns.kreirajNalog(k);
+					refreshableRoditelj.refreshajTabeluKorisnici();
 				}
-				
-				
-				
 			}
 		});
 		frmDodajKorisnika.getContentPane().add(btnKreirajNalog);

@@ -26,6 +26,7 @@ public class RegMenadzerDodajIzmjeniGUI {
 	private Session s;
 	private RegijaServis rs;
 	private AkterServis aks;
+	private SefProdajeMainGUI refreshableRoditelj;
 	private JFrame frmDodajizmijeni;
 	private JTextField textFieldIme;
 	private JTextField textFieldBrojTelefona;
@@ -40,7 +41,7 @@ public class RegMenadzerDodajIzmjeniGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RegMenadzerDodajIzmjeniGUI window = new RegMenadzerDodajIzmjeniGUI(what,s);
+					RegMenadzerDodajIzmjeniGUI window = new RegMenadzerDodajIzmjeniGUI(what,s,refreshableRoditelj);
 					window.frmDodajizmijeni.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,11 +53,13 @@ public class RegMenadzerDodajIzmjeniGUI {
 	/**
 	 * Create the application.
 	 */
-	public RegMenadzerDodajIzmjeniGUI(String what,Session s) {
+	public RegMenadzerDodajIzmjeniGUI(String what,Session s,SefProdajeMainGUI roditelj) {
 		this.s=s;
 		this.rs= new RegijaServis(s);
 		this.aks=new AkterServis(s);
+		this.refreshableRoditelj=roditelj;
 		initialize(what);
+		JOptionPane.showMessageDialog(null, refreshableRoditelj!=null);
 	}
 
 	/**
@@ -137,7 +140,7 @@ public class RegMenadzerDodajIzmjeniGUI {
 				a.setTip("regmen");
 				a.setRegija((Regija)comboBox.getSelectedItem());
 				aks.kreirajAktera(a);
-				
+				refreshableRoditelj.refreshajTabeluMenadzeri();
 			}
 		});
 		frmDodajizmijeni.getContentPane().add(btnDodajIzmjeni);

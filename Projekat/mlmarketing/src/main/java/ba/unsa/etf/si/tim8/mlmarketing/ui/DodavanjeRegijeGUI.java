@@ -20,7 +20,7 @@ import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;
 public class DodavanjeRegijeGUI {
 	
 	Session s;
-
+	SefProdajeMainGUI refreshableRoditelj;
 	private JFrame frmDodavanjeRegije;
 	private JTextField textField;
 	private JTextField textField_1;
@@ -32,7 +32,7 @@ public class DodavanjeRegijeGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DodavanjeRegijeGUI window = new DodavanjeRegijeGUI(s);
+					DodavanjeRegijeGUI window = new DodavanjeRegijeGUI(s,refreshableRoditelj);
 					window.frmDodavanjeRegije.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -44,8 +44,9 @@ public class DodavanjeRegijeGUI {
 	/**
 	 * Create the application.
 	 */
-	public DodavanjeRegijeGUI(Session s) {
+	public DodavanjeRegijeGUI(Session s,SefProdajeMainGUI roditelj) {
 		this.s=s;
+		this.refreshableRoditelj=roditelj;
 		initialize();
 	}
 
@@ -93,6 +94,7 @@ public class DodavanjeRegijeGUI {
 					nova.setDrzava(textField_1.getText());
 					JOptionPane.showMessageDialog(null, nova.getDrzava());
 					r.dodajRegiju(nova);
+					refreshableRoditelj.refreshajTabeluRegije();
 				}
 				
 			}

@@ -71,6 +71,7 @@ public class SefProdajeMainGUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		final SefProdajeMainGUI ref = this;
 		frmSefProdaje = new JFrame();
 		frmSefProdaje.setTitle("\u0160ef prodaje ");
 		frmSefProdaje.setBounds(100, 100, 652, 393);
@@ -96,7 +97,7 @@ public class SefProdajeMainGUI {
 		btnKreirajRacun.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				KreiranjeKorisnickogRacunaGUI kkr = new KreiranjeKorisnickogRacunaGUI(s);
+				KreiranjeKorisnickogRacunaGUI kkr = new KreiranjeKorisnickogRacunaGUI(s,ref);
 				kkr.startKreiranjeRacuna();
 				
 			}
@@ -136,7 +137,7 @@ public class SefProdajeMainGUI {
 			
 				
 				
-		tableKorisnici.setBackground(Color.LIGHT_GRAY);
+		//tableKorisnici.setBackground(Color.LIGHT_GRAY);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.WHITE);
@@ -149,7 +150,7 @@ public class SefProdajeMainGUI {
 		btnDodajMenadzera.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				RegMenadzerDodajIzmjeniGUI rmdodaj = new RegMenadzerDodajIzmjeniGUI("dodaj",s);
+				RegMenadzerDodajIzmjeniGUI rmdodaj = new RegMenadzerDodajIzmjeniGUI("dodaj",s,ref);
 				rmdodaj.main("dodaj");
 				
 			}
@@ -175,7 +176,7 @@ public class SefProdajeMainGUI {
 		btnIzmijeni.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				RegMenadzerDodajIzmjeniGUI rmdodaj = new RegMenadzerDodajIzmjeniGUI("izmjeni",s);
+				RegMenadzerDodajIzmjeniGUI rmdodaj = new RegMenadzerDodajIzmjeniGUI("izmjeni",s,ref);
 				rmdodaj.main("izmjeni");
 				
 			}
@@ -205,7 +206,7 @@ public class SefProdajeMainGUI {
 				}
 		));
 		scrollPane.setViewportView(tableMenadzeri);
-		tableMenadzeri.setBackground(Color.LIGHT_GRAY);
+		//tableMenadzeri.setBackground(Color.LIGHT_GRAY);
 		
 		JButton btnPregledMenadzera = new JButton("Prika\u017Ei aktera");
 		btnPregledMenadzera.setBounds(10, 146, 113, 23);
@@ -395,7 +396,7 @@ public class SefProdajeMainGUI {
 		btnDodajRegiju.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				DodavanjeRegijeGUI dodavanjeRegije = new DodavanjeRegijeGUI(s);
+				DodavanjeRegijeGUI dodavanjeRegije = new DodavanjeRegijeGUI(s,ref);
 				dodavanjeRegije.startDodavanjeRegije();
 				
 			}
@@ -473,7 +474,7 @@ public class SefProdajeMainGUI {
 		refreshajTabeluKorisnici();
 	}
 	
-	private void refreshajTabeluRegije(){
+	public void refreshajTabeluRegije(){
 		ArrayList<Regija> regije = rs.dajRegije();
 		Object[][] data= new Object[regije.size()][];
 		for(int i = 0; i<regije.size();i++) data[i]= new Object[]{regije.get(i).getIme(),regije.get(i).getDrzava(),regije.get(i).getId()};
@@ -487,7 +488,7 @@ public class SefProdajeMainGUI {
 		tableRegije.getColumnModel().removeColumn(tableRegije.getColumnModel().getColumn(2));
 	}
 	
-	private void refreshajTabeluMenadzeri(){
+	public void refreshajTabeluMenadzeri(){
 		ArrayList<Akterprodaje> akteri = aks.dajSveAkterePoTipu("regmen");
 		Object[][] data = new Object[akteri.size()][];
 		for(int i = 0; i<akteri.size();i++) data[i]= new Object[]{akteri.get(i).getIme()+" "+akteri.get(i).getPrezime(),
@@ -510,7 +511,7 @@ public class SefProdajeMainGUI {
 		tableMenadzeri.getColumnModel().removeColumn(tableMenadzeri.getColumnModel().getColumn(5));
 	}
 	
-	private void refreshajTabeluKorisnici(){
+	public void refreshajTabeluKorisnici(){
 		ArrayList<Korisnik> korisnici = ns.dajSveNaloge();
 		Object[][] data = new Object[korisnici.size()][];
 		for(int i = 0; i<korisnici.size();i++) data[i]= new Object[]{korisnici.get(i).getTip(),korisnici.get(i).getUsername(),
