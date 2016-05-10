@@ -86,17 +86,15 @@ public class LoginGUI {
 		btnPrijavi.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				if(txtUsername.getText().equals("komercijalista")){
-					KomercijalistaMainGUI komercijalistamg = new KomercijalistaMainGUI();
-					komercijalistamg.startKomercijalistaMain();
-				}
-				else{
 					SesijaServis sesija= new SesijaServis(s);
 					if(sesija.prijava(txtUsername.getText(),passwordField.getText())){
 						if(sesija.dajKorisnika().getTip().equals("sef")){
 							SefProdajeMainGUI sefmg= new SefProdajeMainGUI(s);
 							sefmg.startSefProdajeMain();}
-					} 
+						else if(sesija.dajKorisnika().getTip().equals("komercijalista")){
+							KomercijalistaMainGUI komercijalistamg = new KomercijalistaMainGUI(s);
+							komercijalistamg.startKomercijalistaMain();
+						}
 					
 				}
 			}

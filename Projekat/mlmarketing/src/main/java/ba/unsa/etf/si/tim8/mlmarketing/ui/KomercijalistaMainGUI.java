@@ -14,7 +14,11 @@ import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
+import org.hibernate.Session;
+
 public class KomercijalistaMainGUI {
+	
+	private Session s;
 
 	private JFrame frmKomercijalista;
 	private JTable table;
@@ -26,11 +30,11 @@ public class KomercijalistaMainGUI {
 	/**
 	 * Launch the application.
 	 */
-	public static void startKomercijalistaMain() {
+	public void startKomercijalistaMain() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					KomercijalistaMainGUI window = new KomercijalistaMainGUI();
+					KomercijalistaMainGUI window = new KomercijalistaMainGUI(s);
 					window.frmKomercijalista.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -42,7 +46,8 @@ public class KomercijalistaMainGUI {
 	/**
 	 * Create the application.
 	 */
-	public KomercijalistaMainGUI() {
+	public KomercijalistaMainGUI(Session s) {
+		this.s=s;
 		initialize();
 	}
 

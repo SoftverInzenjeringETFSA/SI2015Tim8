@@ -113,6 +113,7 @@ public class SefProdajeMainGUI {
 					ns.obrisiNalog(id);
 					refreshajTabeluKorisnici();
 				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nalog");
 				
 			}
 		});
