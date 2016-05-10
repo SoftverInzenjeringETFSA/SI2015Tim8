@@ -34,7 +34,7 @@ public class SefProdajeMainGUI {
 	private JFrame frmSefProdaje;
 	private JTable tableKorisnici;
 	private JTable tableMenadzeri;
-	private JTable table_2;
+	private JTable tableProdavaci;
 	private JTable table_3;
 	private JTable tableRegije;
 	private JTable table_5;
@@ -231,16 +231,29 @@ public class SefProdajeMainGUI {
 		btnDodajProdavaca.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				ProdavacDodajIzmjeni prodavacdodaj= new ProdavacDodajIzmjeni("dodaj");
+				ProdavacDodajIzmjeni prodavacdodaj= new ProdavacDodajIzmjeni("dodaj", s, ref);
 				prodavacdodaj.startProdavacDodajIzmjeni("dodaj");
 				
 			}
 		});
 		
-		JButton btnNewButton_5 = new JButton("Obri\u0161i");
+		JButton btnObrisiProdavaca = new JButton("Obri\u0161i");
 	
-		btnNewButton_5.setBounds(403, 146, 94, 23);
-		panel_2.add(btnNewButton_5);
+		btnObrisiProdavaca.setBounds(403, 146, 94, 23);
+		panel_2.add(btnObrisiProdavaca);
+		btnObrisiProdavaca.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				
+				
+					int id = odaberiIdKolonu(tableProdavaci, 6);
+					aks.izbrisiAktera(id);
+					refreshajTabeluProdavaci();
+				
+				
+				
+			}
+		});
 		
 		JButton btnProdavacIzmjeni = new JButton("Izmijeni");
 		btnProdavacIzmjeni.setBounds(507, 146, 94, 23);
@@ -248,7 +261,7 @@ public class SefProdajeMainGUI {
 		btnProdavacIzmjeni.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				ProdavacDodajIzmjeni prodavacdodaj= new ProdavacDodajIzmjeni("");
+				ProdavacDodajIzmjeni prodavacdodaj= new ProdavacDodajIzmjeni("", s, ref);
 				prodavacdodaj.startProdavacDodajIzmjeni("");
 				
 			}
@@ -274,8 +287,8 @@ public class SefProdajeMainGUI {
 		scrollPane_1.setBounds(10, 11, 591, 124);
 		panel_2.add(scrollPane_1);
 		
-		table_2 = new JTable();
-		table_2.setModel(new DefaultTableModel(
+		tableProdavaci = new JTable();
+		tableProdavaci.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -287,8 +300,8 @@ public class SefProdajeMainGUI {
 				"Nadležni manager"
 			}
 		));
-		scrollPane_1.setViewportView(table_2);
-		table_2.setBackground(Color.LIGHT_GRAY);
+		scrollPane_1.setViewportView(tableProdavaci);
+		tableProdavaci.setBackground(Color.LIGHT_GRAY);
 		
 		JButton btnPregledAktera = new JButton("Prika\u017Ei aktera");
 		btnPregledAktera.setBounds(10, 146, 127, 23);
@@ -296,7 +309,8 @@ public class SefProdajeMainGUI {
 		btnPregledAktera.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				PrikazProdavacGUI prodavacprikaz= new PrikazProdavacGUI();
+				int id = odaberiIdKolonu(tableProdavaci, 6);
+				PrikazProdavacGUI prodavacprikaz= new PrikazProdavacGUI(s, id);
 				prodavacprikaz.startPrikazProdavac();
 				
 			}
@@ -472,6 +486,7 @@ public class SefProdajeMainGUI {
 		refreshajTabeluRegije();
 		refreshajTabeluMenadzeri();
 		refreshajTabeluKorisnici();
+		refreshajTabeluProdavaci();
 	}
 	
 	public void refreshajTabeluRegije(){
@@ -511,6 +526,38 @@ public class SefProdajeMainGUI {
 		tableMenadzeri.getColumnModel().removeColumn(tableMenadzeri.getColumnModel().getColumn(5));
 	}
 	
+	public void refreshajTabeluProdavaci()
+	{
+		ArrayList<Akterprodaje> akteri = aks.dajSveAkterePoTipu("prodavac");
+		Object[][] data = new Object[akteri.size()][];
+		for(int i = 0; i < akteri.size(); i++)
+		{
+			data[i] = new Object[]{ 
+				akteri.get(i).getIme() + " " + akteri.get(i).getPrezime(),
+				akteri.get(i).getBrojtelefona(),
+				akteri.get(i).getAdresa(),
+				akteri.get(i).getEmail(),
+				akteri.get(i).getRegija().getIme(),
+				akteri.get(i).getAkterprodaje().getIme()+" "+ akteri.get(i).getAkterprodaje().getPrezime(),
+				akteri.get(i).getId()
+			};
+			
+			tableProdavaci.setModel(new DefaultTableModel(
+					data,					
+					new String[] {
+						"Ime i prezime",
+						"Broj telefona",
+						"Adresa",
+						"Email",
+						"Regija",
+						"Nadležni manager",
+						"ID"
+					}
+				));
+			tableProdavaci.getColumnModel().removeColumn(tableProdavaci.getColumnModel().getColumn(6));
+		}
+	}
+	
 	public void refreshajTabeluKorisnici(){
 		ArrayList<Korisnik> korisnici = ns.dajSveNaloge();
 		Object[][] data = new Object[korisnici.size()][];
@@ -527,6 +574,8 @@ public class SefProdajeMainGUI {
 		
 		tableKorisnici.getColumnModel().removeColumn(tableKorisnici.getColumnModel().getColumn(5));
 	}
+	
+
 	
 	public int odaberiIdKolonu(JTable tabela,int brojKolone){
 		int id = (Integer)tabela.getModel().getValueAt(tabela.getSelectedRow(),brojKolone);

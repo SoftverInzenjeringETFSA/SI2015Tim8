@@ -178,5 +178,10 @@ public class Akterprodaje implements java.io.Serializable {
 	public void setNarudzbas(Set<Narudzba> narudzbas) {
 		this.narudzbas = narudzbas;
 	}
+	
+	public String toString() {
+		return this.ime + " " + this.prezime;
+	}
+
 
 }

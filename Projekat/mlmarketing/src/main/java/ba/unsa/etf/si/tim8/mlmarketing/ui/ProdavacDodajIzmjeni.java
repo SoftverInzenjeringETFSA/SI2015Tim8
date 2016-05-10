@@ -1,6 +1,9 @@
 package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -9,22 +12,38 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.hibernate.Session;
+
+import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
+import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
+import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;
+
 public class ProdavacDodajIzmjeni {
 
+	
+	private Session s;
+	private RegijaServis rs;
+	private AkterServis aks;
+	private int id=-1;
+	private SefProdajeMainGUI refreshableRoditelj;
+	
+	
 	private JFrame frmDodajizmijeni;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField textFieldIme;
+	private JTextField textFieldBrojTelefona;
+	private JTextField textFieldAdresa;
+	private JTextField textFieldEmail;
+	private JTextField textFieldPrezime;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void startProdavacDodajIzmjeni(final String what) {
+	public void startProdavacDodajIzmjeni(final String what) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ProdavacDodajIzmjeni window = new ProdavacDodajIzmjeni(what);
+					ProdavacDodajIzmjeni window = new ProdavacDodajIzmjeni(what, s,refreshableRoditelj);
 					window.frmDodajizmijeni.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -36,7 +55,11 @@ public class ProdavacDodajIzmjeni {
 	/**
 	 * Create the application.
 	 */
-	public ProdavacDodajIzmjeni(String what) {
+	public ProdavacDodajIzmjeni(String what, Session s, SefProdajeMainGUI roditelj) {
+		this.s = s;
+		this.rs = new RegijaServis(s);
+		this.aks = new AkterServis(s);
+		this.refreshableRoditelj = roditelj;
 		initialize(what);
 	}
 
@@ -44,6 +67,7 @@ public class ProdavacDodajIzmjeni {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(String what) {
+		
 		frmDodajizmijeni = new JFrame();
 		if(what=="dodaj") frmDodajizmijeni.setTitle("Dodaj");
 		else frmDodajizmijeni.setTitle("Izmijeni");
@@ -51,7 +75,7 @@ public class ProdavacDodajIzmjeni {
 		frmDodajizmijeni.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmDodajizmijeni.getContentPane().setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Ime i prezime:");
+		JLabel lblNewLabel = new JLabel("Prezime:");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel.setBounds(37, 49, 102, 14);
 		frmDodajizmijeni.getContentPane().add(lblNewLabel);
@@ -81,39 +105,91 @@ public class ProdavacDodajIzmjeni {
 		lblNewLabel_5.setBounds(12, 182, 127, 14);
 		frmDodajizmijeni.getContentPane().add(lblNewLabel_5);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(149, 154, 94, 20);
-		frmDodajizmijeni.getContentPane().add(comboBox);
+		final JComboBox comboBoxRegije = new JComboBox();
+		comboBoxRegije.setBounds(149, 154, 94, 20);
+		frmDodajizmijeni.getContentPane().add(comboBoxRegije);
 		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setBounds(149, 179, 94, 20);
-		frmDodajizmijeni.getContentPane().add(comboBox_1);
+		final JComboBox comboBoxNM = new JComboBox();
+		comboBoxNM.setBounds(149, 179, 94, 20);
+		frmDodajizmijeni.getContentPane().add(comboBoxNM);
 		
-		textField = new JTextField();
-		textField.setBounds(149, 46, 94, 20);
-		frmDodajizmijeni.getContentPane().add(textField);
-		textField.setColumns(10);
+		textFieldIme = new JTextField();
+		textFieldIme.setBounds(149, 22, 94, 20);
+		frmDodajizmijeni.getContentPane().add(textFieldIme);
+		textFieldIme.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(149, 71, 94, 20);
-		frmDodajizmijeni.getContentPane().add(textField_1);
-		textField_1.setColumns(10);
+		textFieldBrojTelefona = new JTextField();
+		textFieldBrojTelefona.setBounds(149, 71, 94, 20);
+		frmDodajizmijeni.getContentPane().add(textFieldBrojTelefona);
+		textFieldBrojTelefona.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(150, 96, 93, 20);
-		frmDodajizmijeni.getContentPane().add(textField_2);
-		textField_2.setColumns(10);
+		textFieldAdresa = new JTextField();
+		textFieldAdresa.setBounds(150, 96, 93, 20);
+		frmDodajizmijeni.getContentPane().add(textFieldAdresa);
+		textFieldAdresa.setColumns(10);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(150, 121, 94, 20);
-		frmDodajizmijeni.getContentPane().add(textField_3);
-		textField_3.setColumns(10);
+		textFieldEmail = new JTextField();
+		textFieldEmail.setBounds(150, 121, 94, 20);
+		frmDodajizmijeni.getContentPane().add(textFieldEmail);
+		textFieldEmail.setColumns(10);
 		
 		JButton btnDodajIzmjeni;
 		if(what=="dodaj") btnDodajIzmjeni = new JButton("Dodaj");
 		else btnDodajIzmjeni = new JButton("Izmijeni");
+		
+		
+		
+		btnDodajIzmjeni.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				
+				Akterprodaje a = new Akterprodaje();
+				a.setIme(textFieldIme.getText());
+				a.setPrezime(textFieldPrezime.getText());
+				a.setAdresa(textFieldAdresa.getText());
+				a.setBrojtelefona(textFieldBrojTelefona.getText());
+				a.setEmail(textFieldEmail.getText());
+				a.setRegija((Regija) comboBoxRegije.getSelectedItem());
+				a.setAkterprodaje((Akterprodaje)comboBoxNM.getSelectedItem());
+				a.setTip("prodavac");
+				aks.kreirajAktera(a);
+				refreshableRoditelj.refreshajTabeluProdavaci();
+				
+				
+			}
+		});
 		btnDodajIzmjeni.setBounds(149, 224, 94, 23);
 		frmDodajizmijeni.getContentPane().add(btnDodajIzmjeni);
+		
+		textFieldPrezime = new JTextField();
+		textFieldPrezime.setBounds(149, 46, 94, 20);
+		frmDodajizmijeni.getContentPane().add(textFieldPrezime);
+		textFieldPrezime.setColumns(10);
+		
+		JLabel lblNewLabel_6 = new JLabel("Ime:");
+		lblNewLabel_6.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_6.setBounds(93, 25, 46, 14);
+		frmDodajizmijeni.getContentPane().add(lblNewLabel_6);
+		ispuniComboRegija(comboBoxRegije);
+		ispuniComboMenadzera(comboBoxNM);
 	}
-
+	
+	private void ispuniComboRegija(JComboBox j)
+	{
+		ArrayList<Regija> r = rs.dajRegije();
+		for(int i = 0; i < r.size(); i++)
+		{
+			j.addItem(r.get(i));
+		}
+		
+	}
+	private void ispuniComboMenadzera(JComboBox j)
+	{
+		ArrayList<Akterprodaje> a = aks.dajSveAkterePoTipu("regmen");
+		for(int i = 0; i < a.size(); i++)
+		{
+			j.addItem(a.get(i));
+		}
+		
+	}
 }

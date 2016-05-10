@@ -1,10 +1,12 @@
 package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import java.awt.EventQueue;
+import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -28,7 +30,7 @@ public class PrikazRegionalniMenadzerGUI {
 	private JTextField textFieldAdresa;
 	private JTextField textFieldEmail;
 	private JTextField textFieldRegija;
-	private JTable table;
+	private JTable tabelaPodredjenih;
 	private JLabel lblNadleanZa;
 	private JButton btnOk;
 
@@ -127,8 +129,8 @@ public class PrikazRegionalniMenadzerGUI {
 		scrollPane.setBounds(274, 55, 365, 125);
 		frmPregledMenadera.getContentPane().add(scrollPane);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
+		tabelaPodredjenih = new JTable();
+		tabelaPodredjenih.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -139,7 +141,7 @@ public class PrikazRegionalniMenadzerGUI {
 				"Regija"
 			}
 		));
-		scrollPane.setViewportView(table);
+		scrollPane.setViewportView(tabelaPodredjenih);
 		
 		lblNadleanZa = new JLabel("Nadle\u017Ean za:");
 		lblNadleanZa.setBounds(274, 40, 99, 14);
@@ -160,6 +162,35 @@ public class PrikazRegionalniMenadzerGUI {
 			textFieldEmail.setText(prikaz.getEmail());
 			textFieldBrojTelefona.setText(prikaz.getBrojtelefona());
 			textFieldRegija.setText(prikaz.getRegija().getIme());
+				 
+			
+			
+			
+			 Akterprodaje[]akteri = prikaz.getAkterprodajes().toArray(new Akterprodaje[prikaz.getAkterprodajes().size()]);
+			
+			Object[][] data = new Object[akteri.length][];
+			for(int i = 0; i < akteri.length; i++)
+			{
+				data[i] = new Object[]{
+						akteri[i].getIme() + " " + akteri[i].getPrezime(),
+						akteri[i].getBrojtelefona(),
+						akteri[i].getAdresa(),
+						akteri[i].getEmail(),
+						akteri[i].getRegija().getIme()
+				};
+			}
+			
+			
+			tabelaPodredjenih.setModel(new DefaultTableModel(
+					data,
+					new String[] {
+						"Ime i prezime",
+						"Broj telefona",
+						"Adresa",
+						"Email",
+						"Regija"
+					}
+				));
 		}
 			
 	}

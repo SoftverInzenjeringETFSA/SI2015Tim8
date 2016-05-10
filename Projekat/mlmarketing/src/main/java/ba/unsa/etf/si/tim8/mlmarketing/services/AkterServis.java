@@ -22,16 +22,8 @@ public class AkterServis {
 	public boolean kreirajAktera(Akterprodaje a)
 	{
 		Transaction t = s.beginTransaction();
-		Akterprodaje novi = new Akterprodaje();
-		novi.setIme(a.getIme());
-		novi.setPrezime(a.getPrezime());
-		novi.setAdresa(a.getAdresa());
-		novi.setEmail(a.getEmail());
-		novi.setBrojtelefona(a.getBrojtelefona());
-		novi.setTip(a.getTip());
-		novi.setRegija(a.getRegija());
 		
-		s.save(novi);
+		s.save(a);
 		t.commit();
 		return true;
 	}

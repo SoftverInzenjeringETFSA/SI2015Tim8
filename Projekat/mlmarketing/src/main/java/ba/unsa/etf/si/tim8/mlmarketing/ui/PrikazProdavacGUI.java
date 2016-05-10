@@ -8,24 +8,32 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.hibernate.Session;
+
+import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
+import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
+
 public class PrikazProdavacGUI {
 
+	private Session s;
+	private AkterServis aks;
+	private int id;
 	private JFrame frmPregledProdavac;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
+	private JTextField textFieldImePrezime;
+	private JTextField textFieldBrojTelefona;
+	private JTextField textFieldAdresa;
+	private JTextField textFieldEmail;
+	private JTextField textFieldRegija;
+	private JTextField textFieldNM;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void startPrikazProdavac() {
+	public void startPrikazProdavac() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PrikazProdavacGUI window = new PrikazProdavacGUI();
+					PrikazProdavacGUI window = new PrikazProdavacGUI(s, id);
 					window.frmPregledProdavac.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -37,7 +45,10 @@ public class PrikazProdavacGUI {
 	/**
 	 * Create the application.
 	 */
-	public PrikazProdavacGUI() {
+	public PrikazProdavacGUI(Session s, int id) {
+		this.s = s;
+		this.id = id;
+		aks = new AkterServis(s);
 		initialize();
 	}
 
@@ -51,35 +62,35 @@ public class PrikazProdavacGUI {
 		frmPregledProdavac.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmPregledProdavac.getContentPane().setLayout(null);
 		
-		textField = new JTextField();
-		textField.setEditable(false);
-		textField.setColumns(10);
-		textField.setBounds(134, 31, 130, 20);
-		frmPregledProdavac.getContentPane().add(textField);
+		textFieldImePrezime = new JTextField();
+		textFieldImePrezime.setEditable(false);
+		textFieldImePrezime.setColumns(10);
+		textFieldImePrezime.setBounds(134, 31, 130, 20);
+		frmPregledProdavac.getContentPane().add(textFieldImePrezime);
 		
-		textField_1 = new JTextField();
-		textField_1.setEditable(false);
-		textField_1.setColumns(10);
-		textField_1.setBounds(134, 62, 130, 20);
-		frmPregledProdavac.getContentPane().add(textField_1);
+		textFieldBrojTelefona = new JTextField();
+		textFieldBrojTelefona.setEditable(false);
+		textFieldBrojTelefona.setColumns(10);
+		textFieldBrojTelefona.setBounds(134, 62, 130, 20);
+		frmPregledProdavac.getContentPane().add(textFieldBrojTelefona);
 		
-		textField_2 = new JTextField();
-		textField_2.setEditable(false);
-		textField_2.setColumns(10);
-		textField_2.setBounds(134, 93, 130, 20);
-		frmPregledProdavac.getContentPane().add(textField_2);
+		textFieldAdresa = new JTextField();
+		textFieldAdresa.setEditable(false);
+		textFieldAdresa.setColumns(10);
+		textFieldAdresa.setBounds(134, 93, 130, 20);
+		frmPregledProdavac.getContentPane().add(textFieldAdresa);
 		
-		textField_3 = new JTextField();
-		textField_3.setEditable(false);
-		textField_3.setColumns(10);
-		textField_3.setBounds(134, 121, 130, 20);
-		frmPregledProdavac.getContentPane().add(textField_3);
+		textFieldEmail = new JTextField();
+		textFieldEmail.setEditable(false);
+		textFieldEmail.setColumns(10);
+		textFieldEmail.setBounds(134, 121, 130, 20);
+		frmPregledProdavac.getContentPane().add(textFieldEmail);
 		
-		textField_4 = new JTextField();
-		textField_4.setEditable(false);
-		textField_4.setColumns(10);
-		textField_4.setBounds(134, 152, 130, 20);
-		frmPregledProdavac.getContentPane().add(textField_4);
+		textFieldRegija = new JTextField();
+		textFieldRegija.setEditable(false);
+		textFieldRegija.setColumns(10);
+		textFieldRegija.setBounds(134, 152, 130, 20);
+		frmPregledProdavac.getContentPane().add(textFieldRegija);
 		
 		JLabel label = new JLabel("Ime i prezime:");
 		label.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -111,15 +122,33 @@ public class PrikazProdavacGUI {
 		lblNadleniMenader.setBounds(28, 186, 99, 14);
 		frmPregledProdavac.getContentPane().add(lblNadleniMenader);
 		
-		textField_5 = new JTextField();
-		textField_5.setEditable(false);
-		textField_5.setBounds(134, 183, 130, 20);
-		frmPregledProdavac.getContentPane().add(textField_5);
-		textField_5.setColumns(10);
+		textFieldNM = new JTextField();
+		textFieldNM.setEditable(false);
+		textFieldNM.setBounds(134, 183, 130, 20);
+		frmPregledProdavac.getContentPane().add(textFieldNM);
+		textFieldNM.setColumns(10);
 		
 		JButton btnOk = new JButton("OK");
 		btnOk.setBounds(335, 227, 89, 23);
 		frmPregledProdavac.getContentPane().add(btnOk);
+		prikazPodatakaProdavaca();
+	}
+	
+	private void prikazPodatakaProdavaca()
+	{
+		
+		Akterprodaje a = aks.dajAktera(id);
+		if(a != null)
+		{
+			textFieldImePrezime.setText(a.getIme() + " " + a.getPrezime());
+			textFieldBrojTelefona.setText(a.getBrojtelefona()); 
+			textFieldEmail.setText(a.getEmail());
+			textFieldAdresa.setText(a.getAdresa()); 
+			textFieldNM.setText(a.getAkterprodaje().getIme() + " " + a.getAkterprodaje().getPrezime());
+			textFieldRegija.setText(a.getRegija().getIme());
+		}
+		
+		
 	}
 
 }
