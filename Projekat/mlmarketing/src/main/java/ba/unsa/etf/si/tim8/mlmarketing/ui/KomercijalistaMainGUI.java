@@ -4,9 +4,11 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -14,11 +16,22 @@ import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
+import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
+import ba.unsa.etf.si.tim8.mlmarketing.models.Narudzba;
+import ba.unsa.etf.si.tim8.mlmarketing.services.NarudzbaServis;
+
+/*import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
+import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
+import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.NaloziServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;*/
+
 import org.hibernate.Session;
 
 public class KomercijalistaMainGUI {
 	
 	private Session s;
+	private NarudzbaServis ns;
 
 	private JFrame frmKomercijalista;
 	private JTable table;
@@ -48,6 +61,7 @@ public class KomercijalistaMainGUI {
 	 */
 	public KomercijalistaMainGUI(Session s) {
 		this.s=s;
+		this.ns = new NarudzbaServis(s);
 		initialize();
 	}
 
@@ -97,6 +111,19 @@ public class KomercijalistaMainGUI {
 		scrollPane.setViewportView(table);
 		
 		JButton button = new JButton("Obri\u0161i");
+		button.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				if(table.getSelectedRow()!=-1)
+				{
+					int id =(Integer)table.getModel().getValueAt(table.getSelectedRow(),0);
+					ns.izbrisiNarudzbu(id);
+					refreshajTabeluNarudzbe();
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali narudzbu!");
+			}
+		});
 		button.setBounds(353, 280, 97, 25);
 		panel.add(button);
 		
@@ -106,9 +133,8 @@ public class KomercijalistaMainGUI {
 		btnKreirajNarudzu.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				DodavanjeNarudzbeGUI dodavanjenarudzbe = new DodavanjeNarudzbeGUI();
+				DodavanjeNarudzbeGUI dodavanjenarudzbe = new DodavanjeNarudzbeGUI(s, table);
 				dodavanjenarudzbe.startDodavanjeNarudzbe();
-				
 			}
 		});
 		
@@ -266,6 +292,27 @@ public class KomercijalistaMainGUI {
 		JButton btnNewButton_2 = new JButton("Odjava sa sistema");
 		btnNewButton_2.setBounds(499, 13, 156, 25);
 		frmKomercijalista.getContentPane().add(btnNewButton_2);
+		refreshajTabeluNarudzbe();
+	}
+	
+	private void refreshajTabeluNarudzbe()
+	{
+		ArrayList<Narudzba> narudzbe = ns.dajNarudzbe();
+		Object[][] data = new Object[narudzbe.size()][];
+		for(int i = 0; i<narudzbe.size();i++)
+			data[i]= new Object[]
+			{
+				narudzbe.get(i).getId(),narudzbe.get(i).getAkterprodaje().getIme(),
+				narudzbe.get(i).getDatum(),narudzbe.get(i).getStatus()
+					
+			};
+		
+		table.setModel(new DefaultTableModel(
+				data,
+				new String[] {
+					"ID", "Naručilac", "Datum", "Status"
+				}
+			));
 	}
 
 }
