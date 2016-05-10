@@ -1,33 +1,47 @@
 package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.hibernate.Session;
+
+import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
+import ba.unsa.etf.si.tim8.mlmarketing.services.NaloziServis;
+
 public class KreiranjeKorisnickogRacunaGUI {
+	
+	private Session s;
+	
+	private NaloziServis ns;
 
 	private JFrame frmDodajKorisnika;
-	private JTextField textField;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JPasswordField passwordField;
-	private JPasswordField passwordField_1;
+	private JTextField textFieldKorisnickoIme;
+	private JTextField textFieldIme;
+	private JTextField textFieldPrezime;
+	private JTextField textFieldAdresa;
+	private JPasswordField passwordFieldSifra;
+	private JPasswordField passwordFieldSifraPonovo;
+	private JTextField textFieldEmail;
+	private JTextField textFieldTelefon;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void startKreiranjeRacuna() {
+	public void startKreiranjeRacuna() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					KreiranjeKorisnickogRacunaGUI window = new KreiranjeKorisnickogRacunaGUI();
+					KreiranjeKorisnickogRacunaGUI window = new KreiranjeKorisnickogRacunaGUI(s);
 					window.frmDodajKorisnika.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,7 +53,9 @@ public class KreiranjeKorisnickogRacunaGUI {
 	/**
 	 * Create the application.
 	 */
-	public KreiranjeKorisnickogRacunaGUI() {
+	public KreiranjeKorisnickogRacunaGUI(Session s) {
+		this.s=s;
+		ns= new NaloziServis(s);
 		initialize();
 	}
 
@@ -57,7 +73,7 @@ public class KreiranjeKorisnickogRacunaGUI {
 		lblTipRauna.setBounds(63, 30, 71, 14);
 		frmDodajKorisnika.getContentPane().add(lblTipRauna);
 		
-		JComboBox comboBox = new JComboBox();
+		final JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(146, 27, 124, 20);
 		comboBox.addItem("Šef prodaje");
 		comboBox.addItem("Komercijalista");
@@ -73,25 +89,25 @@ public class KreiranjeKorisnickogRacunaGUI {
 		lblNewLabel_1.setBounds(40, 130, 94, 14);
 		frmDodajKorisnika.getContentPane().add(lblNewLabel_1);
 		
-		textField = new JTextField();
-		textField.setBounds(146, 99, 124, 20);
-		frmDodajKorisnika.getContentPane().add(textField);
-		textField.setColumns(10);
+		textFieldKorisnickoIme = new JTextField();
+		textFieldKorisnickoIme.setBounds(146, 99, 124, 20);
+		frmDodajKorisnika.getContentPane().add(textFieldKorisnickoIme);
+		textFieldKorisnickoIme.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(146, 199, 124, 20);
-		frmDodajKorisnika.getContentPane().add(textField_2);
-		textField_2.setColumns(10);
+		textFieldIme = new JTextField();
+		textFieldIme.setBounds(146, 199, 124, 20);
+		frmDodajKorisnika.getContentPane().add(textFieldIme);
+		textFieldIme.setColumns(10);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(146, 230, 124, 20);
-		frmDodajKorisnika.getContentPane().add(textField_3);
-		textField_3.setColumns(10);
+		textFieldPrezime = new JTextField();
+		textFieldPrezime.setBounds(146, 230, 124, 20);
+		frmDodajKorisnika.getContentPane().add(textFieldPrezime);
+		textFieldPrezime.setColumns(10);
 		
-		textField_4 = new JTextField();
-		textField_4.setBounds(146, 261, 124, 20);
-		frmDodajKorisnika.getContentPane().add(textField_4);
-		textField_4.setColumns(10);
+		textFieldAdresa = new JTextField();
+		textFieldAdresa.setBounds(146, 261, 124, 20);
+		frmDodajKorisnika.getContentPane().add(textFieldAdresa);
+		textFieldAdresa.setColumns(10);
 		
 		JLabel lblNewLabel_2 = new JLabel("Ime:");
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -108,22 +124,62 @@ public class KreiranjeKorisnickogRacunaGUI {
 		lblNewLabel_4.setBounds(88, 264, 46, 14);
 		frmDodajKorisnika.getContentPane().add(lblNewLabel_4);
 		
-		JButton btnNewButton = new JButton("Kreiraj");
-		btnNewButton.setBounds(181, 292, 89, 23);
-		frmDodajKorisnika.getContentPane().add(btnNewButton);
+		JButton btnKreirajNalog = new JButton("Kreiraj");
+		btnKreirajNalog.setBounds(181, 354, 89, 23);
+		btnKreirajNalog.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				if(passwordFieldSifra.getText().equals(passwordFieldSifraPonovo.getText()) && !passwordFieldSifra.getText().equals("")){
+					Korisnik k = new Korisnik();
+					k.setIme(textFieldIme.getText());
+					k.setPrezime(textFieldPrezime.getText());
+					k.setUsername(textFieldKorisnickoIme.getText());
+					k.setAdresa(textFieldAdresa.getText());
+					if(comboBox.getSelectedItem()=="Komercijalista") k.setTip("komercijalista");
+					else k.setTip("sef");
+					k.setTelefon(textFieldTelefon.getText());
+					k.setEmail(textFieldEmail.getText());
+					k.setPassword(passwordFieldSifra.getText());
+					ns.kreirajNalog(k);
+				}
+				
+				
+				
+			}
+		});
+		frmDodajKorisnika.getContentPane().add(btnKreirajNalog);
 		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(146, 127, 124, 20);
-		frmDodajKorisnika.getContentPane().add(passwordField);
+		passwordFieldSifra = new JPasswordField();
+		passwordFieldSifra.setBounds(146, 127, 124, 20);
+		frmDodajKorisnika.getContentPane().add(passwordFieldSifra);
 		
-		passwordField_1 = new JPasswordField();
-		passwordField_1.setBounds(146, 158, 124, 20);
-		frmDodajKorisnika.getContentPane().add(passwordField_1);
+		passwordFieldSifraPonovo = new JPasswordField();
+		passwordFieldSifraPonovo.setBounds(146, 158, 124, 20);
+		frmDodajKorisnika.getContentPane().add(passwordFieldSifraPonovo);
 		
 		JLabel lblPotvrdiifru = new JLabel("Potvrdi \u0161ifru:");
 		lblPotvrdiifru.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblPotvrdiifru.setBounds(30, 160, 104, 14);
 		frmDodajKorisnika.getContentPane().add(lblPotvrdiifru);
+		
+		textFieldEmail = new JTextField();
+		textFieldEmail.setColumns(10);
+		textFieldEmail.setBounds(146, 292, 124, 20);
+		frmDodajKorisnika.getContentPane().add(textFieldEmail);
+		
+		JLabel lblEmail = new JLabel("Email:");
+		lblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblEmail.setBounds(63, 295, 71, 14);
+		frmDodajKorisnika.getContentPane().add(lblEmail);
+		
+		JLabel lblTelefon = new JLabel("Telefon:");
+		lblTelefon.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblTelefon.setBounds(88, 326, 46, 14);
+		frmDodajKorisnika.getContentPane().add(lblTelefon);
+		
+		textFieldTelefon = new JTextField();
+		textFieldTelefon.setColumns(10);
+		textFieldTelefon.setBounds(146, 323, 124, 20);
+		frmDodajKorisnika.getContentPane().add(textFieldTelefon);
 	}
-
 }

@@ -19,8 +19,10 @@ import javax.swing.table.DefaultTableModel;
 import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
+import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.NaloziServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;
 
 public class SefProdajeMainGUI {
@@ -28,8 +30,9 @@ public class SefProdajeMainGUI {
 	private Session s;
 	private RegijaServis rs;
 	private AkterServis aks;
+	private NaloziServis ns;
 	private JFrame frmSefProdaje;
-	private JTable table;
+	private JTable tableKorisnici;
 	private JTable tableMenadzeri;
 	private JTable table_2;
 	private JTable table_3;
@@ -60,6 +63,7 @@ public class SefProdajeMainGUI {
 		this.s=s;
 		this.rs = new RegijaServis(s);
 		this.aks = new AkterServis(s);
+		this.ns = new NaloziServis(s);
 		initialize();
 	}
 
@@ -92,36 +96,46 @@ public class SefProdajeMainGUI {
 		btnKreirajRacun.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				KreiranjeKorisnickogRacunaGUI kkr = new KreiranjeKorisnickogRacunaGUI();
+				KreiranjeKorisnickogRacunaGUI kkr = new KreiranjeKorisnickogRacunaGUI(s);
 				kkr.startKreiranjeRacuna();
 				
 			}
 		});
 		
-		JButton btnNewButton_2 = new JButton("Obri\u0161i korisni\u010Dki ra\u010Dun");
-		btnNewButton_2.setBounds(426, 146, 175, 23);
-		panel.add(btnNewButton_2);
+		JButton btnObrisiRacun = new JButton("Obri\u0161i korisni\u010Dki ra\u010Dun");
+		btnObrisiRacun.setBounds(426, 146, 175, 23);
+		panel.add(btnObrisiRacun);
+		btnObrisiRacun.addActionListener(new ActionListener() {
 			
-			JScrollPane scrollPane_2 = new JScrollPane();
-			scrollPane_2.setBounds(10, 11, 591, 118);
-			panel.add(scrollPane_2);
-			
-			
-			
-			
-			table = new JTable();
-			scrollPane_2.setViewportView(table);
-			table.setModel(new DefaultTableModel(
-				new Object[][] {
-				},
-				new String[] {
-					"Tip ra\u010Duna", "Korisni\u010Dko ime", "Ime", "Prezime", "Adresa"
+			public void actionPerformed(ActionEvent e) {
+				if(tableKorisnici.getSelectedRow()!=-1){
+					int id =(Integer)tableKorisnici.getModel().getValueAt(tableKorisnici.getSelectedRow(),5);
+					ns.obrisiNalog(id);
+					refreshajTabeluKorisnici();
 				}
-			));
+				
+			}
+		});
+			
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(10, 11, 591, 118);
+		panel.add(scrollPane_2);
+			
+			
+			
+		tableKorisnici = new JTable();
+		scrollPane_2.setViewportView(tableKorisnici);
+		tableKorisnici.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Tip ra\u010Duna", "Korisni\u010Dko ime", "Ime", "Prezime", "Adresa"
+			}
+		));
 			
 				
 				
-				table.setBackground(Color.LIGHT_GRAY);
+		tableKorisnici.setBackground(Color.LIGHT_GRAY);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.WHITE);
@@ -455,6 +469,7 @@ public class SefProdajeMainGUI {
 		
 		refreshajTabeluRegije();
 		refreshajTabeluMenadzeri();
+		refreshajTabeluKorisnici();
 	}
 	
 	private void refreshajTabeluRegije(){
@@ -492,6 +507,23 @@ public class SefProdajeMainGUI {
 			));
 		
 		tableMenadzeri.getColumnModel().removeColumn(tableMenadzeri.getColumnModel().getColumn(5));
+	}
+	
+	private void refreshajTabeluKorisnici(){
+		ArrayList<Korisnik> korisnici = ns.dajSveNaloge();
+		Object[][] data = new Object[korisnici.size()][];
+		for(int i = 0; i<korisnici.size();i++) data[i]= new Object[]{korisnici.get(i).getTip(),korisnici.get(i).getUsername(),
+				korisnici.get(i).getIme(),korisnici.get(i).getPrezime(),korisnici.get(i).getAdresa(),korisnici.get(i).getId()
+				};
+		
+		tableKorisnici.setModel(new DefaultTableModel(
+				data,
+				new String[] {
+					"Tip ra\u010Duna", "Korisni\u010Dko ime", "Ime", "Prezime", "Adresa","ID"
+				}
+			));
+		
+		tableKorisnici.getColumnModel().removeColumn(tableKorisnici.getColumnModel().getColumn(5));
 	}
 
 }
