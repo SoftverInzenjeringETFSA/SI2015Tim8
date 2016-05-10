@@ -16,8 +16,10 @@ import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
+import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Narudzba;
+import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NarudzbaServis;
 
 /*import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
@@ -32,6 +34,7 @@ public class KomercijalistaMainGUI {
 	
 	private Session s;
 	private NarudzbaServis ns;
+	private AkterServis aks;
 
 	private JFrame frmKomercijalista;
 	private JTable table;
@@ -62,6 +65,7 @@ public class KomercijalistaMainGUI {
 	public KomercijalistaMainGUI(Session s) {
 		this.s=s;
 		this.ns = new NarudzbaServis(s);
+		this.aks = new AkterServis(s);
 		initialize();
 	}
 
@@ -209,8 +213,10 @@ public class KomercijalistaMainGUI {
 		panel_3.add(btnPrikazMenadzera);
 		btnPrikazMenadzera.addActionListener(new ActionListener() {
 			
-			public void actionPerformed(ActionEvent e) {
-				PrikazMenadzerKomGUI prikazmenadzer = new PrikazMenadzerKomGUI();
+			public void actionPerformed(ActionEvent e) 
+			{
+				int id = (Integer)table_2.getModel().getValueAt(table_2.getSelectedRow(), 5);
+				PrikazMenadzerKomGUI prikazmenadzer = new PrikazMenadzerKomGUI(s, id);
 				prikazmenadzer.startPrikazMenadzer();
 				
 			}
@@ -293,6 +299,7 @@ public class KomercijalistaMainGUI {
 		btnNewButton_2.setBounds(499, 13, 156, 25);
 		frmKomercijalista.getContentPane().add(btnNewButton_2);
 		refreshajTabeluNarudzbe();
+		refreshajTabeluMenadzeri();
 	}
 	
 	private void refreshajTabeluNarudzbe()
@@ -313,6 +320,29 @@ public class KomercijalistaMainGUI {
 					"ID", "Naručilac", "Datum", "Status"
 				}
 			));
+	}
+	
+	public void refreshajTabeluMenadzeri(){
+		ArrayList<Akterprodaje> akteri = aks.dajSveAkterePoTipu("regmen");
+		Object[][] data = new Object[akteri.size()][];
+		for(int i = 0; i<akteri.size();i++) data[i]= new Object[]{akteri.get(i).getIme()+" "+akteri.get(i).getPrezime(),
+				akteri.get(i).getBrojtelefona(), akteri.get(i).getAdresa(), akteri.get(i).getEmail(),
+				akteri.get(i).getRegija().getIme(), akteri.get(i).getId()
+				};
+		
+		table_2.setModel(new DefaultTableModel(
+				data ,
+				new String[] {
+					"Ime i prezime", 
+					"Broj telefona",
+					"Adresa",
+					"Email",
+					"Regija",
+					"ID"
+					}
+			));
+		
+		table_2.getColumnModel().removeColumn(table_2.getColumnModel().getColumn(5));
 	}
 
 }
