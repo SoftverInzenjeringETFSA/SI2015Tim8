@@ -1,6 +1,9 @@
 package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -8,19 +11,29 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import org.hibernate.Session;
+
+import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
+import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
+
 public class DodjelaMenadzeraGUI {
 
+	private Session s;
+	private int id = -1;
+	private AkterServis aks;
+	private SefProdajeMainGUI refreshableRoditelj;
+	
 	private JFrame frmDodijeliMenadera;
 	private JTextField textField;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void startDodjelaMenadzera() {
+	public void startDodjelaMenadzera() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DodjelaMenadzeraGUI window = new DodjelaMenadzeraGUI();
+					DodjelaMenadzeraGUI window = new DodjelaMenadzeraGUI(s,refreshableRoditelj,id);
 					window.frmDodijeliMenadera.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -32,8 +45,15 @@ public class DodjelaMenadzeraGUI {
 	/**
 	 * Create the application.
 	 */
-	public DodjelaMenadzeraGUI() {
+	public DodjelaMenadzeraGUI(Session s,SefProdajeMainGUI roditelj, int id) {
+		this.s = s;
+		this.id = id;
+		this.aks = new AkterServis(s);
+		this.refreshableRoditelj=roditelj;
 		initialize();
+		Akterprodaje a = aks.dajAktera(id);
+		
+		textField.setText(a.getIme()+" "+a.getPrezime());
 	}
 
 	/**
@@ -60,13 +80,24 @@ public class DodjelaMenadzeraGUI {
 		frmDodijeliMenadera.getContentPane().add(textField);
 		textField.setColumns(10);
 		
-		JComboBox comboBox = new JComboBox();
+		final JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(165, 82, 121, 20);
 		frmDodijeliMenadera.getContentPane().add(comboBox);
+		ArrayList<Akterprodaje> akteri = aks.dajSveAkterePoTipu("regmen");
+		for(int i = 0; i<akteri.size();i++) comboBox.addItem(akteri.get(i));
 		
-		JButton btnNewButton = new JButton("Dodijeli");
-		btnNewButton.setBounds(197, 113, 89, 23);
-		frmDodijeliMenadera.getContentPane().add(btnNewButton);
+		JButton btnDodijeliMenadzera = new JButton("Dodijeli");
+		btnDodijeliMenadzera.setBounds(197, 113, 89, 23);
+		btnDodijeliMenadzera.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+					Akterprodaje a = aks.dajAktera(id);
+					a.setAkterprodaje((Akterprodaje)comboBox.getSelectedItem());
+					aks.izmjeniAktera(a);
+					refreshableRoditelj.refreshajTabeluProdavaci();
+			}
+		});
+		frmDodijeliMenadera.getContentPane().add(btnDodijeliMenadzera);
 	}
 
 }

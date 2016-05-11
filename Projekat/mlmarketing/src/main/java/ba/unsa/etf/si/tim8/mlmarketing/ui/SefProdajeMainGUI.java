@@ -184,9 +184,33 @@ public class SefProdajeMainGUI {
 			}
 		});
 		
-		JButton btnNewButton_7 = new JButton("Unazadi");
-		btnNewButton_7.setBounds(404, 180, 197, 23);
-		panel_1.add(btnNewButton_7);
+		JButton btnUnazadi = new JButton("Unazadi");
+		btnUnazadi.setBounds(404, 180, 197, 23);
+		btnUnazadi.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				
+				int id = odaberiIdKolonu(tableMenadzeri, 5);
+				Akterprodaje a = aks.dajAktera(id);
+				int brojZaKojeJeNadlezan = a.getAkterprodajes().size();
+				if(brojZaKojeJeNadlezan == 0)
+				{
+					/*
+					a.setTip("prodavac");
+					a.setAkterprodaje(aks.dajAktera(6)); //fiksno
+					aks.izmjeniAktera(a);
+					refreshajTabeluMenadzeri();
+					refreshajTabeluProdavaci();*/
+					
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Nije moguce unazaditi regionalnog menadžera"
+							+ " dok je isti nadležan za neke prodavače.");
+				}
+		
+			}
+		});
+		panel_1.add(btnUnazadi);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -257,7 +281,8 @@ public class SefProdajeMainGUI {
 		btnProdavacIzmjeni.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				ProdavacDodajIzmjeni prodavacdodaj= new ProdavacDodajIzmjeni("", s, ref);
+				int id = odaberiIdKolonu(tableProdavaci, 6);
+				ProdavacDodajIzmjeni prodavacdodaj= new ProdavacDodajIzmjeni("", s, ref, id);
 				prodavacdodaj.startProdavacDodajIzmjeni("");
 				
 			}
@@ -265,6 +290,19 @@ public class SefProdajeMainGUI {
 		
 		JButton btnPromoviiUMenadera = new JButton("Unaprijedi");
 		btnPromoviiUMenadera.setBounds(403, 180, 198, 23);
+		btnPromoviiUMenadera.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				int id = odaberiIdKolonu(tableProdavaci, 6);
+				Akterprodaje a = aks.dajAktera(id);
+				a.setAkterprodaje(null);
+				a.setTip("regmen");
+				aks.izmjeniAktera(a);
+				refreshajTabeluProdavaci();
+				refreshajTabeluMenadzeri();
+				
+			}
+		});
 		panel_2.add(btnPromoviiUMenadera);
 		
 		JButton btnDodjeliMenadzera = new JButton("Dodijeli nadle\u017Enog menad\u017Eera");
@@ -273,7 +311,8 @@ public class SefProdajeMainGUI {
 		btnDodjeliMenadzera.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				DodjelaMenadzeraGUI dodjelamenadzera= new DodjelaMenadzeraGUI();
+				int id = odaberiIdKolonu(tableProdavaci, 6);
+				DodjelaMenadzeraGUI dodjelamenadzera= new DodjelaMenadzeraGUI(s,ref,id);
 				dodjelamenadzera.startDodjelaMenadzera();
 				
 			}

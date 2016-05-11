@@ -43,7 +43,11 @@ public class ProdavacDodajIzmjeni {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ProdavacDodajIzmjeni window = new ProdavacDodajIzmjeni(what, s,refreshableRoditelj);
+					ProdavacDodajIzmjeni window;
+					if(id == -1)
+						window = new ProdavacDodajIzmjeni(what, s,refreshableRoditelj);
+					else 
+						window = new ProdavacDodajIzmjeni(what, s, refreshableRoditelj, id);
 					window.frmDodajizmijeni.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -61,6 +65,24 @@ public class ProdavacDodajIzmjeni {
 		this.aks = new AkterServis(s);
 		this.refreshableRoditelj = roditelj;
 		initialize(what);
+	}
+	
+	public ProdavacDodajIzmjeni(String what, Session s, SefProdajeMainGUI roditelj, int id)
+	{
+		this.s = s;
+		this.rs = new RegijaServis(s);
+		this.aks = new AkterServis(s);
+		this.refreshableRoditelj = roditelj;
+		initialize(what);
+		this.id = id;
+		Akterprodaje ap = aks.dajAktera(id);
+		textFieldIme.setText(ap.getIme());
+		textFieldPrezime.setText(ap.getPrezime());
+		textFieldEmail.setText(ap.getEmail());
+		textFieldBrojTelefona.setText(ap.getBrojtelefona());
+		textFieldAdresa.setText(ap.getAdresa());
+		
+		
 	}
 
 	/**
@@ -143,16 +165,33 @@ public class ProdavacDodajIzmjeni {
 			
 			public void actionPerformed(ActionEvent arg0) {
 				
-				Akterprodaje a = new Akterprodaje();
-				a.setIme(textFieldIme.getText());
-				a.setPrezime(textFieldPrezime.getText());
-				a.setAdresa(textFieldAdresa.getText());
-				a.setBrojtelefona(textFieldBrojTelefona.getText());
-				a.setEmail(textFieldEmail.getText());
-				a.setRegija((Regija) comboBoxRegije.getSelectedItem());
-				a.setAkterprodaje((Akterprodaje)comboBoxNM.getSelectedItem());
-				a.setTip("prodavac");
-				aks.kreirajAktera(a);
+				if(id == -1)
+				{
+					Akterprodaje a = new Akterprodaje();
+					a.setIme(textFieldIme.getText());
+					a.setPrezime(textFieldPrezime.getText());
+					a.setAdresa(textFieldAdresa.getText());
+					a.setBrojtelefona(textFieldBrojTelefona.getText());
+					a.setEmail(textFieldEmail.getText());
+					a.setRegija((Regija) comboBoxRegije.getSelectedItem());
+					a.setAkterprodaje((Akterprodaje)comboBoxNM.getSelectedItem());
+					a.setTip("prodavac");
+					aks.kreirajAktera(a);
+				}
+				else
+				{
+					Akterprodaje ap = aks.dajAktera(id);
+					ap.setIme(textFieldIme.getText());
+					ap.setPrezime(textFieldPrezime.getText());
+					ap.setAdresa(textFieldAdresa.getText());
+					ap.setBrojtelefona(textFieldBrojTelefona.getText());
+					ap.setEmail(textFieldEmail.getText());
+					ap.setRegija((Regija) comboBoxRegije.getSelectedItem());
+					ap.setAkterprodaje((Akterprodaje)comboBoxNM.getSelectedItem());
+					aks.izmjeniAktera(ap);
+				}
+				
+				
 				refreshableRoditelj.refreshajTabeluProdavaci();
 				
 				
