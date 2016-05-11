@@ -195,13 +195,11 @@ public class SefProdajeMainGUI {
 				int brojZaKojeJeNadlezan = a.getAkterprodajes().size();
 				if(brojZaKojeJeNadlezan == 0)
 				{
-					/*
-					a.setTip("prodavac");
-					a.setAkterprodaje(aks.dajAktera(6)); //fiksno
-					aks.izmjeniAktera(a);
-					refreshajTabeluMenadzeri();
-					refreshajTabeluProdavaci();*/
 					
+					a.setTip("prodavac");
+					aks.izmjeniAktera(a);
+					DodjelaMenadzeraGUI dodjelamenadzera= new DodjelaMenadzeraGUI(s,ref,a.getId());
+					dodjelamenadzera.startDodjelaMenadzera();
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Nije moguce unazaditi regionalnog menadžera"

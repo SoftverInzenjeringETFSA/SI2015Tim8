@@ -9,12 +9,15 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class DodjelaMenadzeraGUI {
 
@@ -61,9 +64,18 @@ public class DodjelaMenadzeraGUI {
 	 */
 	private void initialize() {
 		frmDodijeliMenadera = new JFrame();
+		frmDodijeliMenadera.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				if(aks.dajAktera(id).getAkterprodaje()==null){
+					JOptionPane.showMessageDialog(null,"Morate odabrati odgovornog menadzera");
+				}
+				else frmDodijeliMenadera.dispose();
+			}
+		});
 		frmDodijeliMenadera.setTitle("Dodijeli menad\u017Eera");
 		frmDodijeliMenadera.setBounds(100, 100, 313, 204);
-		frmDodijeliMenadera.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmDodijeliMenadera.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frmDodijeliMenadera.getContentPane().setLayout(null);
 		
 		JLabel lblImeIPrezime = new JLabel("Ime i prezime prodava\u010Da:");
@@ -95,6 +107,7 @@ public class DodjelaMenadzeraGUI {
 					a.setAkterprodaje((Akterprodaje)comboBox.getSelectedItem());
 					aks.izmjeniAktera(a);
 					refreshableRoditelj.refreshajTabeluProdavaci();
+					refreshableRoditelj.refreshajTabeluMenadzeri();
 			}
 		});
 		frmDodijeliMenadera.getContentPane().add(btnDodijeliMenadzera);
