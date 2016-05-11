@@ -27,8 +27,11 @@ import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NarudzbaServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
 
 public class DodavanjeNarudzbeGUI {
 
@@ -36,10 +39,14 @@ public class DodavanjeNarudzbeGUI {
 	private NarudzbaServis ns;
 	private AkterServis aks;
 	private Narudzba n;
+	private ProizvodNarudzba pn;
+	private ProizvodServis ps;
 	
 	private JFrame frmKreiranjeNarudbe;
 	private JTextField textField;
 	private JTable table1;
+	private JTable tableProizvodi;
+	private JTable table_1;
 
 	/**
 	 * Launch the application.
@@ -48,7 +55,7 @@ public class DodavanjeNarudzbeGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DodavanjeNarudzbeGUI window = new DodavanjeNarudzbeGUI(s, table1);
+					DodavanjeNarudzbeGUI window = new DodavanjeNarudzbeGUI(s, table1, tableProizvodi);
 					window.frmKreiranjeNarudbe.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -60,13 +67,15 @@ public class DodavanjeNarudzbeGUI {
 	/**
 	 * Create the application.
 	 */
-	public DodavanjeNarudzbeGUI(Session s, JTable table) 
+	public DodavanjeNarudzbeGUI(Session s, JTable table, JTable tableP) 
 	{
 		this.s = s;
 		this.ns = new NarudzbaServis(s);
 		this.aks = new AkterServis(s);
 		this.n = new Narudzba();
+		this.ps = new ProizvodServis(s);
 		table1 = table;
+		tableProizvodi = tableP;
 		initialize();
 	}
 
@@ -77,7 +86,7 @@ public class DodavanjeNarudzbeGUI {
 		frmKreiranjeNarudbe = new JFrame();
 		frmKreiranjeNarudbe.getContentPane().setBackground(Color.WHITE);
 		frmKreiranjeNarudbe.setTitle("Kreiranje narud\u017Ebe");
-		frmKreiranjeNarudbe.setBounds(100, 100, 376, 390);
+		frmKreiranjeNarudbe.setBounds(100, 100, 376, 583);
 		frmKreiranjeNarudbe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmKreiranjeNarudbe.getContentPane().setLayout(null);
 		
@@ -126,7 +135,7 @@ public class DodavanjeNarudzbeGUI {
 		lblNewLabel_2.setBounds(-23, 63, 78, 16);
 		panel.add(lblNewLabel_2);
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
-		
+			
 		JButton btnNewButton = new JButton("Dodaj");
 		btnNewButton.addActionListener(new ActionListener() 
 		{
@@ -135,12 +144,14 @@ public class DodavanjeNarudzbeGUI {
 				if(n == null) n = new Narudzba();
 				if(Integer.parseInt(textField.getText())  <= ((Proizvod)comboBox_1.getSelectedItem()).getKolicina())
 				{
-					ProizvodNarudzba pn = new ProizvodNarudzba();
+					pn = new ProizvodNarudzba();
 					pn.setKolicina(Integer.parseInt(textField.getText()));
 					pn.setNarudzba(n);
 					pn.setProizvod((Proizvod)comboBox_1.getSelectedItem());
 					pn.getProizvod().setKolicina(pn.getProizvod().getKolicina() - Integer.parseInt(textField.getText()));
 					n.getProizvodNarudzbas().add(pn);
+					refreshajTabeluProizvodNarudzbe();
+					refreshajTabeluProizvodi();
 				}
 				else JOptionPane.showMessageDialog(null, "Unijeli ste nedozvoljenu količinu!");
 			}
@@ -159,12 +170,33 @@ public class DodavanjeNarudzbeGUI {
 				n.setDatum(new Date());
 				n.setStatus("Na čekanju");
 				ns.kreirajNarudzbu(n);
+				ProizvodNarudzba[] pn = n.getProizvodNarudzbas().toArray(new ProizvodNarudzba[n.getProizvodNarudzbas().size()]);
+				for(int i = 0; i < pn.length; i++)
+				{
+					ns.dodajProizvod(pn[i]);
+				}
 				refreshajTabeluNarudzbe();
 				n = null;
+				refreshajTabeluProizvodNarudzbe();
+				refreshajTabeluProizvodi();
 			}
 		});
-		btnNewButton_1.setBounds(129, 278, 97, 25);
+		btnNewButton_1.setBounds(125, 445, 97, 25);
 		frmKreiranjeNarudbe.getContentPane().add(btnNewButton_1);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(80, 254, 196, 178);
+		frmKreiranjeNarudbe.getContentPane().add(scrollPane);
+		
+		table_1 = new JTable();
+		table_1.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Proizvod", "Koli\u010Dina"
+			}
+		));
+		scrollPane.setViewportView(table_1);
 	}
 	
 	private void refreshajTabeluNarudzbe()
@@ -186,5 +218,56 @@ public class DodavanjeNarudzbeGUI {
 				}
 			));
 	}
-
+	
+	private void refreshajTabeluProizvodNarudzbe()
+	{
+		if(n != null)
+		{
+			ProizvodNarudzba[] pn = n.getProizvodNarudzbas().toArray(new ProizvodNarudzba[n.getProizvodNarudzbas().size()]);
+			Object[][] data = new Object[pn.length][];
+			for(int i = 0; i<pn.length;i++)
+				data[i]= new Object[]
+				{
+					pn[i].getProizvod().getNaziv(), pn[i].getKolicina()
+				};
+			
+			table_1.setModel(new DefaultTableModel(
+					data,
+					new String[] {
+						"Proizvod", "Količina"
+					}
+				));
+		}
+		else
+		{
+			table_1.setModel(new DefaultTableModel(
+					new Object[][] { },
+					new String[] {
+						"Proizvod", "Količina"
+					}
+				));
+		}
+	}
+	
+	public void refreshajTabeluProizvodi(){
+		ArrayList<Proizvod> proizvodi = ps.dajSveProizvode();
+		Object[][] data = new Object[proizvodi.size()][];
+		for(int i = 0; i<proizvodi.size();i++){
+			data[i]= new Object[]{proizvodi.get(i).getNaziv(),proizvodi.get(i).getNabavnacijena(),
+					proizvodi.get(i).getProdajnacijena(),proizvodi.get(i).getKolicina(),proizvodi.get(i).getId()
+			};
+		}
+		tableProizvodi.setModel(new DefaultTableModel(
+				data,
+				new String[] {
+					"Naziv proizvoda",
+					"Nabavna cijena",
+					"Prodajna cijena",
+					"Stanje na skladištu",
+					"ID"
+				}));
+		tableProizvodi.getColumnModel().removeColumn(tableProizvodi.getColumnModel().getColumn(4));
+	}
+	
+	
 }

@@ -19,8 +19,10 @@ import javax.swing.table.DefaultTableModel;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Narudzba;
+import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NarudzbaServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
 
 /*import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
@@ -35,6 +37,7 @@ public class KomercijalistaMainGUI {
 	private Session s;
 	private NarudzbaServis ns;
 	private AkterServis aks;
+	private ProizvodServis ps;
 
 	private JFrame frmKomercijalista;
 	private JTable table;
@@ -66,6 +69,7 @@ public class KomercijalistaMainGUI {
 		this.s=s;
 		this.ns = new NarudzbaServis(s);
 		this.aks = new AkterServis(s);
+		this.ps = new ProizvodServis(s);
 		initialize();
 	}
 
@@ -124,6 +128,7 @@ public class KomercijalistaMainGUI {
 					int id =(Integer)table.getModel().getValueAt(table.getSelectedRow(),0);
 					ns.izbrisiNarudzbu(id);
 					refreshajTabeluNarudzbe();
+					refreshajTabeluProizvodi();
 				}
 				else JOptionPane.showMessageDialog(null, "Niste odabrali narudzbu!");
 			}
@@ -137,7 +142,7 @@ public class KomercijalistaMainGUI {
 		btnKreirajNarudzu.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				DodavanjeNarudzbeGUI dodavanjenarudzbe = new DodavanjeNarudzbeGUI(s, table);
+				DodavanjeNarudzbeGUI dodavanjenarudzbe = new DodavanjeNarudzbeGUI(s, table, table_1);
 				dodavanjenarudzbe.startDodavanjeNarudzbe();
 			}
 		});
@@ -272,8 +277,9 @@ public class KomercijalistaMainGUI {
 		btnPrikaziProizvod.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				//PrikazProdavacKomGUI prikazproizvoda = new PrikazProdavacKomGUI();
-				//prikazproizvoda.startPrikazProdavaca();
+				int id = odaberiIdKolonu(table_1, 4);
+				PrikazProizvodKomGUI prikazproizvoda = new PrikazProizvodKomGUI(s, id);
+				prikazproizvoda.startPrikazProizvodKom();
 				
 			}
 		});
@@ -302,6 +308,7 @@ public class KomercijalistaMainGUI {
 		refreshajTabeluNarudzbe();
 		refreshajTabeluMenadzeri();
 		refreshajTabeluProdavaci();
+		refreshajTabeluProizvodi();
 	}
 	
 	private void refreshajTabeluNarudzbe()
@@ -377,6 +384,26 @@ public class KomercijalistaMainGUI {
 				));
 			table_3.getColumnModel().removeColumn(table_3.getColumnModel().getColumn(6));
 		}
+	}
+	
+	public void refreshajTabeluProizvodi(){
+		ArrayList<Proizvod> proizvodi = ps.dajSveProizvode();
+		Object[][] data = new Object[proizvodi.size()][];
+		for(int i = 0; i<proizvodi.size();i++){
+			data[i]= new Object[]{proizvodi.get(i).getNaziv(),proizvodi.get(i).getNabavnacijena(),
+					proizvodi.get(i).getProdajnacijena(),proizvodi.get(i).getKolicina(),proizvodi.get(i).getId()
+			};
+		}
+		table_1.setModel(new DefaultTableModel(
+				data,
+				new String[] {
+					"Naziv proizvoda",
+					"Nabavna cijena",
+					"Prodajna cijena",
+					"Stanje na skladištu",
+					"ID"
+				}));
+		table_1.getColumnModel().removeColumn(table_1.getColumnModel().getColumn(4));
 	}
 	
 	public int odaberiIdKolonu(JTable tabela,int brojKolone){

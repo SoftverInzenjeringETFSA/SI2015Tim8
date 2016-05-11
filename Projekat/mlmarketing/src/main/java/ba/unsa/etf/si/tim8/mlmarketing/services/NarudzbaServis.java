@@ -25,13 +25,15 @@ public class NarudzbaServis
 	public boolean kreirajNarudzbu(Narudzba n)
 	{
 		Transaction t = s.beginTransaction();
-		Narudzba nova = new Narudzba();
-		nova.setAkterprodaje(n.getAkterprodaje());
-		nova.setDatum(n.getDatum());
-		nova.setStatus(n.getStatus());
-		nova.setProizvodNarudzbas(n.getProizvodNarudzbas());
-		
-		s.save(nova);
+		s.save(n);
+		t.commit();
+		return true;
+	}
+	
+	public boolean dodajProizvod(ProizvodNarudzba pn)
+	{
+		Transaction t = s.beginTransaction();
+		s.save(pn);
 		t.commit();
 		return true;
 	}
@@ -40,7 +42,17 @@ public class NarudzbaServis
 	{
 		Transaction t = s.beginTransaction();
 		Narudzba n = (Narudzba) s.get(Narudzba.class, id);
-		if(n!=null)s.delete(n);
+		if(n!=null) 
+		{
+			
+			ProizvodNarudzba[] pn = n.getProizvodNarudzbas().toArray(new ProizvodNarudzba[n.getProizvodNarudzbas().size()]);
+			for(int i = 0; i < pn.length; i++)
+			{
+				pn[i].getProizvod().setKolicina(pn[i].getProizvod().getKolicina() + pn[i].getKolicina());
+				s.delete(pn[i]);
+			}
+			s.delete(n);
+		}
 		t.commit();
 		return true;
 	}
