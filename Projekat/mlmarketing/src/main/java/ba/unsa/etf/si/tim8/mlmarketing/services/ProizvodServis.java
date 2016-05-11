@@ -45,4 +45,14 @@ public class ProizvodServis {
 		t.commit();
 		return true;
 	}
+	
+	public boolean izmijeniProizvod(Proizvod p){
+		s.flush();
+		s.clear();
+		Transaction t = s.beginTransaction();
+		s.update(p);
+		t.commit();
+		s.flush();
+		return true;
+	}
 }

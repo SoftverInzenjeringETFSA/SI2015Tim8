@@ -1,29 +1,41 @@
 package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.hibernate.Session;
+
+import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
+import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
+
 public class IzmjenaProizvodaGUI {
 
+	private Session s;
+	private int id = -1;
+	private ProizvodServis ps;
+	private SefProdajeMainGUI refreshableRoditelj;
 	private JFrame frmIzmijeni;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField textFieldStanjeSkladista;
+	private JTextField textFieldProdajnaCijena;
+	private JTextField textFieldNabavnaCijena;
+	private JTextField textFieldNazivProizvoda;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void startIzmjenaProizvoda() {
+	public void startIzmjenaProizvoda() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					IzmjenaProizvodaGUI window = new IzmjenaProizvodaGUI();
+					IzmjenaProizvodaGUI window = new IzmjenaProizvodaGUI(s, refreshableRoditelj, id);
 					window.frmIzmijeni.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -35,8 +47,19 @@ public class IzmjenaProizvodaGUI {
 	/**
 	 * Create the application.
 	 */
-	public IzmjenaProizvodaGUI() {
+	public IzmjenaProizvodaGUI(Session s, SefProdajeMainGUI roditelj, int id) {
+		this.s = s;
+		ps = new ProizvodServis(s);
+		this.id = id;
+		this.refreshableRoditelj = roditelj;
+		
 		initialize();
+		
+		Proizvod p = ps.dajProizvod(id);
+	    textFieldNazivProizvoda.setText(p.getNaziv());
+		textFieldNabavnaCijena.setText(Double.toString(p.getNabavnacijena()));		
+		textFieldProdajnaCijena.setText(Double.toString(p.getProdajnacijena()));
+		textFieldStanjeSkladista.setText(Integer.toString(p.getKolicina()));
 	}
 
 	/**
@@ -69,28 +92,41 @@ public class IzmjenaProizvodaGUI {
 		label_3.setBounds(0, 111, 119, 14);
 		frmIzmijeni.getContentPane().add(label_3);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(129, 108, 146, 20);
-		frmIzmijeni.getContentPane().add(textField);
+		textFieldStanjeSkladista = new JTextField();
+		textFieldStanjeSkladista.setColumns(10);
+		textFieldStanjeSkladista.setBounds(129, 108, 146, 20);
+		frmIzmijeni.getContentPane().add(textFieldStanjeSkladista);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(129, 83, 146, 20);
-		frmIzmijeni.getContentPane().add(textField_1);
+		textFieldProdajnaCijena = new JTextField();
+		textFieldProdajnaCijena.setColumns(10);
+		textFieldProdajnaCijena.setBounds(129, 83, 146, 20);
+		frmIzmijeni.getContentPane().add(textFieldProdajnaCijena);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(129, 58, 146, 20);
-		frmIzmijeni.getContentPane().add(textField_2);
+		textFieldNabavnaCijena = new JTextField();
+		textFieldNabavnaCijena.setColumns(10);
+		textFieldNabavnaCijena.setBounds(129, 58, 146, 20);
+		frmIzmijeni.getContentPane().add(textFieldNabavnaCijena);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(129, 33, 146, 20);
-		frmIzmijeni.getContentPane().add(textField_3);
+		textFieldNazivProizvoda = new JTextField();
+		textFieldNazivProizvoda.setColumns(10);
+		textFieldNazivProizvoda.setBounds(129, 33, 146, 20);
+		frmIzmijeni.getContentPane().add(textFieldNazivProizvoda);
 		
 		JButton btnIzmijeniProizvod = new JButton("Izmijeni proizvod");
 		btnIzmijeniProizvod.setBounds(159, 154, 116, 23);
+		btnIzmijeniProizvod.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				Proizvod p = ps.dajProizvod(id);
+				p.setNaziv(textFieldNazivProizvoda.getText());
+				p.setNabavnacijena(Double.parseDouble(textFieldNabavnaCijena.getText()));
+				p.setProdajnacijena(Double.parseDouble(textFieldProdajnaCijena.getText()));
+				p.setKolicina(Integer.parseInt(textFieldStanjeSkladista.getText()));
+				ps.izmijeniProizvod(p);
+				refreshableRoditelj.refreshajTabeluProizvodi();
+				
+			}
+		});
 		frmIzmijeni.getContentPane().add(btnIzmijeniProizvod);
 	}
 

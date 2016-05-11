@@ -379,7 +379,8 @@ public class SefProdajeMainGUI {
 		btnIzmijeniProizvod.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				IzmjenaProizvodaGUI izmjenaproizvoda = new IzmjenaProizvodaGUI();
+				int id = odaberiIdKolonu(tableProizvodi, 4);
+				IzmjenaProizvodaGUI izmjenaproizvoda = new IzmjenaProizvodaGUI(s, ref, id);
 				izmjenaproizvoda.startIzmjenaProizvoda();
 				
 			}
@@ -417,7 +418,7 @@ public class SefProdajeMainGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				int id = odaberiIdKolonu(tableProizvodi, 4);
-				PrikazProizvodGUI pprikaz = new PrikazProizvodGUI(s,id);
+				PrikazProizvodGUI pprikaz = new PrikazProizvodGUI(s, ref,id);
 				pprikaz.startPrikazProizvod();
 			}
 		});

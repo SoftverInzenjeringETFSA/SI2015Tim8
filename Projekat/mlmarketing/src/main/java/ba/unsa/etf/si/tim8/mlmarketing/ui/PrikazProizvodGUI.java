@@ -13,12 +13,15 @@ import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
 import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PrikazProizvodGUI {
 	
 	private int id;
 	private Session s;
 	private ProizvodServis ps;
+	private SefProdajeMainGUI refreshableRoditelj;
 
 	private JFrame frmProizvod;
 	private JTextField textFieldNaziv;
@@ -33,7 +36,7 @@ public class PrikazProizvodGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PrikazProizvodGUI window = new PrikazProizvodGUI(s,id);
+					PrikazProizvodGUI window = new PrikazProizvodGUI(s, refreshableRoditelj ,id);
 					window.frmProizvod.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,10 +48,11 @@ public class PrikazProizvodGUI {
 	/**
 	 * Create the application.
 	 */
-	public PrikazProizvodGUI(Session s,int id) {
+	public PrikazProizvodGUI(Session s, SefProdajeMainGUI roditelj, int id) {
 		this.s=s;
 		this.id=id;
 		this.ps= new ProizvodServis(s);
+		this.refreshableRoditelj = roditelj;
 		initialize();
 	}
 
@@ -105,9 +109,17 @@ public class PrikazProizvodGUI {
 		frmProizvod.getContentPane().add(textFieldStanjeNaSkladistu);
 		textFieldStanjeNaSkladistu.setColumns(10);
 		
-		JButton btnNewButton = new JButton("Potvrdi promjenu stanja");
-		btnNewButton.setBounds(94, 269, 231, 25);
-		frmProizvod.getContentPane().add(btnNewButton);
+		JButton btnPromjenaStanja = new JButton("Potvrdi promjenu stanja");
+		btnPromjenaStanja.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Proizvod p = ps.dajProizvod(id);
+				p.setKolicina(Integer.parseInt(textFieldStanjeNaSkladistu.getText()));
+				ps.izmijeniProizvod(p);
+				refreshableRoditelj.refreshajTabeluProizvodi();				
+			}
+		});
+		btnPromjenaStanja.setBounds(94, 269, 231, 25);
+		frmProizvod.getContentPane().add(btnPromjenaStanja);
 		prikaziPodatkeZaProizvod();
 	}
 	
