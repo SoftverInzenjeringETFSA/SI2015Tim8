@@ -215,7 +215,7 @@ public class KomercijalistaMainGUI {
 			
 			public void actionPerformed(ActionEvent e) 
 			{
-				int id = (Integer)table_2.getModel().getValueAt(table_2.getSelectedRow(), 5);
+				int id = odaberiIdKolonu(table_2, 5);
 				PrikazMenadzerKomGUI prikazmenadzer = new PrikazMenadzerKomGUI(s, id);
 				prikazmenadzer.startPrikazMenadzer();
 				
@@ -254,7 +254,8 @@ public class KomercijalistaMainGUI {
 		btnPrikaziProdavaca.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				PrikazProdavacKomGUI prikazprodavac= new PrikazProdavacKomGUI();
+				int id = odaberiIdKolonu(table_3, 6);
+				PrikazProdavacKomGUI prikazprodavac= new PrikazProdavacKomGUI(s, id);
 				prikazprodavac.startPrikazProdavaca();
 				
 			}
@@ -271,8 +272,8 @@ public class KomercijalistaMainGUI {
 		btnPrikaziProizvod.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				PrikazProdavacKomGUI prikazproizvoda = new PrikazProdavacKomGUI();
-				prikazproizvoda.startPrikazProdavaca();
+				//PrikazProdavacKomGUI prikazproizvoda = new PrikazProdavacKomGUI();
+				//prikazproizvoda.startPrikazProdavaca();
 				
 			}
 		});
@@ -300,6 +301,7 @@ public class KomercijalistaMainGUI {
 		frmKomercijalista.getContentPane().add(btnNewButton_2);
 		refreshajTabeluNarudzbe();
 		refreshajTabeluMenadzeri();
+		refreshajTabeluProdavaci();
 	}
 	
 	private void refreshajTabeluNarudzbe()
@@ -343,6 +345,43 @@ public class KomercijalistaMainGUI {
 			));
 		
 		table_2.getColumnModel().removeColumn(table_2.getColumnModel().getColumn(5));
+	}
+	
+	public void refreshajTabeluProdavaci()
+	{
+		ArrayList<Akterprodaje> akteri = aks.dajSveAkterePoTipu("prodavac");
+		Object[][] data = new Object[akteri.size()][];
+		for(int i = 0; i < akteri.size(); i++)
+		{
+			data[i] = new Object[]{ 
+				akteri.get(i).getIme() + " " + akteri.get(i).getPrezime(),
+				akteri.get(i).getBrojtelefona(),
+				akteri.get(i).getAdresa(),
+				akteri.get(i).getEmail(),
+				akteri.get(i).getRegija().getIme(),
+				akteri.get(i).getAkterprodaje().getIme()+" "+ akteri.get(i).getAkterprodaje().getPrezime(),
+				akteri.get(i).getId()
+			};
+			
+			table_3.setModel(new DefaultTableModel(
+					data,					
+					new String[] {
+						"Ime i prezime",
+						"Broj telefona",
+						"Adresa",
+						"Email",
+						"Regija",
+						"Nadležni manager",
+						"ID"
+					}
+				));
+			table_3.getColumnModel().removeColumn(table_3.getColumnModel().getColumn(6));
+		}
+	}
+	
+	public int odaberiIdKolonu(JTable tabela,int brojKolone){
+		int id = (Integer)tabela.getModel().getValueAt(tabela.getSelectedRow(),brojKolone);
+		return id;
 	}
 
 }
