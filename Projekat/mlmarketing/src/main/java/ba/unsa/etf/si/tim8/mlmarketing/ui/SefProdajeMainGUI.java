@@ -20,10 +20,12 @@ import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
+import ba.unsa.etf.si.tim8.mlmarketing.models.Narudzba;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NaloziServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.NarudzbaServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;
 
@@ -34,6 +36,7 @@ public class SefProdajeMainGUI {
 	private AkterServis aks;
 	private NaloziServis ns;
 	private ProizvodServis ps;
+	private NarudzbaServis nfs;
 	
 	private JFrame frmSefProdaje;
 	private JTable tableKorisnici;
@@ -41,7 +44,7 @@ public class SefProdajeMainGUI {
 	private JTable tableProdavaci;
 	private JTable tableProizvodi;
 	private JTable tableRegije;
-	private JTable table_5;
+	private JTable tableNarudzbe;
 	private JTable table_6;
 
 	/**
@@ -69,6 +72,7 @@ public class SefProdajeMainGUI {
 		this.aks = new AkterServis(s);
 		this.ns = new NaloziServis(s);
 		this.ps = new ProizvodServis(s);
+		this.nfs = new NarudzbaServis(s);
 		initialize();
 	}
 
@@ -532,19 +536,24 @@ public class SefProdajeMainGUI {
 		scrollPane_5.setBounds(12, 13, 587, 186);
 		panel_5.add(scrollPane_5);
 		
-		table_5 = new JTable();
-		table_5.setModel(new DefaultTableModel(
+		tableNarudzbe = new JTable();
+		tableNarudzbe.setModel(new MyTableModel(
 			new Object[][] {
 			},
 			new String[] {
 				"ID", "Naru\u010Dilac", "Datum", "Status"
 			}
 		));
-		scrollPane_5.setViewportView(table_5);
+		scrollPane_5.setViewportView(tableNarudzbe);
 		
-		JButton button_2 = new JButton("Prika\u017Ei narud\u017Ebu");
-		button_2.setBounds(441, 212, 158, 25);
-		panel_5.add(button_2);
+		JButton btnPrikaziNarudzbu = new JButton("Prika\u017Ei narud\u017Ebu");
+		btnPrikaziNarudzbu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
+		btnPrikaziNarudzbu.setBounds(441, 212, 158, 25);
+		panel_5.add(btnPrikaziNarudzbu);
 		
 		JPanel panel_6 = new JPanel();
 		panel_6.setBackground(Color.WHITE);
@@ -583,6 +592,7 @@ public class SefProdajeMainGUI {
 		refreshajTabeluKorisnici();
 		refreshajTabeluProdavaci();
 		refreshajTabeluProizvodi();
+		refreshajTabeluNarudzba();
 	}
 	
 	public void refreshajTabeluRegije(){
@@ -690,7 +700,22 @@ public class SefProdajeMainGUI {
 				}));
 		tableProizvodi.getColumnModel().removeColumn(tableProizvodi.getColumnModel().getColumn(4));
 	}
-	
+	public void refreshajTabeluNarudzba(){
+		ArrayList<Narudzba> narudzbe = nfs.dajNarudzbe();
+		Object[][] data = new Object[narudzbe.size()][];
+		for (int i = 0; i < narudzbe.size(); i++) {
+			data[i] = new Object[] {
+					narudzbe.get(i).getId(), 
+					narudzbe.get(i).getAkterprodaje().toString(),
+					narudzbe.get(i).getDatum().toString(),
+					narudzbe.get(i).getStatus()
+			};
+		}
+		
+		tableNarudzbe.setModel(new MyTableModel(data, new String[]{
+				"ID", "Naru\u010Dilac", "Datum", "Status"
+		}));
+	}
 
 	
 	public int odaberiIdKolonu(JTable tabela,int brojKolone){
