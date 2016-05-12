@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -138,12 +139,18 @@ public class RegMenadzerDodajIzmjeniGUI {
 		frmDodajizmijeni.getContentPane().add(textFieldEmail);
 		textFieldEmail.setColumns(10);
 		
-		final JComboBox comboBox = new JComboBox();
+		final JComboBox comboBox = new JComboBox(new DefaultComboBoxModel(rs.dajRegije().toArray()));
 		comboBox.setBounds(140, 157, 129, 20);
 		frmDodajizmijeni.getContentPane().add(comboBox);
-		ArrayList<Regija> regije = rs.dajRegije();
-		for(int i = 0; i<regije.size();i++) comboBox.addItem(regije.get(i));
-		
+		if(id!=-1){
+			int regijaid=aks.dajAktera(id).getRegija().getId();
+			for(int i = 0; i < comboBox.getItemCount();i++){
+				if(((Regija)comboBox.getModel().getElementAt(i)).getId()==regijaid){
+					comboBox.setSelectedIndex(i);
+					break;
+				}
+			}
+		}
 		JButton btnDodajIzmjeni;
 		if(what=="dodaj") btnDodajIzmjeni = new JButton("Dodaj");
 		else btnDodajIzmjeni = new JButton("Izmijeni");
@@ -170,14 +177,7 @@ public class RegMenadzerDodajIzmjeniGUI {
 					a.setBrojtelefona(textFieldBrojTelefona.getText());
 					a.setEmail(textFieldEmail.getText());
 					a.setTip("regmen");
-					/*
-					int pozicija=-1;
-					
-					for(int i = 0; i < comboBox.getModel().getSize();i++){
-						
-					}*/
-					
-					//comboBox.setSelectedIndex(pozicija);
+					a.setRegija((Regija)comboBox.getSelectedItem());
 					aks.izmjeniAktera(a);
 				}
 				refreshableRoditelj.refreshajTabeluMenadzeri();

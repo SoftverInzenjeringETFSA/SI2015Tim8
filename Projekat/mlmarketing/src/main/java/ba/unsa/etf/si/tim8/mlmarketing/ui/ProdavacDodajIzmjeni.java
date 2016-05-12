@@ -5,10 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -73,8 +75,8 @@ public class ProdavacDodajIzmjeni {
 		this.rs = new RegijaServis(s);
 		this.aks = new AkterServis(s);
 		this.refreshableRoditelj = roditelj;
-		initialize(what);
 		this.id = id;
+		initialize(what);
 		Akterprodaje ap = aks.dajAktera(id);
 		textFieldIme.setText(ap.getIme());
 		textFieldPrezime.setText(ap.getPrezime());
@@ -127,13 +129,31 @@ public class ProdavacDodajIzmjeni {
 		lblNewLabel_5.setBounds(12, 182, 127, 14);
 		frmDodajizmijeni.getContentPane().add(lblNewLabel_5);
 		
-		final JComboBox comboBoxRegije = new JComboBox();
+		final JComboBox comboBoxRegije = new JComboBox(new DefaultComboBoxModel(rs.dajRegije().toArray()));
 		comboBoxRegije.setBounds(149, 154, 94, 20);
 		frmDodajizmijeni.getContentPane().add(comboBoxRegije);
 		
-		final JComboBox comboBoxNM = new JComboBox();
+		final JComboBox comboBoxNM = new JComboBox(new DefaultComboBoxModel(aks.dajSveAkterePoTipu("regmen").toArray()));
 		comboBoxNM.setBounds(149, 179, 94, 20);
 		frmDodajizmijeni.getContentPane().add(comboBoxNM);
+		
+		if(id!=-1){
+			JOptionPane.showMessageDialog(null, "imaa");
+			int regijaid=aks.dajAktera(id).getRegija().getId();
+			for(int i = 0; i < comboBoxRegije.getItemCount();i++){
+				if(((Regija)comboBoxRegije.getModel().getElementAt(i)).getId()==regijaid){
+					comboBoxRegije.setSelectedIndex(i);
+					break;
+				}
+			}
+			int menadzerid=aks.dajAktera(id).getAkterprodaje().getId();
+			for(int i = 0; i < comboBoxNM.getItemCount();i++){
+				if(((Akterprodaje)comboBoxNM.getModel().getElementAt(i)).getId()==menadzerid){
+					comboBoxNM.setSelectedIndex(i);
+					break;
+				}
+			}
+		}
 		
 		textFieldIme = new JTextField();
 		textFieldIme.setBounds(149, 22, 94, 20);
@@ -209,26 +229,5 @@ public class ProdavacDodajIzmjeni {
 		lblNewLabel_6.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel_6.setBounds(93, 25, 46, 14);
 		frmDodajizmijeni.getContentPane().add(lblNewLabel_6);
-		ispuniComboRegija(comboBoxRegije);
-		ispuniComboMenadzera(comboBoxNM);
-	}
-	
-	private void ispuniComboRegija(JComboBox j)
-	{
-		ArrayList<Regija> r = rs.dajRegije();
-		for(int i = 0; i < r.size(); i++)
-		{
-			j.addItem(r.get(i));
-		}
-		
-	}
-	private void ispuniComboMenadzera(JComboBox j)
-	{
-		ArrayList<Akterprodaje> a = aks.dajSveAkterePoTipu("regmen");
-		for(int i = 0; i < a.size(); i++)
-		{
-			j.addItem(a.get(i));
-		}
-		
 	}
 }
