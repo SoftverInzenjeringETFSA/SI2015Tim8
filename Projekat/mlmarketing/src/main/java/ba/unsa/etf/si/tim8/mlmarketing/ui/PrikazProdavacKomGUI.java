@@ -127,8 +127,10 @@ public class PrikazProdavacKomGUI {
 		button.setBounds(135, 268, 169, 25);
 		frmProdava.getContentPane().add(button);
 		button.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-
+			public void actionPerformed(ActionEvent e)
+			{
+				PrikazNarudzbiAkterGUI prikazNarudzbiAkter = new PrikazNarudzbiAkterGUI(s, id);
+				prikazNarudzbiAkter.startPrikazNarudzbiAkter();
 			}
 		});
 		

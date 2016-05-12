@@ -4,12 +4,14 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
 
 import org.hibernate.Session;
 
@@ -121,6 +123,13 @@ public class PrikazMenadzerKomGUI {
 		frmRegionalniMenader.getContentPane().add(textFieldRegija);
 		
 		JButton btnNewButton = new JButton("Prika\u017Ei narud\u017Ebe");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				PrikazNarudzbiAkterGUI prikazNarudzbiAkter = new PrikazNarudzbiAkterGUI(s, id);
+				prikazNarudzbiAkter.startPrikazNarudzbiAkter();
+			}
+		});
 		btnNewButton.setBounds(126, 243, 169, 25);
 		frmRegionalniMenader.getContentPane().add(btnNewButton);
 		
@@ -134,7 +143,7 @@ public class PrikazMenadzerKomGUI {
 		btnPrikaziProdavace.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				PrikazProdavacaMenadzeraGUI prikazprodavaca=new PrikazProdavacaMenadzeraGUI();
+				PrikazProdavacaMenadzeraGUI prikazprodavaca=new PrikazProdavacaMenadzeraGUI(s, id);
 				prikazprodavaca.startPrikazProdavaca();
 				
 			}
@@ -156,5 +165,7 @@ public class PrikazMenadzerKomGUI {
 			textFieldRegija.setText(prikaz.getRegija().getIme());
 		}
 	}
+	
+	
 
 }

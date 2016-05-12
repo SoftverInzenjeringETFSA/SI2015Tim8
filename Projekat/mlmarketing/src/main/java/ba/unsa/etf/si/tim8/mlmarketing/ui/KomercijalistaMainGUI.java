@@ -14,7 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.table.DefaultTableModel;
+import ba.unsa.etf.si.tim8.mlmarketing.ui.MyTableModel;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
@@ -98,7 +98,7 @@ public class KomercijalistaMainGUI {
 		panel.add(scrollPane);
 		
 		table = new JTable();
-		table.setModel(new DefaultTableModel(
+		table.setModel(new MyTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -148,6 +148,14 @@ public class KomercijalistaMainGUI {
 		});
 		
 		JButton btnNewButton_1 = new JButton("Prika\u017Ei narud\u017Ebu");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				int id = odaberiIdKolonu(table, 0);
+				PrikazNarudzbaKomGUI prikaznarudzbe = new PrikazNarudzbaKomGUI(s, id);
+				prikaznarudzbe.startPrikazNarudzbaKom();
+			}
+		});
 		btnNewButton_1.setBounds(468, 280, 158, 25);
 		panel.add(btnNewButton_1);
 		
@@ -165,7 +173,7 @@ public class KomercijalistaMainGUI {
 		panel_4.add(scrollPane_4);
 		
 		table_4 = new JTable();
-		table_4.setModel(new DefaultTableModel(
+		table_4.setModel(new MyTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -199,7 +207,7 @@ public class KomercijalistaMainGUI {
 		panel_3.add(scrollPane_2);
 		
 		table_2 = new JTable();
-		table_2.setModel(new DefaultTableModel(
+		table_2.setModel(new MyTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -238,7 +246,7 @@ public class KomercijalistaMainGUI {
 		panel_2.add(scrollPane_3);
 		
 		table_3 = new JTable();
-		table_3.setModel(new DefaultTableModel(
+		table_3.setModel(new MyTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -289,7 +297,7 @@ public class KomercijalistaMainGUI {
 		panel_1.add(scrollPane_1);
 		
 		table_1 = new JTable();
-		table_1.setModel(new DefaultTableModel(
+		table_1.setModel(new MyTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -323,7 +331,7 @@ public class KomercijalistaMainGUI {
 					
 			};
 		
-		table.setModel(new DefaultTableModel(
+		table.setModel(new MyTableModel(
 				data,
 				new String[] {
 					"ID", "Naručilac", "Datum", "Status"
@@ -339,7 +347,7 @@ public class KomercijalistaMainGUI {
 				akteri.get(i).getRegija().getIme(), akteri.get(i).getId()
 				};
 		
-		table_2.setModel(new DefaultTableModel(
+		table_2.setModel(new MyTableModel(
 				data ,
 				new String[] {
 					"Ime i prezime", 
@@ -370,7 +378,7 @@ public class KomercijalistaMainGUI {
 				akteri.get(i).getId()
 			};
 			
-			table_3.setModel(new DefaultTableModel(
+			table_3.setModel(new MyTableModel(
 					data,					
 					new String[] {
 						"Ime i prezime",
@@ -394,7 +402,7 @@ public class KomercijalistaMainGUI {
 					proizvodi.get(i).getProdajnacijena(),proizvodi.get(i).getKolicina(),proizvodi.get(i).getId()
 			};
 		}
-		table_1.setModel(new DefaultTableModel(
+		table_1.setModel(new MyTableModel(
 				data,
 				new String[] {
 					"Naziv proizvoda",

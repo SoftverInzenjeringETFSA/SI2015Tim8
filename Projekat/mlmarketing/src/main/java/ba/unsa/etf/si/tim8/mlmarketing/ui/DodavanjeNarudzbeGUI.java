@@ -16,7 +16,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
+import ba.unsa.etf.si.tim8.mlmarketing.ui.MyTableModel;
 
 import org.hibernate.Session;
 
@@ -189,7 +189,7 @@ public class DodavanjeNarudzbeGUI {
 		frmKreiranjeNarudbe.getContentPane().add(scrollPane);
 		
 		table_1 = new JTable();
-		table_1.setModel(new DefaultTableModel(
+		table_1.setModel(new MyTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -211,7 +211,7 @@ public class DodavanjeNarudzbeGUI {
 					
 			};
 		
-		table1.setModel(new DefaultTableModel(
+		table1.setModel(new MyTableModel(
 				data,
 				new String[] {
 					"ID", "Naručilac", "Datum", "Status"
@@ -231,7 +231,7 @@ public class DodavanjeNarudzbeGUI {
 					pn[i].getProizvod().getNaziv(), pn[i].getKolicina()
 				};
 			
-			table_1.setModel(new DefaultTableModel(
+			table_1.setModel(new MyTableModel(
 					data,
 					new String[] {
 						"Proizvod", "Količina"
@@ -240,7 +240,7 @@ public class DodavanjeNarudzbeGUI {
 		}
 		else
 		{
-			table_1.setModel(new DefaultTableModel(
+			table_1.setModel(new MyTableModel(
 					new Object[][] { },
 					new String[] {
 						"Proizvod", "Količina"
@@ -257,7 +257,7 @@ public class DodavanjeNarudzbeGUI {
 					proizvodi.get(i).getProdajnacijena(),proizvodi.get(i).getKolicina(),proizvodi.get(i).getId()
 			};
 		}
-		tableProizvodi.setModel(new DefaultTableModel(
+		tableProizvodi.setModel(new MyTableModel(
 				data,
 				new String[] {
 					"Naziv proizvoda",
