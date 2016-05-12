@@ -17,6 +17,7 @@ import javax.swing.ScrollPaneConstants;
 import ba.unsa.etf.si.tim8.mlmarketing.ui.MyTableModel;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
+import ba.unsa.etf.si.tim8.mlmarketing.models.Faktura;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Narudzba;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
@@ -160,6 +161,15 @@ public class KomercijalistaMainGUI {
 		panel.add(btnNewButton_1);
 		
 		JButton btnNewButton_3 = new JButton("Kreiraj fakturu");
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int id = odaberiIdKolonu(table, 0);
+				Narudzba n = ns.dajNarudzbu(id);
+				ns.kreirajFakturu(n);
+				refreshajTabeluFakture();
+				refreshajTabeluNarudzbe();
+			}
+		});
 		btnNewButton_3.setBounds(12, 280, 134, 25);
 		panel.add(btnNewButton_3);
 		
@@ -190,7 +200,8 @@ public class KomercijalistaMainGUI {
 		btnPrikazFakture.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				PrikazFakturaGUI prikazfaktura = new PrikazFakturaGUI();
+				int id = odaberiIdKolonu(table_4, 0);
+				PrikazFakturaGUI prikazfaktura = new PrikazFakturaGUI(s, id);
 				prikazfaktura.startPrikazFakture();
 				
 			}
@@ -317,6 +328,7 @@ public class KomercijalistaMainGUI {
 		refreshajTabeluMenadzeri();
 		refreshajTabeluProdavaci();
 		refreshajTabeluProizvodi();
+		refreshajTabeluFakture();
 	}
 	
 	private void refreshajTabeluNarudzbe()
@@ -326,7 +338,7 @@ public class KomercijalistaMainGUI {
 		for(int i = 0; i<narudzbe.size();i++)
 			data[i]= new Object[]
 			{
-				narudzbe.get(i).getId(),narudzbe.get(i).getAkterprodaje().getIme(),
+				narudzbe.get(i).getId(),narudzbe.get(i).getAkterprodaje().getIme() + " " + narudzbe.get(i).getAkterprodaje().getPrezime(),
 				narudzbe.get(i).getDatum(),narudzbe.get(i).getStatus()
 					
 			};
@@ -412,6 +424,26 @@ public class KomercijalistaMainGUI {
 					"ID"
 				}));
 		table_1.getColumnModel().removeColumn(table_1.getColumnModel().getColumn(4));
+	}
+	
+	private void refreshajTabeluFakture()
+	{
+		ArrayList<Faktura> fakture = ns.dajFakture();
+		Object[][] data = new Object[fakture.size()][];
+		for(int i = 0; i<fakture.size();i++)
+			data[i]= new Object[]
+			{
+				fakture.get(i).getId(),fakture.get(i).getAkterprodaje().getIme() + " " + fakture.get(i).getAkterprodaje().getPrezime(),
+				fakture.get(i).getDatum(),fakture.get(i).getUkupnacijena()
+					
+			};
+		
+		table_4.setModel(new MyTableModel(
+				data,
+				new String[] {
+					"ID", "Naručilac", "Datum", "UkupnaCijena"
+				}
+			));
 	}
 	
 	public int odaberiIdKolonu(JTable tabela,int brojKolone){
