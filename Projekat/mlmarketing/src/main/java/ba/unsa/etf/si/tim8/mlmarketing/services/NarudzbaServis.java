@@ -50,7 +50,7 @@ public class NarudzbaServis
 			ProizvodNarudzba[] pn = n.getProizvodNarudzbas().toArray(new ProizvodNarudzba[n.getProizvodNarudzbas().size()]);
 			for(int i = 0; i < pn.length; i++)
 			{
-				pn[i].getProizvod().setKolicina(pn[i].getProizvod().getKolicina() + pn[i].getKolicina());
+				//pn[i].getProizvod().setKolicina(pn[i].getProizvod().getKolicina() + pn[i].getKolicina());
 				s.delete(pn[i]);
 			}
 			s.delete(n);
@@ -74,30 +74,38 @@ public class NarudzbaServis
 	
 	public boolean kreirajFakturu(Narudzba n)
 	{
-		Transaction t = s.beginTransaction();
-		Faktura f = new Faktura();
-		double ukupnacijena=0;
-		f.setAkterprodaje(n.getAkterprodaje());
-		f.setDatum(new Date());
-		f.setUkupnacijena(0);
-		int id = (Integer)s.save(f);
-		f=s.get(Faktura.class, id);
-		ProizvodNarudzba[] pn = n.getProizvodNarudzbas().toArray(new ProizvodNarudzba[n.getProizvodNarudzbas().size()]);
-		for(int i=0; i<pn.length;i++){
-			ProizvodFaktura pf = new ProizvodFaktura();
-			pf.setFaktura(f);
-			pf.setProizvod(pn[i].getProizvod());
-			pf.setKolicina(pn[i].getKolicina());
-			pf.setCijena(pn[i].getProizvod().getNabavnacijena()*pn[i].getKolicina());
-			ukupnacijena+=pf.getCijena();
-			s.save(pf);
+		//Kasnije ce ici if(n.getStatus() == "Potvrđena"
+		if(n.getStatus() == "Na čekanju")
+		{
+			Transaction t = s.beginTransaction();
+			Faktura f = new Faktura();
+			double ukupnacijena=0;
+			f.setAkterprodaje(n.getAkterprodaje());
+			f.setDatum(new Date());
+			f.setUkupnacijena(0);
+			int id = (Integer)s.save(f);
+			f=s.get(Faktura.class, id);
+			ProizvodNarudzba[] pn = n.getProizvodNarudzbas().toArray(new ProizvodNarudzba[n.getProizvodNarudzbas().size()]);
+			for(int i=0; i<pn.length;i++)
+			{
+				ProizvodFaktura pf = new ProizvodFaktura();
+				pf.setFaktura(f);
+				pf.setProizvod(pn[i].getProizvod());
+				pf.setKolicina(pn[i].getKolicina());
+				pf.setCijena(pn[i].getProizvod().getNabavnacijena()*pn[i].getKolicina());
+				pf.getProizvod().setKolicina(pf.getProizvod().getKolicina() - pf.getKolicina());
+				f.getProizvodFakturas().add(pf);
+				ukupnacijena+=pf.getCijena();
+				s.save(pf);
+			}
+			f.setUkupnacijena(ukupnacijena);
+			n.setStatus("Potvrđena");
+			s.update(f);
+			s.update(n);
+			t.commit();
+			return true;
 		}
-		f.setUkupnacijena(ukupnacijena);
-		n.setStatus("Potvrđena");
-		s.update(f);
-		s.update(n);
-		t.commit();
-		return true;
+		else return false;
 	}
 	
 	public Faktura dajFakturu(int id)

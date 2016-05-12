@@ -126,12 +126,12 @@ public class KomercijalistaMainGUI {
 			{
 				if(table.getSelectedRow()!=-1)
 				{
-					int id =(Integer)table.getModel().getValueAt(table.getSelectedRow(),0);
+					int id = odaberiIdKolonu(table, 0);
 					ns.izbrisiNarudzbu(id);
 					refreshajTabeluNarudzbe();
 					refreshajTabeluProizvodi();
 				}
-				else JOptionPane.showMessageDialog(null, "Niste odabrali narudzbu!");
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednu narudžbu iz tabele.");
 			}
 		});
 		button.setBounds(353, 280, 97, 25);
@@ -152,9 +152,13 @@ public class KomercijalistaMainGUI {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				int id = odaberiIdKolonu(table, 0);
-				PrikazNarudzbaKomGUI prikaznarudzbe = new PrikazNarudzbaKomGUI(s, id);
-				prikaznarudzbe.startPrikazNarudzbaKom();
+				if(table.getSelectedRow() != -1)
+				{
+					int id = odaberiIdKolonu(table, 0);
+					PrikazNarudzbaKomGUI prikaznarudzbe = new PrikazNarudzbaKomGUI(s, id);
+					prikaznarudzbe.startPrikazNarudzbaKom();
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednu narudžbu iz tabele.");
 			}
 		});
 		btnNewButton_1.setBounds(468, 280, 158, 25);
@@ -163,11 +167,17 @@ public class KomercijalistaMainGUI {
 		JButton btnNewButton_3 = new JButton("Kreiraj fakturu");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int id = odaberiIdKolonu(table, 0);
-				Narudzba n = ns.dajNarudzbu(id);
-				ns.kreirajFakturu(n);
-				refreshajTabeluFakture();
-				refreshajTabeluNarudzbe();
+				if(table.getSelectedRow() != -1)
+				{
+					int id = odaberiIdKolonu(table, 0);
+					Narudzba n = ns.dajNarudzbu(id);
+					if(!ns.kreirajFakturu(n)) 
+						JOptionPane.showMessageDialog(null, "Narudžba mora biti potvrđena da biste kreirali fakturu.");
+					refreshajTabeluFakture();
+					refreshajTabeluNarudzbe();
+					refreshajTabeluProizvodi();
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednu narudžbu iz tabele.");
 			}
 		});
 		btnNewButton_3.setBounds(12, 280, 134, 25);
@@ -200,10 +210,13 @@ public class KomercijalistaMainGUI {
 		btnPrikazFakture.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				int id = odaberiIdKolonu(table_4, 0);
-				PrikazFakturaGUI prikazfaktura = new PrikazFakturaGUI(s, id);
-				prikazfaktura.startPrikazFakture();
-				
+				if(table_4.getSelectedRow() != -1)
+				{
+					int id = odaberiIdKolonu(table_4, 0);
+					PrikazFakturaGUI prikazfaktura = new PrikazFakturaGUI(s, id);
+					prikazfaktura.startPrikazFakture();
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednu fakturu iz tabele.");
 			}
 		});
 		
@@ -232,16 +245,20 @@ public class KomercijalistaMainGUI {
 		table_2.getColumnModel().getColumn(4).setPreferredWidth(100);
 		scrollPane_2.setViewportView(table_2);
 		
-		JButton btnPrikazMenadzera = new JButton("Prika\u017Ei aktera");
+		JButton btnPrikazMenadzera = new JButton("Prika\u017Ei menadžera");
 		btnPrikazMenadzera.setBounds(513, 271, 113, 23);
 		panel_3.add(btnPrikazMenadzera);
 		btnPrikazMenadzera.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) 
 			{
-				int id = odaberiIdKolonu(table_2, 5);
-				PrikazMenadzerKomGUI prikazmenadzer = new PrikazMenadzerKomGUI(s, id);
-				prikazmenadzer.startPrikazMenadzer();
+				if(table_2.getSelectedRow() != -1)
+				{
+					int id = odaberiIdKolonu(table_2, 5);
+					PrikazMenadzerKomGUI prikazmenadzer = new PrikazMenadzerKomGUI(s, id);
+					prikazmenadzer.startPrikazMenadzer();
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednog regionalnog menadžera iz tabele.");
 				
 			}
 		});
@@ -278,10 +295,13 @@ public class KomercijalistaMainGUI {
 		btnPrikaziProdavaca.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				int id = odaberiIdKolonu(table_3, 6);
-				PrikazProdavacKomGUI prikazprodavac= new PrikazProdavacKomGUI(s, id);
-				prikazprodavac.startPrikazProdavaca();
-				
+				if(table_3.getSelectedRow() != -1)
+				{
+					int id = odaberiIdKolonu(table_3, 6);
+					PrikazProdavacKomGUI prikazprodavac= new PrikazProdavacKomGUI(s, id);
+					prikazprodavac.startPrikazProdavaca();
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednog prodavača iz tabele.");
 			}
 		});
 		
@@ -296,10 +316,13 @@ public class KomercijalistaMainGUI {
 		btnPrikaziProizvod.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				int id = odaberiIdKolonu(table_1, 4);
-				PrikazProizvodKomGUI prikazproizvoda = new PrikazProizvodKomGUI(s, id);
-				prikazproizvoda.startPrikazProizvodKom();
-				
+				if(table_1.getSelectedRow() != -1)
+				{
+					int id = odaberiIdKolonu(table_1, 4);
+					PrikazProizvodKomGUI prikazproizvoda = new PrikazProizvodKomGUI(s, id);
+					prikazproizvoda.startPrikazProizvodKom();
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijedan proizvod iz tabele.");
 			}
 		});
 		

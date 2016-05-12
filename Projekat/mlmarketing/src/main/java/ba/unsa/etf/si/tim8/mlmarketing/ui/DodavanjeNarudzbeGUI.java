@@ -148,7 +148,7 @@ public class DodavanjeNarudzbeGUI {
 					pn.setKolicina(Integer.parseInt(textField.getText()));
 					pn.setNarudzba(n);
 					pn.setProizvod((Proizvod)comboBox_1.getSelectedItem());
-					pn.getProizvod().setKolicina(pn.getProizvod().getKolicina() - Integer.parseInt(textField.getText()));
+					//pn.getProizvod().setKolicina(pn.getProizvod().getKolicina() - Integer.parseInt(textField.getText()));
 					n.getProizvodNarudzbas().add(pn);
 					refreshajTabeluProizvodNarudzbe();
 					refreshajTabeluProizvodi();
