@@ -138,7 +138,7 @@ public class ProdavacDodajIzmjeni {
 		frmDodajizmijeni.getContentPane().add(comboBoxNM);
 		
 		if(id!=-1){
-			JOptionPane.showMessageDialog(null, "imaa");
+			
 			int regijaid=aks.dajAktera(id).getRegija().getId();
 			for(int i = 0; i < comboBoxRegije.getItemCount();i++){
 				if(((Regija)comboBoxRegije.getModel().getElementAt(i)).getId()==regijaid){

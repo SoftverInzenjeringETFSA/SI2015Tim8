@@ -87,12 +87,12 @@ public class DodavanjeRegijeGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(!textField.getText().equals("") && !textField_1.getText().equals("")){
-					JOptionPane.showMessageDialog(null, "My Goodness, this is so concise");
+					
 					RegijaServis r= new RegijaServis(s);
 					Regija nova = new Regija();
 					nova.setIme(textField.getText());
 					nova.setDrzava(textField_1.getText());
-					JOptionPane.showMessageDialog(null, nova.getDrzava());
+					
 					r.dodajRegiju(nova);
 					refreshableRoditelj.refreshajTabeluRegije();
 				}

@@ -75,7 +75,7 @@ public class SefProdajeMainGUI {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize() {		
 		final SefProdajeMainGUI ref = this;
 		frmSefProdaje = new JFrame();
 		frmSefProdaje.setTitle("\u0160ef prodaje ");
@@ -132,7 +132,7 @@ public class SefProdajeMainGUI {
 			
 		tableKorisnici = new JTable();
 		scrollPane_2.setViewportView(tableKorisnici);
-		tableKorisnici.setModel(new DefaultTableModel(
+		tableKorisnici.setModel(new MyTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -162,10 +162,14 @@ public class SefProdajeMainGUI {
 		btnObrisiMenadzera.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
+				if(tableMenadzeri.getSelectedRow() != -1)
+				{
+					int id = (Integer)tableMenadzeri.getModel().getValueAt(tableMenadzeri.getSelectedRow(), 5);
+					aks.izbrisiAktera(id);
+					refreshajTabeluMenadzeri();
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednog menadžera iz tabele.");
 				
-				int id = (Integer)tableMenadzeri.getModel().getValueAt(tableMenadzeri.getSelectedRow(), 5);
-				aks.izbrisiAktera(id);
-				refreshajTabeluMenadzeri();
 				
 			}
 		});
@@ -177,9 +181,13 @@ public class SefProdajeMainGUI {
 		btnIzmijeni.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				int id= odaberiIdKolonu(tableMenadzeri, 5);
-				RegMenadzerDodajIzmjeniGUI rmdodaj = new RegMenadzerDodajIzmjeniGUI("izmjeni",s,ref,id);
-				rmdodaj.pokreniRegMenDodajIzmjeni("izmjeni");
+				if(tableMenadzeri.getSelectedRow() != -1){
+					int id= odaberiIdKolonu(tableMenadzeri, 5);
+					RegMenadzerDodajIzmjeniGUI rmdodaj = new RegMenadzerDodajIzmjeniGUI("izmjeni",s,ref,id);
+					rmdodaj.pokreniRegMenDodajIzmjeni("izmjeni");
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednog menadžera iz tabele.");
+				
 				
 			}
 		});
@@ -189,22 +197,25 @@ public class SefProdajeMainGUI {
 		btnUnazadi.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
+				if(tableMenadzeri.getSelectedRow() != -1){
+					int id = odaberiIdKolonu(tableMenadzeri, 5);
+					Akterprodaje a = aks.dajAktera(id);
+					int brojZaKojeJeNadlezan = a.getAkterprodajes().size();
+					if(brojZaKojeJeNadlezan == 0)
+					{
+						
+						a.setTip("prodavac");
+						aks.izmjeniAktera(a);
+						DodjelaMenadzeraGUI dodjelamenadzera= new DodjelaMenadzeraGUI(s,ref,a.getId());
+						dodjelamenadzera.startDodjelaMenadzera();
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Nije moguce unazaditi regionalnog menadžera"
+								+ " dok je isti nadležan za neke prodavače.");
+					}
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednog menadžera iz tabele.");
 				
-				int id = odaberiIdKolonu(tableMenadzeri, 5);
-				Akterprodaje a = aks.dajAktera(id);
-				int brojZaKojeJeNadlezan = a.getAkterprodajes().size();
-				if(brojZaKojeJeNadlezan == 0)
-				{
-					
-					a.setTip("prodavac");
-					aks.izmjeniAktera(a);
-					DodjelaMenadzeraGUI dodjelamenadzera= new DodjelaMenadzeraGUI(s,ref,a.getId());
-					dodjelamenadzera.startDodjelaMenadzera();
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "Nije moguce unazaditi regionalnog menadžera"
-							+ " dok je isti nadležan za neke prodavače.");
-				}
 		
 			}
 		});
@@ -218,7 +229,7 @@ public class SefProdajeMainGUI {
 
 		
 		tableMenadzeri = new JTable();
-		tableMenadzeri.setModel(new DefaultTableModel(
+		tableMenadzeri.setModel(new MyTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -237,9 +248,16 @@ public class SefProdajeMainGUI {
 		btnPregledMenadzera.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				int id = (Integer)tableMenadzeri.getModel().getValueAt(tableMenadzeri.getSelectedRow(), 5);
-				PrikazRegionalniMenadzerGUI rmprikaz = new PrikazRegionalniMenadzerGUI(s,id);
-				rmprikaz.startPrikazMenadzer();				
+				if(tableMenadzeri.getSelectedRow() != -1)
+				{
+					int id = (Integer)tableMenadzeri.getModel().getValueAt(tableMenadzeri.getSelectedRow(), 5);
+					PrikazRegionalniMenadzerGUI rmprikaz = new PrikazRegionalniMenadzerGUI(s,id);
+					rmprikaz.startPrikazMenadzer();
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Niste odabrali nijednog menadžera iz tabele");
+				}
+								
 			}
 		});
 		
@@ -267,9 +285,13 @@ public class SefProdajeMainGUI {
 		btnObrisiProdavaca.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
+				if(tableProdavaci.getSelectedRow() != -1){
 					int id = odaberiIdKolonu(tableProdavaci, 6);
 					aks.izbrisiAktera(id);
 					refreshajTabeluProdavaci();
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednog prodavača iz tabele.");
+					
 			}
 		});
 		
@@ -279,9 +301,12 @@ public class SefProdajeMainGUI {
 		btnProdavacIzmjeni.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				int id = odaberiIdKolonu(tableProdavaci, 6);
-				ProdavacDodajIzmjeni prodavacdodaj= new ProdavacDodajIzmjeni("", s, ref, id);
-				prodavacdodaj.startProdavacDodajIzmjeni("");
+				if(tableProdavaci.getSelectedRow() != -1){
+					int id = odaberiIdKolonu(tableProdavaci, 6);
+					ProdavacDodajIzmjeni prodavacdodaj= new ProdavacDodajIzmjeni("", s, ref, id);
+					prodavacdodaj.startProdavacDodajIzmjeni("");
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednog prodavača iz tabele.");				
 				
 			}
 		});
@@ -291,13 +316,17 @@ public class SefProdajeMainGUI {
 		btnPromoviiUMenadera.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				int id = odaberiIdKolonu(tableProdavaci, 6);
-				Akterprodaje a = aks.dajAktera(id);
-				a.setAkterprodaje(null);
-				a.setTip("regmen");
-				aks.izmjeniAktera(a);
-				refreshajTabeluProdavaci();
-				refreshajTabeluMenadzeri();
+				if(tableProdavaci.getSelectedRow() != -1){
+					int id = odaberiIdKolonu(tableProdavaci, 6);
+					Akterprodaje a = aks.dajAktera(id);
+					a.setAkterprodaje(null);
+					a.setTip("regmen");
+					aks.izmjeniAktera(a);
+					refreshajTabeluProdavaci();
+					refreshajTabeluMenadzeri();
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednog prodavača iz tabele.");
+				
 				
 			}
 		});
@@ -309,9 +338,13 @@ public class SefProdajeMainGUI {
 		btnDodjeliMenadzera.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				int id = odaberiIdKolonu(tableProdavaci, 6);
-				DodjelaMenadzeraGUI dodjelamenadzera= new DodjelaMenadzeraGUI(s,ref,id);
-				dodjelamenadzera.startDodjelaMenadzera();
+				if(tableProdavaci.getSelectedRow() != -1){
+					int id = odaberiIdKolonu(tableProdavaci, 6);
+					DodjelaMenadzeraGUI dodjelamenadzera= new DodjelaMenadzeraGUI(s,ref,id);
+					dodjelamenadzera.startDodjelaMenadzera();
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednog prodavača iz tabele.");
+				
 				
 			}
 		});
@@ -321,7 +354,7 @@ public class SefProdajeMainGUI {
 		panel_2.add(scrollPane_1);
 		
 		tableProdavaci = new JTable();
-		tableProdavaci.setModel(new DefaultTableModel(
+		tableProdavaci.setModel(new MyTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -341,9 +374,13 @@ public class SefProdajeMainGUI {
 		btnPregledAktera.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				int id = odaberiIdKolonu(tableProdavaci, 6);
-				PrikazProdavacGUI prodavacprikaz= new PrikazProdavacGUI(s, id);
-				prodavacprikaz.startPrikazProdavac();
+				if(tableProdavaci.getSelectedRow() != -1){
+					int id = odaberiIdKolonu(tableProdavaci, 6);
+					PrikazProdavacGUI prodavacprikaz= new PrikazProdavacGUI(s, id);
+					prodavacprikaz.startPrikazProdavac();
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednog prodavača iz tabele.");
+				
 				
 			}
 		});
@@ -358,7 +395,7 @@ public class SefProdajeMainGUI {
 		panel_3.add(scrollPane_3);
 		
 		tableProizvodi = new JTable();
-		tableProizvodi.setModel(new DefaultTableModel(
+		tableProizvodi.setModel(new MyTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -379,9 +416,13 @@ public class SefProdajeMainGUI {
 		btnIzmijeniProizvod.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				int id = odaberiIdKolonu(tableProizvodi, 4);
-				IzmjenaProizvodaGUI izmjenaproizvoda = new IzmjenaProizvodaGUI(s, ref, id);
-				izmjenaproizvoda.startIzmjenaProizvoda();
+				if(tableProizvodi.getSelectedRow() != -1){
+					int id = odaberiIdKolonu(tableProizvodi, 4);
+					IzmjenaProizvodaGUI izmjenaproizvoda = new IzmjenaProizvodaGUI(s, ref, id);
+					izmjenaproizvoda.startIzmjenaProizvoda();
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijedan proizvod iz tabele.");
+				
 				
 			}
 		});
@@ -391,10 +432,14 @@ public class SefProdajeMainGUI {
 		btnObrisiProizvod.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				int id = odaberiIdKolonu(tableProizvodi, 4);
-				Proizvod p = ps.dajProizvod(id);
-				ps.obrisiProizvod(p);
-				refreshajTabeluProizvodi();
+				if(tableProizvodi.getSelectedRow() != -1){
+					int id = odaberiIdKolonu(tableProizvodi, 4);
+					Proizvod p = ps.dajProizvod(id);
+					ps.obrisiProizvod(p);
+					refreshajTabeluProizvodi();
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijedan proizvod iz tabele.");
+				
 			}
 		});
 		panel_3.add(btnObrisiProizvod);
@@ -417,9 +462,13 @@ public class SefProdajeMainGUI {
 		btnProizvodPrikaz.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				int id = odaberiIdKolonu(tableProizvodi, 4);
-				PrikazProizvodGUI pprikaz = new PrikazProizvodGUI(s, ref,id);
-				pprikaz.startPrikazProizvod();
+				if(tableProizvodi.getSelectedRow() != -1){
+					int id = odaberiIdKolonu(tableProizvodi, 4);
+					PrikazProizvodGUI pprikaz = new PrikazProizvodGUI(s, ref,id);
+					pprikaz.startPrikazProizvod();
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijedan proizvod iz tabele.");
+				
 			}
 		});
 		
@@ -435,7 +484,7 @@ public class SefProdajeMainGUI {
 		panel_4.add(scrollPane_4);
 		
 		tableRegije = new JTable();
-		tableRegije.setModel(new DefaultTableModel(
+		tableRegije.setModel(new MyTableModel(
 			new Object[][]{},
 			new String[] {
 				"Regija", "Dr\u017Eava",""
@@ -464,9 +513,13 @@ public class SefProdajeMainGUI {
 		btnObrisiRegiju.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(null, tableRegije.getModel().getValueAt(tableRegije.getSelectedRow(), 2));
-				rs.obrisi((Integer)tableRegije.getModel().getValueAt(tableRegije.getSelectedRow(), 2));
-				refreshajTabeluRegije();
+				if(tableRegije.getSelectedRow() != -1){
+					
+					rs.obrisi((Integer)tableRegije.getModel().getValueAt(tableRegije.getSelectedRow(), 2));
+					refreshajTabeluRegije();
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednu regiju iz tabele.");
+				
 			}
 		});
 		
@@ -537,7 +590,7 @@ public class SefProdajeMainGUI {
 		Object[][] data= new Object[regije.size()][];
 		for(int i = 0; i<regije.size();i++) data[i]= new Object[]{regije.get(i).getIme(),regije.get(i).getDrzava(),regije.get(i).getId()};
 		
-		tableRegije.setModel(new DefaultTableModel(
+		tableRegije.setModel(new MyTableModel(
 				data,
 				new String[] {
 					"Regija", "Dr\u017Eava",""
@@ -554,7 +607,7 @@ public class SefProdajeMainGUI {
 				akteri.get(i).getRegija().getIme(), akteri.get(i).getId()
 				};
 		
-		tableMenadzeri.setModel(new DefaultTableModel(
+		tableMenadzeri.setModel(new MyTableModel(
 				data ,
 				new String[] {
 					"Ime i prezime", 
@@ -585,7 +638,7 @@ public class SefProdajeMainGUI {
 				akteri.get(i).getId()
 			};
 			
-			tableProdavaci.setModel(new DefaultTableModel(
+			tableProdavaci.setModel(new MyTableModel(
 					data,					
 					new String[] {
 						"Ime i prezime",
@@ -608,7 +661,7 @@ public class SefProdajeMainGUI {
 				korisnici.get(i).getIme(),korisnici.get(i).getPrezime(),korisnici.get(i).getAdresa(),korisnici.get(i).getId()
 				};
 		
-		tableKorisnici.setModel(new DefaultTableModel(
+		tableKorisnici.setModel(new MyTableModel(
 				data,
 				new String[] {
 					"Tip ra\u010Duna", "Korisni\u010Dko ime", "Ime", "Prezime", "Adresa","ID"
@@ -626,7 +679,7 @@ public class SefProdajeMainGUI {
 					proizvodi.get(i).getProdajnacijena(),proizvodi.get(i).getKolicina(),proizvodi.get(i).getId()
 			};
 		}
-		tableProizvodi.setModel(new DefaultTableModel(
+		tableProizvodi.setModel(new MyTableModel(
 				data,
 				new String[] {
 					"Naziv proizvoda",

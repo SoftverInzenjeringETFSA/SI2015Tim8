@@ -64,7 +64,7 @@ public class RegMenadzerDodajIzmjeniGUI {
 		this.aks=new AkterServis(s);
 		this.refreshableRoditelj=roditelj;
 		initialize(what);
-		JOptionPane.showMessageDialog(null, refreshableRoditelj!=null);
+		
 	}
 	
 	public RegMenadzerDodajIzmjeniGUI(String what,Session s,SefProdajeMainGUI roditelj, int id) {
