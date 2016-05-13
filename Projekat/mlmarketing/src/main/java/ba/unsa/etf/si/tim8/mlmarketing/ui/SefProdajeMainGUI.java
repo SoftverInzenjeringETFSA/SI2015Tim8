@@ -28,6 +28,7 @@ import ba.unsa.etf.si.tim8.mlmarketing.services.NaloziServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NarudzbaServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 
 public class SefProdajeMainGUI {
 	
@@ -37,6 +38,7 @@ public class SefProdajeMainGUI {
 	private NaloziServis ns;
 	private ProizvodServis ps;
 	private NarudzbaServis nfs;
+	private LoginGUI roditelj;
 	
 	private JFrame frmSefProdaje;
 	private JTable tableKorisnici;
@@ -54,7 +56,7 @@ public class SefProdajeMainGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SefProdajeMainGUI window = new SefProdajeMainGUI(s);
+					SefProdajeMainGUI window = new SefProdajeMainGUI(s,roditelj);
 					window.frmSefProdaje.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -66,13 +68,14 @@ public class SefProdajeMainGUI {
 	/**
 	 * Create the application.
 	 */
-	public SefProdajeMainGUI(Session s) {
+	public SefProdajeMainGUI(Session s,LoginGUI roditelj) {
 		this.s=s;
 		this.rs = new RegijaServis(s);
 		this.aks = new AkterServis(s);
 		this.ns = new NaloziServis(s);
 		this.ps = new ProizvodServis(s);
 		this.nfs = new NarudzbaServis(s);
+		this.roditelj=roditelj;
 		initialize();
 	}
 
@@ -84,12 +87,20 @@ public class SefProdajeMainGUI {
 		frmSefProdaje = new JFrame();
 		frmSefProdaje.setTitle("\u0160ef prodaje ");
 		frmSefProdaje.setBounds(100, 100, 652, 393);
-		frmSefProdaje.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmSefProdaje.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSefProdaje.getContentPane().setLayout(null);
 		
-		JButton btnNewButton = new JButton("Odjava sa sistema");
-		btnNewButton.setBounds(460, 11, 166, 23);
-		frmSefProdaje.getContentPane().add(btnNewButton);
+		JButton btnOdjava = new JButton("Odjava sa sistema");
+		btnOdjava.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(SesijaServis.odjava()){
+					roditelj.otkrij();
+					frmSefProdaje.dispose();
+				}
+			}
+		});
+		btnOdjava.setBounds(460, 11, 166, 23);
+		frmSefProdaje.getContentPane().add(btnOdjava);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(10, 41, 616, 302);

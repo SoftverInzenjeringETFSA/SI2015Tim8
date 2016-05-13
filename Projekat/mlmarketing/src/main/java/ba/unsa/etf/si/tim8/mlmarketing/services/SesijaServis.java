@@ -44,11 +44,13 @@ public class SesijaServis {
 	}
 	
 	public static String dajUsername(){
-		return korisnik.getUsername();
+		if(korisnik!=null) return korisnik.getUsername();
+		else return "";
 	}
 	
 	public static String dajTipKorisnika() {
-		return korisnik.getTip();
+		if(korisnik!=null) return korisnik.getTip();
+		else return "";
 	}
 		
 }

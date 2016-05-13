@@ -27,6 +27,7 @@ public class LoginGUI {
 	private JTextField txtUsername;
 	private JPasswordField passwordField;
 	private Session s;
+	public LoginGUI ref;
 
 	/**
 	 * Launch the application.
@@ -60,6 +61,7 @@ public class LoginGUI {
 	 */
 	public LoginGUI(Session s) {
 		this.s=s;
+		this.ref=this;
 		initialize();
 	}
 
@@ -101,17 +103,22 @@ public class LoginGUI {
 					if(SesijaServis.prijava(txtUsername.getText(),passwordField.getText())){
 						startUpCheck();
 						if(SesijaServis.dajTipKorisnika().equals("sef")){
-							SefProdajeMainGUI sefmg= new SefProdajeMainGUI(s);
+							SefProdajeMainGUI sefmg= new SefProdajeMainGUI(s,ref);
 							sefmg.startSefProdajeMain();}
 						else if(SesijaServis.dajTipKorisnika().equals("komercijalista")){
 							KomercijalistaMainGUI komercijalistamg = new KomercijalistaMainGUI(s);
 							komercijalistamg.startKomercijalistaMain();
 						}
+						frmLogin.hide();
 					
 				}
 			}
 		});
 		
+	}
+	
+	public void otkrij(){
+		frmLogin.show();
 	}
 	
 }
