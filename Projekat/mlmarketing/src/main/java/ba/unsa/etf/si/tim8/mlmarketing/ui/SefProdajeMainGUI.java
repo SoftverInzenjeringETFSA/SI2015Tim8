@@ -549,7 +549,13 @@ public class SefProdajeMainGUI {
 		JButton btnPrikaziNarudzbu = new JButton("Prika\u017Ei narud\u017Ebu");
 		btnPrikaziNarudzbu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				if(tableNarudzbe.getSelectedRow() != -1)
+				{
+					int id = odaberiIdKolonu(tableNarudzbe, 0);
+					PrikazNarudzbaKomGUI pnk = new PrikazNarudzbaKomGUI(s, id);
+					pnk.startPrikazNarudzbaKom();
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednu narudžbu iz tabele.");
 			}
 		});
 		btnPrikaziNarudzbu.setBounds(441, 212, 158, 25);
