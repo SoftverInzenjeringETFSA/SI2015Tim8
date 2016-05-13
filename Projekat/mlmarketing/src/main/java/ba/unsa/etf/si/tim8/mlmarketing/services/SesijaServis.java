@@ -6,32 +6,49 @@ import org.hibernate.criterion.Restrictions;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
 
+
 public class SesijaServis {
-	Session s;
-	Korisnik k;
+	private static SesijaServis instanca = null;
+	private static Session s;
+	private static Korisnik korisnik;
 	
-	public SesijaServis(Session s){
+	protected SesijaServis(Session s){
 		this.s=s;
-		k=null;
+		korisnik=null;
 	}
 	
-	public boolean prijava(String Username, String Password){
+	public static SesijaServis instanciraj(Session s){
+		if(instanca==null){
+			instanca = new SesijaServis(s);
+		}
+		return instanca;
+	}
+	
+	public static boolean instanciran(){
+		return instanca!=null;
+	}
+	
+	public static boolean prijava(String Username, String Password){
 		Criteria criteria = s.createCriteria(Korisnik.class);
 		Korisnik k = (Korisnik) criteria.add(Restrictions.eq("username", Username)).uniqueResult();
 		if(k.getPassword().equals(Password)){
-			this.k=k;
+			korisnik=k;
 			return true;
 		}
 		else return false;
 	}
 	
-	public boolean odjava(){
-		this.k=null;
+	public static boolean odjava(){
+		korisnik=null;
 		return true;
 	}
 	
-	public Korisnik dajKorisnika(){
-		return k;
+	public static String dajUsername(){
+		return korisnik.getUsername();
+	}
+	
+	public static String dajTipKorisnika() {
+		return korisnik.getTip();
 	}
 		
 }

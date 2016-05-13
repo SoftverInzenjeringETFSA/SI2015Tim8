@@ -98,13 +98,12 @@ public class LoginGUI {
 		btnPrijavi.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-					SesijaServis sesija= new SesijaServis(s);
-					if(sesija.prijava(txtUsername.getText(),passwordField.getText())){
+					if(SesijaServis.prijava(txtUsername.getText(),passwordField.getText())){
 						startUpCheck();
-						if(sesija.dajKorisnika().getTip().equals("sef")){
+						if(SesijaServis.dajTipKorisnika().equals("sef")){
 							SefProdajeMainGUI sefmg= new SefProdajeMainGUI(s);
 							sefmg.startSefProdajeMain();}
-						else if(sesija.dajKorisnika().getTip().equals("komercijalista")){
+						else if(SesijaServis.dajTipKorisnika().equals("komercijalista")){
 							KomercijalistaMainGUI komercijalistamg = new KomercijalistaMainGUI(s);
 							komercijalistamg.startKomercijalistaMain();
 						}
