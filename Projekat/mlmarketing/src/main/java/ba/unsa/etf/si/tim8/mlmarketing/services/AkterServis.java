@@ -69,6 +69,7 @@ public class AkterServis {
 	
 	public Akterprodaje pronadjiProdavacaBezMenadzera(){
 		Criteria c = s.createCriteria(Akterprodaje.class);
+		c.add(Restrictions.eq("tip", "prodavac"));
 		Akterprodaje a = (Akterprodaje) c.add(Restrictions.isNull("akterprodaje")).uniqueResult();
 		return a;
 	}

@@ -1,6 +1,7 @@
 package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.*;
+import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 
 import java.awt.EventQueue;
@@ -41,6 +42,17 @@ public class LoginGUI {
 				}
 			}
 		});
+	}
+	
+	private void startUpCheck(){
+		AkterServis aks = new AkterServis(s);
+		Akterprodaje a =aks.pronadjiProdavacaBezMenadzera();
+		if(a!= null){
+			a.setTip("regmen");
+			aks.izmjeniAktera(a);
+			JOptionPane.showMessageDialog(null, "Posto prilikom promjene statusa aktera"+a.toString()+" "
+					+ "nije odabran nadlezni menadzer, status mu se privremeno vraca u prethodno stanje.");
+		}
 	}
 
 	/**
@@ -88,6 +100,7 @@ public class LoginGUI {
 			public void actionPerformed(ActionEvent e) {
 					SesijaServis sesija= new SesijaServis(s);
 					if(sesija.prijava(txtUsername.getText(),passwordField.getText())){
+						startUpCheck();
 						if(sesija.dajKorisnika().getTip().equals("sef")){
 							SefProdajeMainGUI sefmg= new SefProdajeMainGUI(s);
 							sefmg.startSefProdajeMain();}
@@ -98,12 +111,8 @@ public class LoginGUI {
 					
 				}
 			}
-		});/*
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction t=session.beginTransaction();
-		Korisnik k = (Korisnik) session.get(Korisnik.class, 1);
-		JOptionPane.showMessageDialog(null, k.getIme());
-		t.commit();*/
+		});
+		
 	}
-
+	
 }

@@ -27,11 +27,11 @@ public class ProizvodServis {
 		return p;
 	}
 	
-	public boolean kreirajProizvod(Proizvod p){
+	public int kreirajProizvod(Proizvod p){
 		Transaction t = s.beginTransaction();
-		s.save(p);
+		int id = (Integer)s.save(p);
 		t.commit();
-		return true;
+		return id;
 	}
 	
 	public ArrayList<Proizvod> dajSveProizvode(){
