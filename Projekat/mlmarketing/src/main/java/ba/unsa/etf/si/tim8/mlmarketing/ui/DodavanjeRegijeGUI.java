@@ -16,6 +16,7 @@ import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
 import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 
 public class DodavanjeRegijeGUI {
 	
@@ -86,16 +87,23 @@ public class DodavanjeRegijeGUI {
 		btnNewButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				if(!textField.getText().equals("") && !textField_1.getText().equals("")){
-					
-					RegijaServis r= new RegijaServis(s);
-					Regija nova = new Regija();
-					nova.setIme(textField.getText());
-					nova.setDrzava(textField_1.getText());
-					
-					r.dodajRegiju(nova);
-					refreshableRoditelj.refreshajTabeluRegije();
+				if(SesijaServis.dajTipKorisnika().equals("sef")){
+					if(!textField.getText().equals("") && !textField_1.getText().equals("")){
+						
+						RegijaServis r= new RegijaServis(s);
+						Regija nova = new Regija();
+						nova.setIme(textField.getText());
+						nova.setDrzava(textField_1.getText());
+						
+						r.dodajRegiju(nova);
+						refreshableRoditelj.refreshajTabeluRegije();
+					}
 				}
+				else {
+					JOptionPane.showMessageDialog(null, "Niste logovani sa odgovarajućim privilegijama za ovu akciju.");
+					frmDodavanjeRegije.dispose();
+				}
+				
 				
 			}
 		});

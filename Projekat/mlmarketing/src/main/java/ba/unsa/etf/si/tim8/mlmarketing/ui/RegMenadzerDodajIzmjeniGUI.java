@@ -21,6 +21,7 @@ import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 
 public class RegMenadzerDodajIzmjeniGUI {
 	
@@ -158,29 +159,40 @@ public class RegMenadzerDodajIzmjeniGUI {
 		btnDodajIzmjeni.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				if(id==-1){
-					Akterprodaje a = new Akterprodaje();
-					a.setIme(textFieldIme.getText());
-					a.setPrezime(textFieldPrezime.getText());
-					a.setAdresa(textFieldAdresa.getText());
-					a.setBrojtelefona(textFieldBrojTelefona.getText());
-					a.setEmail(textFieldEmail.getText());
-					a.setTip("regmen");
-					a.setRegija((Regija)comboBox.getSelectedItem());
-					aks.kreirajAktera(a);
+				if(SesijaServis.dajTipKorisnika().equals("sef")){
+					int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+					if(rez == JOptionPane.YES_OPTION){
+						if(id==-1){
+							Akterprodaje a = new Akterprodaje();
+							a.setIme(textFieldIme.getText());
+							a.setPrezime(textFieldPrezime.getText());
+							a.setAdresa(textFieldAdresa.getText());
+							a.setBrojtelefona(textFieldBrojTelefona.getText());
+							a.setEmail(textFieldEmail.getText());
+							a.setTip("regmen");
+							a.setRegija((Regija)comboBox.getSelectedItem());
+							aks.kreirajAktera(a);
+						}
+						else{
+							Akterprodaje a = aks.dajAktera(id);
+							a.setIme(textFieldIme.getText());
+							a.setPrezime(textFieldPrezime.getText());
+							a.setAdresa(textFieldAdresa.getText());
+							a.setBrojtelefona(textFieldBrojTelefona.getText());
+							a.setEmail(textFieldEmail.getText());
+							a.setTip("regmen");
+							a.setRegija((Regija)comboBox.getSelectedItem());
+							aks.izmjeniAktera(a);
+						}
+						refreshableRoditelj.refreshajTabeluMenadzeri();
+					}
+					
 				}
-				else{
-					Akterprodaje a = aks.dajAktera(id);
-					a.setIme(textFieldIme.getText());
-					a.setPrezime(textFieldPrezime.getText());
-					a.setAdresa(textFieldAdresa.getText());
-					a.setBrojtelefona(textFieldBrojTelefona.getText());
-					a.setEmail(textFieldEmail.getText());
-					a.setTip("regmen");
-					a.setRegija((Regija)comboBox.getSelectedItem());
-					aks.izmjeniAktera(a);
+				else {
+					JOptionPane.showMessageDialog(null, "Niste logovani sa odgovarajućim privilegijama za ovu akciju.");
+					frmDodajizmijeni.dispose();
 				}
-				refreshableRoditelj.refreshajTabeluMenadzeri();
+				
 			}
 		});
 		frmDodajizmijeni.getContentPane().add(btnDodajIzmjeni);

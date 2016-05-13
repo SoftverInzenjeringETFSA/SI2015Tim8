@@ -16,6 +16,8 @@ import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -103,11 +105,18 @@ public class DodjelaMenadzeraGUI {
 		btnDodijeliMenadzera.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
+				if(SesijaServis.dajTipKorisnika().equals("sef")){
 					Akterprodaje a = aks.dajAktera(id);
 					a.setAkterprodaje((Akterprodaje)comboBox.getSelectedItem());
 					aks.izmjeniAktera(a);
 					refreshableRoditelj.refreshajTabeluProdavaci();
 					refreshableRoditelj.refreshajTabeluMenadzeri();
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Niste logovani sa odgovarajućim privilegijama za ovu akciju.");
+					frmDodijeliMenadera.dispose();
+				}
+					
 			}
 		});
 		frmDodijeliMenadera.getContentPane().add(btnDodijeliMenadzera);

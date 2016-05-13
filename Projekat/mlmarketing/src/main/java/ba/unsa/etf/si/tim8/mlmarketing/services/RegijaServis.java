@@ -49,4 +49,8 @@ public class RegijaServis {
 		return s.createCriteria(Regija.class).list().size();
 	}
 	
+	public int dajBrojAkteraZaRegiju(int id){
+		Regija r =(Regija) s.get(Regija.class, id);
+		return r.getAkterprodajes().size();
+	}
 }

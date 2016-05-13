@@ -130,9 +130,14 @@ public class SefProdajeMainGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(tableKorisnici.getSelectedRow()!=-1){
-					int id = odaberiIdKolonu(tableKorisnici, 5);
-					ns.obrisiNalog(id);
-					refreshajTabeluKorisnici();
+					
+					int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+					if(rez == JOptionPane.YES_OPTION){
+						int id = odaberiIdKolonu(tableKorisnici, 5);
+						ns.obrisiNalog(id);
+						refreshajTabeluKorisnici();
+					}
+					
 				}
 				else JOptionPane.showMessageDialog(null, "Niste odabrali nalog");
 				
@@ -179,9 +184,13 @@ public class SefProdajeMainGUI {
 			public void actionPerformed(ActionEvent arg0) {
 				if(tableMenadzeri.getSelectedRow() != -1)
 				{
-					int id = (Integer)tableMenadzeri.getModel().getValueAt(tableMenadzeri.getSelectedRow(), 5);
-					aks.izbrisiAktera(id);
-					refreshajTabeluMenadzeri();
+					int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+					if(rez == JOptionPane.YES_OPTION){
+						int id = (Integer)tableMenadzeri.getModel().getValueAt(tableMenadzeri.getSelectedRow(), 5);
+						aks.izbrisiAktera(id);
+						refreshajTabeluMenadzeri();
+					}
+					
 				}
 				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednog menadžera iz tabele.");
 				
@@ -197,9 +206,12 @@ public class SefProdajeMainGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(tableMenadzeri.getSelectedRow() != -1){
-					int id= odaberiIdKolonu(tableMenadzeri, 5);
-					RegMenadzerDodajIzmjeniGUI rmdodaj = new RegMenadzerDodajIzmjeniGUI("izmjeni",s,ref,id);
-					rmdodaj.pokreniRegMenDodajIzmjeni("izmjeni");
+					
+						int id= odaberiIdKolonu(tableMenadzeri, 5);
+						RegMenadzerDodajIzmjeniGUI rmdodaj = new RegMenadzerDodajIzmjeniGUI("izmjeni",s,ref,id);
+						rmdodaj.pokreniRegMenDodajIzmjeni("izmjeni");
+					
+					
 				}
 				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednog menadžera iz tabele.");
 				
@@ -213,21 +225,25 @@ public class SefProdajeMainGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(tableMenadzeri.getSelectedRow() != -1){
-					int id = odaberiIdKolonu(tableMenadzeri, 5);
-					Akterprodaje a = aks.dajAktera(id);
-					int brojZaKojeJeNadlezan = a.getAkterprodajes().size();
-					if(brojZaKojeJeNadlezan == 0)
-					{
-						
-						a.setTip("prodavac");
-						aks.izmjeniAktera(a);
-						DodjelaMenadzeraGUI dodjelamenadzera= new DodjelaMenadzeraGUI(s,ref,a.getId());
-						dodjelamenadzera.startDodjelaMenadzera();
+					int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+					if(rez == JOptionPane.YES_OPTION){
+						int id = odaberiIdKolonu(tableMenadzeri, 5);
+						Akterprodaje a = aks.dajAktera(id);
+						int brojZaKojeJeNadlezan = a.getAkterprodajes().size();
+						if(brojZaKojeJeNadlezan == 0)
+						{
+							
+							a.setTip("prodavac");
+							aks.izmjeniAktera(a);
+							DodjelaMenadzeraGUI dodjelamenadzera= new DodjelaMenadzeraGUI(s,ref,a.getId());
+							dodjelamenadzera.startDodjelaMenadzera();
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "Nije moguce unazaditi regionalnog menadžera"
+									+ " dok je isti nadležan za neke prodavače.");
+						}
 					}
-					else {
-						JOptionPane.showMessageDialog(null, "Nije moguce unazaditi regionalnog menadžera"
-								+ " dok je isti nadležan za neke prodavače.");
-					}
+					
 				}
 				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednog menadžera iz tabele.");
 				
@@ -300,10 +316,15 @@ public class SefProdajeMainGUI {
 		btnObrisiProdavaca.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
+				
 				if(tableProdavaci.getSelectedRow() != -1){
-					int id = odaberiIdKolonu(tableProdavaci, 6);
-					aks.izbrisiAktera(id);
-					refreshajTabeluProdavaci();
+					int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+					if(rez == JOptionPane.YES_OPTION){
+						int id = odaberiIdKolonu(tableProdavaci, 6);
+						aks.izbrisiAktera(id);
+						refreshajTabeluProdavaci();
+					}
+
 				}
 				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednog prodavača iz tabele.");
 					
@@ -332,13 +353,17 @@ public class SefProdajeMainGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(tableProdavaci.getSelectedRow() != -1){
-					int id = odaberiIdKolonu(tableProdavaci, 6);
-					Akterprodaje a = aks.dajAktera(id);
-					a.setAkterprodaje(null);
-					a.setTip("regmen");
-					aks.izmjeniAktera(a);
-					refreshajTabeluProdavaci();
-					refreshajTabeluMenadzeri();
+					int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+					if(rez == JOptionPane.YES_OPTION){
+						int id = odaberiIdKolonu(tableProdavaci, 6);
+						Akterprodaje a = aks.dajAktera(id);
+						a.setAkterprodaje(null);
+						a.setTip("regmen");
+						aks.izmjeniAktera(a);
+						refreshajTabeluProdavaci();
+						refreshajTabeluMenadzeri();
+					}
+					
 				}
 				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednog prodavača iz tabele.");
 				
@@ -431,6 +456,7 @@ public class SefProdajeMainGUI {
 		btnIzmijeniProizvod.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
+				
 				if(tableProizvodi.getSelectedRow() != -1){
 					int id = odaberiIdKolonu(tableProizvodi, 4);
 					IzmjenaProizvodaGUI izmjenaproizvoda = new IzmjenaProizvodaGUI(s, ref, id);
@@ -448,10 +474,14 @@ public class SefProdajeMainGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(tableProizvodi.getSelectedRow() != -1){
-					int id = odaberiIdKolonu(tableProizvodi, 4);
-					Proizvod p = ps.dajProizvod(id);
-					ps.obrisiProizvod(p);
-					refreshajTabeluProizvodi();
+					int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+					if(rez == JOptionPane.YES_OPTION){
+						int id = odaberiIdKolonu(tableProizvodi, 4);
+						Proizvod p = ps.dajProizvod(id);
+						ps.obrisiProizvod(p);
+						refreshajTabeluProizvodi();
+					}
+					
 				}
 				else JOptionPane.showMessageDialog(null, "Niste odabrali nijedan proizvod iz tabele.");
 				
@@ -529,9 +559,19 @@ public class SefProdajeMainGUI {
 			
 			public void actionPerformed(ActionEvent arg0) {
 				if(tableRegije.getSelectedRow() != -1){
+					int id = odaberiIdKolonu(tableRegije, 2);
+					if(rs.dajBrojAkteraZaRegiju(id) > 0)
+						JOptionPane.showMessageDialog(null, "Ne možete obrisati regiju dok postoje akteri u istoj.");
+					else
+					{
+						int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+						if(rez == JOptionPane.YES_OPTION){
+							rs.obrisi(id);
+							refreshajTabeluRegije();
+						}
+					}
 					
-					rs.obrisi((Integer)tableRegije.getModel().getValueAt(tableRegije.getSelectedRow(), 2));
-					refreshajTabeluRegije();
+					
 				}
 				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednu regiju iz tabele.");
 				

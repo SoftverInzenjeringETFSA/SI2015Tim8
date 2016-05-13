@@ -15,6 +15,7 @@ import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
 import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 
 public class IzmjenaProizvodaGUI {
 
@@ -117,13 +118,24 @@ public class IzmjenaProizvodaGUI {
 		btnIzmijeniProizvod.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				Proizvod p = ps.dajProizvod(id);
-				p.setNaziv(textFieldNazivProizvoda.getText());
-				p.setNabavnacijena(Double.parseDouble(textFieldNabavnaCijena.getText()));
-				p.setProdajnacijena(Double.parseDouble(textFieldProdajnaCijena.getText()));
-				p.setKolicina(Integer.parseInt(textFieldStanjeSkladista.getText()));
-				ps.izmijeniProizvod(p);
-				refreshableRoditelj.refreshajTabeluProizvodi();
+				if(SesijaServis.dajTipKorisnika().equals("sef")){
+					int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+					if(rez == JOptionPane.YES_OPTION){
+						Proizvod p = ps.dajProizvod(id);
+						p.setNaziv(textFieldNazivProizvoda.getText());
+						p.setNabavnacijena(Double.parseDouble(textFieldNabavnaCijena.getText()));
+						p.setProdajnacijena(Double.parseDouble(textFieldProdajnaCijena.getText()));
+						p.setKolicina(Integer.parseInt(textFieldStanjeSkladista.getText()));
+						ps.izmijeniProizvod(p);
+						refreshableRoditelj.refreshajTabeluProizvodi();
+					}
+					
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Niste logovani sa odgovarajućim privilegijama za ovu akciju.");
+					frmIzmijeni.dispose();
+				}
+				
 				
 			}
 		});

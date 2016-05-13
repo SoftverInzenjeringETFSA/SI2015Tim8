@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -14,6 +15,7 @@ import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
 import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -96,13 +98,20 @@ public class DodavanjeProizvodaGUI {
 		btnDodajProizvod.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				Proizvod p= new Proizvod();
-				p.setNaziv(textFieldNaziv.getText());
-				p.setKolicina(Integer.parseInt(textFieldStanjeNaSkladistu.getText()));
-				p.setNabavnacijena(Double.parseDouble(textFieldNabavnaCijena.getText()));
-				p.setProdajnacijena(Double.parseDouble(textFieldProdajnaCijena.getText()));
-				ps.kreirajProizvod(p);
-				refreshableRoditelj.refreshajTabeluProizvodi();
+				if(SesijaServis.dajTipKorisnika().equals("sef")){
+					Proizvod p= new Proizvod();
+					p.setNaziv(textFieldNaziv.getText());
+					p.setKolicina(Integer.parseInt(textFieldStanjeNaSkladistu.getText()));
+					p.setNabavnacijena(Double.parseDouble(textFieldNabavnaCijena.getText()));
+					p.setProdajnacijena(Double.parseDouble(textFieldProdajnaCijena.getText()));
+					ps.kreirajProizvod(p);
+					refreshableRoditelj.refreshajTabeluProizvodi();
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Niste logovani sa odgovarajućim privilegijama za ovu akciju.");
+					frmDodajProizvod.dispose();
+				}
+				
 				
 			}
 		});

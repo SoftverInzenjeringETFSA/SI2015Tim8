@@ -17,6 +17,7 @@ import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NaloziServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 
 public class KreiranjeKorisnickogRacunaGUI {
 	
@@ -130,20 +131,27 @@ public class KreiranjeKorisnickogRacunaGUI {
 		btnKreirajNalog.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				if(passwordFieldSifra.getText().equals(passwordFieldSifraPonovo.getText()) && !passwordFieldSifra.getText().equals("")){
-					Korisnik k = new Korisnik();
-					k.setIme(textFieldIme.getText());
-					k.setPrezime(textFieldPrezime.getText());
-					k.setUsername(textFieldKorisnickoIme.getText());
-					k.setAdresa(textFieldAdresa.getText());
-					if(comboBox.getSelectedItem()=="Komercijalista") k.setTip("komercijalista");
-					else k.setTip("sef");
-					k.setTelefon(textFieldTelefon.getText());
-					k.setEmail(textFieldEmail.getText());
-					k.setPassword(passwordFieldSifra.getText());
-					ns.kreirajNalog(k);
-					refreshableRoditelj.refreshajTabeluKorisnici();
+				if(SesijaServis.dajTipKorisnika().equals("sef")){
+					if(passwordFieldSifra.getText().equals(passwordFieldSifraPonovo.getText()) && !passwordFieldSifra.getText().equals("")){
+						Korisnik k = new Korisnik();
+						k.setIme(textFieldIme.getText());
+						k.setPrezime(textFieldPrezime.getText());
+						k.setUsername(textFieldKorisnickoIme.getText());
+						k.setAdresa(textFieldAdresa.getText());
+						if(comboBox.getSelectedItem()=="Komercijalista") k.setTip("komercijalista");
+						else k.setTip("sef");
+						k.setTelefon(textFieldTelefon.getText());
+						k.setEmail(textFieldEmail.getText());
+						k.setPassword(passwordFieldSifra.getText());
+						ns.kreirajNalog(k);
+						refreshableRoditelj.refreshajTabeluKorisnici();
+					}
 				}
+				else {
+					JOptionPane.showMessageDialog(null, "Niste logovani sa odgovarajućim privilegijama za ovu akciju.");
+					frmDodajKorisnika.dispose();
+				}
+				
 			}
 		});
 		frmDodajKorisnika.getContentPane().add(btnKreirajNalog);
