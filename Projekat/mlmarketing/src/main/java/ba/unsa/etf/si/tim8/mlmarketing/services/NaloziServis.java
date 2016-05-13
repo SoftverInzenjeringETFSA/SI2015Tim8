@@ -16,11 +16,11 @@ import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
 		this.s=s;
 	}
 	
-	public boolean kreirajNalog(Korisnik k) {
+	public int kreirajNalog(Korisnik k) {
 		Transaction t = s.beginTransaction();
-		s.save(k);
+		int id =(Integer) s.save(k);
 		t.commit();
-		return true;
+		return id;
 	}
 	
 	public boolean obrisiNalog(int id){

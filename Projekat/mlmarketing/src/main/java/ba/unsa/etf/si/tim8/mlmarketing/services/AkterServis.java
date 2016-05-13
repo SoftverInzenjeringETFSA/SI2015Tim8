@@ -19,13 +19,12 @@ public class AkterServis {
 		this.s =s;
 	}
 	
-	public boolean kreirajAktera(Akterprodaje a)
+	public int kreirajAktera(Akterprodaje a)
 	{
 		Transaction t = s.beginTransaction();
-		
-		s.save(a);
+		int id = (Integer)s.save(a);
 		t.commit();
-		return true;
+		return id;
 	}
 	
 	public boolean izmjeniAktera(Akterprodaje a)
@@ -64,6 +63,13 @@ public class AkterServis {
 		return new ArrayList<Akterprodaje>(akteri);
 	}
 	
+	public int dajBrojAktera(){
+		return s.createCriteria(Akterprodaje.class).list().size();
+	}
 	
-
+	public Akterprodaje pronadjiProdavacaBezMenadzera(){
+		Criteria c = s.createCriteria(Akterprodaje.class);
+		Akterprodaje a = (Akterprodaje) c.add(Restrictions.isNull("akterprodaje")).uniqueResult();
+		return a;
+	}
 }
