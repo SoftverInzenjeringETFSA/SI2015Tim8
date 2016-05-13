@@ -75,7 +75,7 @@ public class NarudzbaServis
 	public boolean kreirajFakturu(Narudzba n)
 	{
 		//Kasnije ce ici if(n.getStatus() == "Potvrđena"
-		if(n.getStatus() == "Na čekanju")
+	/*	if(n.getStatus() == "Na čekanju")
 		{
 			Transaction t = s.beginTransaction();
 			Faktura f = new Faktura();
@@ -105,7 +105,8 @@ public class NarudzbaServis
 			t.commit();
 			return true;
 		}
-		else return false;
+		else return false;*/
+		return true;
 	}
 	
 	public Faktura dajFakturu(int id)

@@ -1,7 +1,7 @@
 package ba.unsa.etf.si.tim8.mlmarketing.models;
 
 // default package
-// Generated May 9, 2016 2:18:54 AM by Hibernate Tools 5.0.0.Alpha3
+// Generated May 13, 2016 11:55:21 PM by Hibernate Tools 5.1.0.Alpha1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -28,23 +28,31 @@ public class Faktura implements java.io.Serializable {
 
 	private Integer id;
 	private Akterprodaje akterprodaje;
+	private Regija regija;
 	private double ukupnacijena;
 	private Date datum;
+	private String imeaktera;
+	private String imeregije;
 	private Set<ProizvodFaktura> proizvodFakturas = new HashSet<ProizvodFaktura>(0);
 
 	public Faktura() {
 	}
 
-	public Faktura(Akterprodaje akterprodaje, double ukupnacijena, Date datum) {
-		this.akterprodaje = akterprodaje;
+	public Faktura(double ukupnacijena, Date datum, String imeaktera, String imeregije) {
 		this.ukupnacijena = ukupnacijena;
 		this.datum = datum;
+		this.imeaktera = imeaktera;
+		this.imeregije = imeregije;
 	}
 
-	public Faktura(Akterprodaje akterprodaje, double ukupnacijena, Date datum, Set<ProizvodFaktura> proizvodFakturas) {
+	public Faktura(Akterprodaje akterprodaje, Regija regija, double ukupnacijena, Date datum, String imeaktera,
+			String imeregije, Set<ProizvodFaktura> proizvodFakturas) {
 		this.akterprodaje = akterprodaje;
+		this.regija = regija;
 		this.ukupnacijena = ukupnacijena;
 		this.datum = datum;
+		this.imeaktera = imeaktera;
+		this.imeregije = imeregije;
 		this.proizvodFakturas = proizvodFakturas;
 	}
 
@@ -61,13 +69,23 @@ public class Faktura implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "akterid", nullable = false)
+	@JoinColumn(name = "akterid")
 	public Akterprodaje getAkterprodaje() {
 		return this.akterprodaje;
 	}
 
 	public void setAkterprodaje(Akterprodaje akterprodaje) {
 		this.akterprodaje = akterprodaje;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "regijaid")
+	public Regija getRegija() {
+		return this.regija;
+	}
+
+	public void setRegija(Regija regija) {
+		this.regija = regija;
 	}
 
 	@Column(name = "ukupnacijena", nullable = false, precision = 22, scale = 0)
@@ -87,6 +105,24 @@ public class Faktura implements java.io.Serializable {
 
 	public void setDatum(Date datum) {
 		this.datum = datum;
+	}
+
+	@Column(name = "imeaktera", nullable = false, length = 91)
+	public String getImeaktera() {
+		return this.imeaktera;
+	}
+
+	public void setImeaktera(String imeaktera) {
+		this.imeaktera = imeaktera;
+	}
+
+	@Column(name = "imeregije", nullable = false, length = 90)
+	public String getImeregije() {
+		return this.imeregije;
+	}
+
+	public void setImeregije(String imeregije) {
+		this.imeregije = imeregije;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "faktura")

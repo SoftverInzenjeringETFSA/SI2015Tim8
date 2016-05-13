@@ -1,7 +1,7 @@
 package ba.unsa.etf.si.tim8.mlmarketing.models;
 
 // default package
-// Generated May 9, 2016 2:18:54 AM by Hibernate Tools 5.0.0.Alpha3
+// Generated May 13, 2016 11:55:21 PM by Hibernate Tools 5.1.0.Alpha1
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,17 +23,31 @@ public class ProizvodFaktura implements java.io.Serializable {
 	private Integer id;
 	private Faktura faktura;
 	private Proizvod proizvod;
+	private String nazivproizvoda;
+	private double prodajnacijena;
+	private double nabavnacijena;
 	private int kolicina;
-	private double cijena;
 
 	public ProizvodFaktura() {
 	}
 
-	public ProizvodFaktura(Faktura faktura, Proizvod proizvod, int kolicina, double cijena) {
+	public ProizvodFaktura(Faktura faktura, String nazivproizvoda, double prodajnacijena, double nabavnacijena,
+			int kolicina) {
+		this.faktura = faktura;
+		this.nazivproizvoda = nazivproizvoda;
+		this.prodajnacijena = prodajnacijena;
+		this.nabavnacijena = nabavnacijena;
+		this.kolicina = kolicina;
+	}
+
+	public ProizvodFaktura(Faktura faktura, Proizvod proizvod, String nazivproizvoda, double prodajnacijena,
+			double nabavnacijena, int kolicina) {
 		this.faktura = faktura;
 		this.proizvod = proizvod;
+		this.nazivproizvoda = nazivproizvoda;
+		this.prodajnacijena = prodajnacijena;
+		this.nabavnacijena = nabavnacijena;
 		this.kolicina = kolicina;
-		this.cijena = cijena;
 	}
 
 	@Id
@@ -59,13 +73,40 @@ public class ProizvodFaktura implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "proizvodid", nullable = false)
+	@JoinColumn(name = "proizvodid")
 	public Proizvod getProizvod() {
 		return this.proizvod;
 	}
 
 	public void setProizvod(Proizvod proizvod) {
 		this.proizvod = proizvod;
+	}
+
+	@Column(name = "nazivproizvoda", nullable = false, length = 90)
+	public String getNazivproizvoda() {
+		return this.nazivproizvoda;
+	}
+
+	public void setNazivproizvoda(String nazivproizvoda) {
+		this.nazivproizvoda = nazivproizvoda;
+	}
+
+	@Column(name = "prodajnacijena", nullable = false, precision = 22, scale = 0)
+	public double getProdajnacijena() {
+		return this.prodajnacijena;
+	}
+
+	public void setProdajnacijena(double prodajnacijena) {
+		this.prodajnacijena = prodajnacijena;
+	}
+
+	@Column(name = "nabavnacijena", nullable = false, precision = 22, scale = 0)
+	public double getNabavnacijena() {
+		return this.nabavnacijena;
+	}
+
+	public void setNabavnacijena(double nabavnacijena) {
+		this.nabavnacijena = nabavnacijena;
 	}
 
 	@Column(name = "kolicina", nullable = false)
@@ -75,15 +116,6 @@ public class ProizvodFaktura implements java.io.Serializable {
 
 	public void setKolicina(int kolicina) {
 		this.kolicina = kolicina;
-	}
-
-	@Column(name = "cijena", nullable = false, precision = 22, scale = 0)
-	public double getCijena() {
-		return this.cijena;
-	}
-
-	public void setCijena(double cijena) {
-		this.cijena = cijena;
 	}
 
 }

@@ -1,7 +1,7 @@
 package ba.unsa.etf.si.tim8.mlmarketing.models;
 
 // default package
-// Generated May 9, 2016 2:18:54 AM by Hibernate Tools 5.0.0.Alpha3
+// Generated May 13, 2016 11:55:21 PM by Hibernate Tools 5.1.0.Alpha1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -182,6 +182,5 @@ public class Akterprodaje implements java.io.Serializable {
 	public String toString() {
 		return this.ime + " " + this.prezime;
 	}
-
 
 }

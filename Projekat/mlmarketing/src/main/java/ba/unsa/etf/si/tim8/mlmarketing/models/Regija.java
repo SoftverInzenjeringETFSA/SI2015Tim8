@@ -1,7 +1,7 @@
 package ba.unsa.etf.si.tim8.mlmarketing.models;
 
 // default package
-// Generated May 9, 2016 2:18:54 AM by Hibernate Tools 5.0.0.Alpha3
+// Generated May 13, 2016 11:55:21 PM by Hibernate Tools 5.1.0.Alpha1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,6 +26,7 @@ public class Regija implements java.io.Serializable {
 	private String ime;
 	private String drzava;
 	private Set<Akterprodaje> akterprodajes = new HashSet<Akterprodaje>(0);
+	private Set<Faktura> fakturas = new HashSet<Faktura>(0);
 
 	public Regija() {
 	}
@@ -35,10 +36,11 @@ public class Regija implements java.io.Serializable {
 		this.drzava = drzava;
 	}
 
-	public Regija(String ime, String drzava, Set<Akterprodaje> akterprodajes) {
+	public Regija(String ime, String drzava, Set<Akterprodaje> akterprodajes, Set<Faktura> fakturas) {
 		this.ime = ime;
 		this.drzava = drzava;
 		this.akterprodajes = akterprodajes;
+		this.fakturas = fakturas;
 	}
 
 	@Id
@@ -79,10 +81,18 @@ public class Regija implements java.io.Serializable {
 	public void setAkterprodajes(Set<Akterprodaje> akterprodajes) {
 		this.akterprodajes = akterprodajes;
 	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "regija")
+	public Set<Faktura> getFakturas() {
+		return this.fakturas;
+	}
+
+	public void setFakturas(Set<Faktura> fakturas) {
+		this.fakturas = fakturas;
+	}
 	
 	@Override
 	public String toString() {
 		return this.ime;
 	}
-
 }

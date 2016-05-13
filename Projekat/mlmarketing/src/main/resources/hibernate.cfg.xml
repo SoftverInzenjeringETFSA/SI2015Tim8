@@ -2,20 +2,20 @@
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
                                          "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
- <session-factory>
+ <session-factory name="">
   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
   <property name="hibernate.connection.password">nekipassword123</property>
-  <property name="hibernate.connection.url">jdbc:mysql://localhost/tim8</property>
+  <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/tim8</property>
   <property name="hibernate.connection.username">root</property>
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
   <property name="hibernate.hbm2ddl.auto">update</property>
   <mapping class="ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje"/>
-  <mapping class="ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik"/>
-  <mapping class="ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod"/>
   <mapping class="ba.unsa.etf.si.tim8.mlmarketing.models.Faktura"/>
+  <mapping class="ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik"/>
   <mapping class="ba.unsa.etf.si.tim8.mlmarketing.models.Narudzba"/>
-  <mapping class="ba.unsa.etf.si.tim8.mlmarketing.models.Regija"/>
+  <mapping class="ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod"/>
   <mapping class="ba.unsa.etf.si.tim8.mlmarketing.models.ProizvodFaktura"/>
   <mapping class="ba.unsa.etf.si.tim8.mlmarketing.models.ProizvodNarudzba"/>
+  <mapping class="ba.unsa.etf.si.tim8.mlmarketing.models.Regija"/>
  </session-factory>
 </hibernate-configuration>

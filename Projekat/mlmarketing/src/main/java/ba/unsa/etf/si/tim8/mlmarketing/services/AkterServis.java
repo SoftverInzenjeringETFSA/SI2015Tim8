@@ -24,6 +24,7 @@ public class AkterServis {
 		Transaction t = s.beginTransaction();
 		int id = (Integer)s.save(a);
 		t.commit();
+		s.flush();
 		return id;
 	}
 	
