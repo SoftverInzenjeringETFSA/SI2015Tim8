@@ -81,7 +81,6 @@ public class RegMenadzerDodajIzmjeniGUI {
 		textFieldAdresa.setText(trenutni.getAdresa());
 		textFieldBrojTelefona.setText(trenutni.getBrojtelefona());
 		textFieldEmail.setText(trenutni.getEmail());
-		JOptionPane.showMessageDialog(null, refreshableRoditelj!=null);
 	}
 
 	/**
@@ -160,8 +159,6 @@ public class RegMenadzerDodajIzmjeniGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(SesijaServis.dajTipKorisnika().equals("sef")){
-					int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
-					if(rez == JOptionPane.YES_OPTION){
 						if(id==-1){
 							Akterprodaje a = new Akterprodaje();
 							a.setIme(textFieldIme.getText());
@@ -174,6 +171,8 @@ public class RegMenadzerDodajIzmjeniGUI {
 							aks.kreirajAktera(a);
 						}
 						else{
+							int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+							if(rez == JOptionPane.YES_OPTION){
 							Akterprodaje a = aks.dajAktera(id);
 							a.setIme(textFieldIme.getText());
 							a.setPrezime(textFieldPrezime.getText());
@@ -183,10 +182,9 @@ public class RegMenadzerDodajIzmjeniGUI {
 							a.setTip("regmen");
 							a.setRegija((Regija)comboBox.getSelectedItem());
 							aks.izmjeniAktera(a);
+							}
 						}
 						refreshableRoditelj.refreshajTabeluMenadzeri();
-					}
-					
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Niste logovani sa odgovarajućim privilegijama za ovu akciju.");
@@ -207,12 +205,6 @@ public class RegMenadzerDodajIzmjeniGUI {
 		lblPrezime.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblPrezime.setBounds(84, 60, 46, 14);
 		frmDodajizmijeni.getContentPane().add(lblPrezime);
-		btnDodajIzmjeni.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent arg0) {
-				Regija r = (Regija)comboBox.getSelectedItem();
-				JOptionPane.showMessageDialog(null, r.getDrzava());
-			}
-		});
+		
 	}
 }
