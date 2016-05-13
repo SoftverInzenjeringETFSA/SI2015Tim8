@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `tim8`.`korisnik` ;
 CREATE TABLE IF NOT EXISTS `tim8`.`korisnik` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `Username` VARCHAR(45) NOT NULL,
-  `Password` VARCHAR(45) NOT NULL,
+  `Password` VARCHAR(60) NOT NULL,
   `Ime` VARCHAR(45) NOT NULL,
   `Prezime` VARCHAR(45) NOT NULL,
   `Adresa` VARCHAR(45) NOT NULL,
@@ -151,12 +151,21 @@ CREATE TABLE IF NOT EXISTS `tim8`.`faktura` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `ukupnacijena` DOUBLE NOT NULL,
   `datum` DATETIME NOT NULL,
-  `akterid` INT NOT NULL,
+  `akterid` INT NULL,
+  `imeaktera` VARCHAR(91) NOT NULL,
+  `regijaid` INT NULL,
+  `imeregije` VARCHAR(90) NOT NULL,
   PRIMARY KEY (`ID`),
   INDEX `fk_faktura_akterProdaje1_idx` (`akterid` ASC),
+  INDEX `fk_faktura_regija1_idx` (`regijaid` ASC),
   CONSTRAINT `fk_faktura_akterProdaje1`
     FOREIGN KEY (`akterid`)
     REFERENCES `tim8`.`akterProdaje` (`ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_faktura_regija1`
+    FOREIGN KEY (`regijaid`)
+    REFERENCES `tim8`.`regija` (`ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -169,10 +178,12 @@ DROP TABLE IF EXISTS `tim8`.`proizvod_faktura` ;
 
 CREATE TABLE IF NOT EXISTS `tim8`.`proizvod_faktura` (
   `ID` INT NOT NULL AUTO_INCREMENT,
-  `proizvodid` INT NOT NULL,
+  `proizvodid` INT NULL,
   `fakturaid` INT NOT NULL,
+  `nazivproizvoda` VARCHAR(90) NOT NULL,
+  `prodajnacijena` DOUBLE NOT NULL,
+  `nabavnacijena` DOUBLE NOT NULL,
   `kolicina` INT NOT NULL,
-  `cijena` DOUBLE NOT NULL,
   PRIMARY KEY (`ID`),
   INDEX `fk_proizvod_faktura_proizvod1_idx` (`proizvodid` ASC),
   INDEX `fk_proizvod_faktura_faktura1_idx` (`fakturaid` ASC),
