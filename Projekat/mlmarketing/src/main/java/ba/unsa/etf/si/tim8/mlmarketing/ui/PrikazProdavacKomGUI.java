@@ -135,6 +135,13 @@ public class PrikazProdavacKomGUI {
 		});
 		
 		JButton button_1 = new JButton("Prika\u017Ei fakture");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				PrikazFakturaAkterGUI prikazFakturaAkter = new PrikazFakturaAkterGUI(s, id);
+				prikazFakturaAkter.startPrikazFakturaAkter();
+			}
+		});
 		button_1.setBounds(135, 306, 169, 25);
 		frmProdava.getContentPane().add(button_1);
 		

@@ -102,7 +102,7 @@ public class PrikazNarudzbiAkterGUI {
 		for(int i = 0; i<narudzbe.size();i++)
 			data[i]= new Object[]
 			{
-				narudzbe.get(i).getId(),narudzbe.get(i).getAkterprodaje().getIme(),
+				narudzbe.get(i).getId(),narudzbe.get(i).getAkterprodaje().getIme() + " " + narudzbe.get(i).getAkterprodaje().getPrezime(),
 				narudzbe.get(i).getDatum(),narudzbe.get(i).getStatus()
 					
 			};

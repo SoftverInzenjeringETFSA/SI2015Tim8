@@ -134,6 +134,13 @@ public class PrikazMenadzerKomGUI {
 		frmRegionalniMenader.getContentPane().add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Prika\u017Ei fakture");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				PrikazFakturaAkterGUI prikazFakturaAkter = new PrikazFakturaAkterGUI(s, id);
+				prikazFakturaAkter.startPrikazFakturaAkter();
+			}
+		});
 		btnNewButton_1.setBounds(126, 281, 169, 25);
 		frmRegionalniMenader.getContentPane().add(btnNewButton_1);
 		

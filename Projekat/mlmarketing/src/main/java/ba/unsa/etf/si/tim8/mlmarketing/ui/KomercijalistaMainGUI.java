@@ -129,10 +129,14 @@ public class KomercijalistaMainGUI {
 			{
 				if(table.getSelectedRow()!=-1)
 				{
-					int id = odaberiIdKolonu(table, 0);
-					ns.izbrisiNarudzbu(id);
-					refreshajTabeluNarudzbe();
-					refreshajTabeluProizvodi();
+					int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+					if(rez == JOptionPane.YES_OPTION)
+					{
+						int id = odaberiIdKolonu(table, 0);
+						ns.izbrisiNarudzbu(id);
+						refreshajTabeluNarudzbe();
+						refreshajTabeluProizvodi();
+					}
 				}
 				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednu narudžbu iz tabele.");
 			}
