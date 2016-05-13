@@ -106,7 +106,7 @@ public class LoginGUI {
 							SefProdajeMainGUI sefmg= new SefProdajeMainGUI(s,ref);
 							sefmg.startSefProdajeMain();}
 						else if(SesijaServis.dajTipKorisnika().equals("komercijalista")){
-							KomercijalistaMainGUI komercijalistamg = new KomercijalistaMainGUI(s);
+							KomercijalistaMainGUI komercijalistamg = new KomercijalistaMainGUI(s, ref);
 							komercijalistamg.startKomercijalistaMain();
 						}
 						frmLogin.hide();

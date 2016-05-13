@@ -24,6 +24,7 @@ import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NarudzbaServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 
 /*import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
@@ -39,6 +40,7 @@ public class KomercijalistaMainGUI {
 	private NarudzbaServis ns;
 	private AkterServis aks;
 	private ProizvodServis ps;
+	private LoginGUI roditelj;
 
 	private JFrame frmKomercijalista;
 	private JTable table;
@@ -54,7 +56,7 @@ public class KomercijalistaMainGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					KomercijalistaMainGUI window = new KomercijalistaMainGUI(s);
+					KomercijalistaMainGUI window = new KomercijalistaMainGUI(s, roditelj);
 					window.frmKomercijalista.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -66,11 +68,12 @@ public class KomercijalistaMainGUI {
 	/**
 	 * Create the application.
 	 */
-	public KomercijalistaMainGUI(Session s) {
+	public KomercijalistaMainGUI(Session s, LoginGUI roditelj) {
 		this.s=s;
 		this.ns = new NarudzbaServis(s);
 		this.aks = new AkterServis(s);
 		this.ps = new ProizvodServis(s);
+		this.roditelj = roditelj;
 		initialize();
 	}
 
@@ -82,7 +85,7 @@ public class KomercijalistaMainGUI {
 		frmKomercijalista.setTitle("Komercijalista");
 		frmKomercijalista.getContentPane().setBackground(Color.WHITE);
 		frmKomercijalista.setBounds(100, 100, 685, 473);
-		frmKomercijalista.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmKomercijalista.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmKomercijalista.getContentPane().setLayout(null);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -246,7 +249,7 @@ public class KomercijalistaMainGUI {
 		scrollPane_2.setViewportView(table_2);
 		
 		JButton btnPrikazMenadzera = new JButton("Prika\u017Ei menadžera");
-		btnPrikazMenadzera.setBounds(513, 271, 113, 23);
+		btnPrikazMenadzera.setBounds(451, 271, 175, 23);
 		panel_3.add(btnPrikazMenadzera);
 		btnPrikazMenadzera.addActionListener(new ActionListener() {
 			
@@ -289,8 +292,8 @@ public class KomercijalistaMainGUI {
 		table_3.getColumnModel().getColumn(5).setPreferredWidth(126);
 		scrollPane_3.setViewportView(table_3);
 		
-		JButton btnPrikaziProdavaca = new JButton("Prika\u017Ei aktera");
-		btnPrikaziProdavaca.setBounds(513, 277, 113, 23);
+		JButton btnPrikaziProdavaca = new JButton("Prikaži prodavača");
+		btnPrikaziProdavaca.setBounds(470, 277, 156, 23);
 		panel_2.add(btnPrikaziProdavaca);
 		btnPrikaziProdavaca.addActionListener(new ActionListener() {
 			
@@ -344,9 +347,18 @@ public class KomercijalistaMainGUI {
 		table_1.getColumnModel().getColumn(3).setPreferredWidth(112);
 		scrollPane_1.setViewportView(table_1);
 		
-		JButton btnNewButton_2 = new JButton("Odjava sa sistema");
-		btnNewButton_2.setBounds(499, 13, 156, 25);
-		frmKomercijalista.getContentPane().add(btnNewButton_2);
+		JButton btnOdjava = new JButton("Odjava sa sistema");
+		btnOdjava.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				if(SesijaServis.odjava()){
+					roditelj.otkrij();
+					frmKomercijalista.dispose();
+				}
+			}
+		});
+		btnOdjava.setBounds(499, 13, 156, 25);
+		frmKomercijalista.getContentPane().add(btnOdjava);
 		refreshajTabeluNarudzbe();
 		refreshajTabeluMenadzeri();
 		refreshajTabeluProdavaci();
