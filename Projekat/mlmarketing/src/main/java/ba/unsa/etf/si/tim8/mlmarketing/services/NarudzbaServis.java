@@ -117,7 +117,7 @@ public class NarudzbaServis
 				s.update(n);
 			}	
 		}
-		else if(noviStatus.equals("Odbijena"))
+		else if(noviStatus.equals("Odbijena") || noviStatus.equals("Na čekanju"))
 		{
 			n.setStatus(noviStatus);
 			s.update(n);
@@ -160,7 +160,7 @@ public class NarudzbaServis
 				pf.setKolicina(pn[i].getKolicina());
 				//pf.getProizvod().setKolicina(pf.getProizvod().getKolicina() - pf.getKolicina());
 				f.getProizvodFakturas().add(pf);
-				ukupnacijena = pf.getNabavnacijena() * pf.getKolicina();
+				ukupnacijena = ukupnacijena + pf.getNabavnacijena() * pf.getKolicina();
 				s.save(pf);
 			}
 			f.setUkupnacijena(ukupnacijena);

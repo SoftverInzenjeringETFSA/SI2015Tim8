@@ -150,10 +150,26 @@ public class PrikazNarudzbaKomGUI {
 				
 				String status = (String)comboBoxStatus.getSelectedItem();
 				Narudzba n = ns.dajNarudzbu(id);
+				if(n.getStatus().equals("Potvrđena") || n.getStatus().equals("Fakturisana"))
+				{
+					JOptionPane.showMessageDialog(null, "Nije moguće mijenjati status narudzbe koja je potvrđena ili fakturisana.");
+					return;
+				}
+				if(status.equals("Fakturisana"))
+				{
+					JOptionPane.showMessageDialog(null, "Nije moguće promijeniti status narudžbe u fakturisana. Fakturisanje narudžbe obavlja komercijalista.");
+					return;
+				}
 				if(!ns.izmijeniStatusNarudzbe(n, status))
 				{
-					JOptionPane.showMessageDialog(null, "Nije moguće potvrditi odabranu narudžbu jer nema dovoljno proizvoda na stanju!");
+					JOptionPane.showMessageDialog(null, "Nije moguće potvrditi odabranu narudžbu jer nema dovoljno proizvoda na stanju.");
 				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Uspješno ste promijenili status narudžbe.");
+					frmNarudba.dispose();
+				}
+				//treba dodati refreshovanje tabele narudzbe i refreshovanje tabele proizvodi
 			}
 		});
 		prikaziPodatke();
