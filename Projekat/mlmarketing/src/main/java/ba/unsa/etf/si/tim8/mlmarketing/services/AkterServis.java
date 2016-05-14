@@ -9,8 +9,6 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
-import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
-import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
 
 public class AkterServis {
 	

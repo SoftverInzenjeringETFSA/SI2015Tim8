@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import ba.unsa.etf.si.tim8.mlmarketing.ui.MyTableModel;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;

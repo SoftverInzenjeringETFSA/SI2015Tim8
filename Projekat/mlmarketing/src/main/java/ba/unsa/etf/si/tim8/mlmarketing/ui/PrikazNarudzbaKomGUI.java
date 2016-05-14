@@ -1,30 +1,23 @@
 package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
-import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.util.ArrayList;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JList;
-import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import ba.unsa.etf.si.tim8.mlmarketing.ui.MyTableModel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
-import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Narudzba;
-import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
 import ba.unsa.etf.si.tim8.mlmarketing.models.ProizvodNarudzba;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NarudzbaServis;
-
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 
 public class PrikazNarudzbaKomGUI {
 	

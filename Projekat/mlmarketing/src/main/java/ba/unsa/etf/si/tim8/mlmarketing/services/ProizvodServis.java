@@ -3,13 +3,9 @@ package ba.unsa.etf.si.tim8.mlmarketing.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
 
-import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
-import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
 
 public class ProizvodServis {

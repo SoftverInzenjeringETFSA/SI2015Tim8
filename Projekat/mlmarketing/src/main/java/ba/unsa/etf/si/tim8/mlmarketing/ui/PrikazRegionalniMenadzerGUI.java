@@ -2,7 +2,6 @@ package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;

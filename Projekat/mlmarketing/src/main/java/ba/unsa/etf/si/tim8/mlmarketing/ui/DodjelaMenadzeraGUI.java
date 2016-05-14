@@ -3,6 +3,8 @@ package ba.unsa.etf.si.tim8.mlmarketing.ui;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -18,9 +20,6 @@ import org.jboss.logging.Logger;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
-
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 public class DodjelaMenadzeraGUI {
 

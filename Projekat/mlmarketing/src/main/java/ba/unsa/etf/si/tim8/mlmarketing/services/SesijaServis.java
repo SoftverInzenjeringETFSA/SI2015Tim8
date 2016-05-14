@@ -5,7 +5,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
-import ba.unsa.etf.si.tim8.mlmarketing.services.SifraServis;
 
 
 public class SesijaServis {

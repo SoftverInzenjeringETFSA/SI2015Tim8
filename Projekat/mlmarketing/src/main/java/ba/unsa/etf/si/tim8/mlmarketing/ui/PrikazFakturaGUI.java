@@ -15,9 +15,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Faktura;
-import ba.unsa.etf.si.tim8.mlmarketing.models.Narudzba;
 import ba.unsa.etf.si.tim8.mlmarketing.models.ProizvodFaktura;
-import ba.unsa.etf.si.tim8.mlmarketing.models.ProizvodNarudzba;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NarudzbaServis;
 
 public class PrikazFakturaGUI {

@@ -14,17 +14,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
-import ba.unsa.etf.si.tim8.mlmarketing.ui.MyTableModel;
-
-import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
-import ba.unsa.etf.si.tim8.mlmarketing.models.Faktura;
-import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
-import ba.unsa.etf.si.tim8.mlmarketing.models.Narudzba;
-import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
-import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
-import ba.unsa.etf.si.tim8.mlmarketing.services.NarudzbaServis;
-import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
-import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 
 import org.apache.log4j.Logger;
 
@@ -35,6 +24,15 @@ import ba.unsa.etf.si.tim8.mlmarketing.services.NaloziServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;*/
 
 import org.hibernate.Session;
+
+import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
+import ba.unsa.etf.si.tim8.mlmarketing.models.Faktura;
+import ba.unsa.etf.si.tim8.mlmarketing.models.Narudzba;
+import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
+import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.NarudzbaServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 
 public class KomercijalistaMainGUI {
 	

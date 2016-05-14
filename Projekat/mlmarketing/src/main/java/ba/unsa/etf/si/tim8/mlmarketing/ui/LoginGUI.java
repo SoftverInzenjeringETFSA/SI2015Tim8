@@ -1,9 +1,5 @@
 package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
-import ba.unsa.etf.si.tim8.mlmarketing.models.*;
-import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
-import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
-
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +14,10 @@ import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+
+import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
+import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 
 
 

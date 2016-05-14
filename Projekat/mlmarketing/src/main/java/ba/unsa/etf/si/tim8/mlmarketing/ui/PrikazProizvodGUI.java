@@ -2,6 +2,8 @@ package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,8 +16,6 @@ import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
 import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class PrikazProizvodGUI {
 	

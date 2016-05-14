@@ -1,13 +1,12 @@
 package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import ba.unsa.etf.si.tim8.mlmarketing.ui.MyTableModel;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;

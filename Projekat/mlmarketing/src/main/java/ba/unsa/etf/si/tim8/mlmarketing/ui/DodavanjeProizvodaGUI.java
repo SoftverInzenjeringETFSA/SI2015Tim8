@@ -8,7 +8,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
@@ -17,9 +19,6 @@ import org.hibernate.Session;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
 import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
-
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 
 public class DodavanjeProizvodaGUI {
 	

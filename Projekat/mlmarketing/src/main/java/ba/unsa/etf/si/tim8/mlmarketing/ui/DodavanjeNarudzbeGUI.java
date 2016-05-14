@@ -2,6 +2,8 @@ package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,27 +14,22 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-import ba.unsa.etf.si.tim8.mlmarketing.ui.MyTableModel;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Narudzba;
-import ba.unsa.etf.si.tim8.mlmarketing.models.ProizvodNarudzba;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
-import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
+import ba.unsa.etf.si.tim8.mlmarketing.models.ProizvodNarudzba;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NarudzbaServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JScrollPane;
 
 public class DodavanjeNarudzbeGUI {
 

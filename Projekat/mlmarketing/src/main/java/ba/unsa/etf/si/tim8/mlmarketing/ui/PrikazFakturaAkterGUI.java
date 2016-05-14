@@ -1,10 +1,10 @@
 package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -14,7 +14,6 @@ import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Faktura;
-import ba.unsa.etf.si.tim8.mlmarketing.models.Narudzba;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NarudzbaServis;
 
