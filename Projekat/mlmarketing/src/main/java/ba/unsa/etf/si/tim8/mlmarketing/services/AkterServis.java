@@ -21,8 +21,12 @@ public class AkterServis {
 	{
 		Transaction t = s.beginTransaction();
 		int id = (Integer)s.save(a);
+		if(a.getAkterprodaje() != null){
+			s.update(a.getAkterprodaje());
+		}
 		t.commit();
 		s.flush();
+		s.clear();
 		return id;
 	}
 	
@@ -44,6 +48,8 @@ public class AkterServis {
 		Akterprodaje a = (Akterprodaje) s.get(Akterprodaje.class, id);
 		if(a!=null)s.delete(a);
 		t.commit();
+		s.flush();
+		s.clear();
 		return true;
 	}
 	
