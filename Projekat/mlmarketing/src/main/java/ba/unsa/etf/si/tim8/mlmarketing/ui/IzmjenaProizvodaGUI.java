@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import org.hibernate.Session;
+import org.jboss.logging.Logger;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
 import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
@@ -19,6 +20,7 @@ import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 
 public class IzmjenaProizvodaGUI {
 
+	final static Logger logger = Logger.getLogger(IzmjenaProizvodaGUI.class);
 	private Session s;
 	private int id = -1;
 	private ProizvodServis ps;
@@ -39,7 +41,7 @@ public class IzmjenaProizvodaGUI {
 					IzmjenaProizvodaGUI window = new IzmjenaProizvodaGUI(s, refreshableRoditelj, id);
 					window.frmIzmijeni.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 			}
 		});

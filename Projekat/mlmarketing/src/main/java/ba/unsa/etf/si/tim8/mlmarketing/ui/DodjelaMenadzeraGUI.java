@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.hibernate.Session;
+import org.jboss.logging.Logger;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
@@ -23,6 +24,7 @@ import java.awt.event.WindowEvent;
 
 public class DodjelaMenadzeraGUI {
 
+	final static Logger logger = Logger.getLogger(DodjelaMenadzeraGUI.class);
 	private Session s;
 	private int id = -1;
 	private AkterServis aks;
@@ -41,7 +43,7 @@ public class DodjelaMenadzeraGUI {
 					DodjelaMenadzeraGUI window = new DodjelaMenadzeraGUI(s,refreshableRoditelj,id);
 					window.frmDodijeliMenadera.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 			}
 		});

@@ -16,6 +16,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -23,6 +24,7 @@ import org.hibernate.Transaction;
 
 public class LoginGUI {
 
+	final static Logger logger = Logger.getLogger(LoginGUI.class);
 	private JFrame frmLogin;
 	private JTextField txtUsername;
 	private JPasswordField passwordField;
@@ -39,7 +41,7 @@ public class LoginGUI {
 					LoginGUI window = new LoginGUI(s);
 					window.frmLogin.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 			}
 		});

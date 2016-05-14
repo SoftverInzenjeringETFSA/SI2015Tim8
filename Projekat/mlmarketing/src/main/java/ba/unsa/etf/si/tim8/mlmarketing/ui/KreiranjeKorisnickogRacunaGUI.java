@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import org.hibernate.Session;
+import org.jboss.logging.Logger;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NaloziServis;
@@ -21,6 +22,7 @@ import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 
 public class KreiranjeKorisnickogRacunaGUI {
 	
+	final static Logger logger = Logger.getLogger(KreiranjeKorisnickogRacunaGUI.class);
 	private Session s;
 	private NaloziServis ns;
 	private SefProdajeMainGUI refreshableRoditelj;
@@ -45,7 +47,7 @@ public class KreiranjeKorisnickogRacunaGUI {
 					KreiranjeKorisnickogRacunaGUI window = new KreiranjeKorisnickogRacunaGUI(s,refreshableRoditelj);
 					window.frmDodajKorisnika.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 			}
 		});

@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
@@ -21,6 +22,7 @@ import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 
 public class PrikazRegionalniMenadzerGUI {
 
+	final static Logger logger = Logger.getLogger(PrikazRegionalniMenadzerGUI.class);
 	private Session s;
 	private AkterServis aks;
 	private int id;
@@ -45,7 +47,7 @@ public class PrikazRegionalniMenadzerGUI {
 					PrikazRegionalniMenadzerGUI window = new PrikazRegionalniMenadzerGUI(s,id);
 					window.frmPregledMenadera.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 			}
 		});

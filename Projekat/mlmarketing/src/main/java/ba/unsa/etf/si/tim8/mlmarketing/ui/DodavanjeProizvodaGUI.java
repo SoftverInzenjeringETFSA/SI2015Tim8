@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
@@ -22,6 +23,7 @@ import javax.swing.SpinnerNumberModel;
 
 public class DodavanjeProizvodaGUI {
 	
+	final static Logger logger = Logger.getLogger(DodavanjeProizvodaGUI.class);
 	private Session s;
 	private ProizvodServis ps;
 	private SefProdajeMainGUI refreshableRoditelj;
@@ -42,7 +44,7 @@ public class DodavanjeProizvodaGUI {
 					DodavanjeProizvodaGUI window = new DodavanjeProizvodaGUI(s,refreshableRoditelj);
 					window.frmDodajProizvod.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 			}
 		});

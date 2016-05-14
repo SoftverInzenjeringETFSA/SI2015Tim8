@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
@@ -25,6 +26,7 @@ import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 
 public class RegMenadzerDodajIzmjeniGUI {
 	
+	final static Logger logger = Logger.getLogger(RegMenadzerDodajIzmjeniGUI.class);
 	private Session s;
 	private RegijaServis rs;
 	private AkterServis aks;
@@ -50,7 +52,7 @@ public class RegMenadzerDodajIzmjeniGUI {
 					else window = new RegMenadzerDodajIzmjeniGUI(what,s,refreshableRoditelj,id);
 					window.frmDodajizmijeni.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 			}
 		});

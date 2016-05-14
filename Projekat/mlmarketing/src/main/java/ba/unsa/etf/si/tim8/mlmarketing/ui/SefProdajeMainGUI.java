@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
@@ -32,6 +33,7 @@ import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 
 public class SefProdajeMainGUI {
 	
+	final static Logger logger = Logger.getLogger(SefProdajeMainGUI.class);
 	private Session s;
 	private RegijaServis rs;
 	private AkterServis aks;
@@ -59,7 +61,7 @@ public class SefProdajeMainGUI {
 					SefProdajeMainGUI window = new SefProdajeMainGUI(s,roditelj);
 					window.frmSefProdaje.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 			}
 		});

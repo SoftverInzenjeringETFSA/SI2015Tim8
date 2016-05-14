@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import org.hibernate.Session;
+import org.jboss.logging.Logger;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
 import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;
@@ -20,6 +21,7 @@ import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 
 public class DodavanjeRegijeGUI {
 	
+	final static Logger logger = Logger.getLogger(DodavanjeRegijeGUI.class);
 	Session s;
 	SefProdajeMainGUI refreshableRoditelj;
 	private JFrame frmDodavanjeRegije;
@@ -36,7 +38,7 @@ public class DodavanjeRegijeGUI {
 					DodavanjeRegijeGUI window = new DodavanjeRegijeGUI(s,refreshableRoditelj);
 					window.frmDodavanjeRegije.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 			}
 		});
