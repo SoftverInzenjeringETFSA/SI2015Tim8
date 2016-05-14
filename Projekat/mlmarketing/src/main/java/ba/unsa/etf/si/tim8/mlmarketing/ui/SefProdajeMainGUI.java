@@ -205,17 +205,24 @@ public class SefProdajeMainGUI {
 				{
 					int id = odaberiIdKolonu(tableMenadzeri, 5);
 					Akterprodaje a = aks.dajAktera(id);
-					if(a.getAkterprodajes().size()==0){
-						int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
-						if(rez == JOptionPane.YES_OPTION){
-							aks.izbrisiAktera(id);
-							refreshajTabeluMenadzeri();
+					if(aks.moguceBrisanje(a)){
+						if(a.getAkterprodajes().size()==0){
+							int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+							if(rez == JOptionPane.YES_OPTION){
+								aks.izbrisiAktera(id);
+								refreshajTabeluMenadzeri();
+							}
+						}
+						else{
+							JOptionPane.showMessageDialog(null, "Nije moguce obrisati regionalnog menadžera"
+									+ " dok je isti nadležan za neke prodavače.");
 						}
 					}
 					else{
-						JOptionPane.showMessageDialog(null, "Nije moguce obrisati regionalnog menadžera"
-								+ " dok je isti nadležan za neke prodavače.");
+						JOptionPane.showMessageDialog(null, "Nije moguce brisanje aktera dok se ne fakturisu sve njegove "
+								+ "narudzbe koje su potvrdene!");
 					}
+					
 				}
 				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednog menadžera iz tabele.");
 				

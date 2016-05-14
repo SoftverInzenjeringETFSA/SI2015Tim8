@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
+import ba.unsa.etf.si.tim8.mlmarketing.models.Narudzba;
 
 public class AkterServis {
 	
@@ -44,8 +45,12 @@ public class AkterServis {
 	
 	public boolean izbrisiAktera(int id)
 	{
-		Transaction t = s.beginTransaction();
 		Akterprodaje a = (Akterprodaje) s.get(Akterprodaje.class, id);
+		Criteria cn = s.createCriteria(Narudzba.class);
+		cn.add(Restrictions.eq("akterprodaje", a));
+		List<Narudzba> listanarudzbi = cn.list();
+		//ArrayList<Naru>
+		Transaction t = s.beginTransaction();
 		if(a!=null)s.delete(a);
 		t.commit();
 		s.flush();
@@ -77,5 +82,15 @@ public class AkterServis {
 		c.add(Restrictions.eq("tip", "prodavac"));
 		Akterprodaje a = (Akterprodaje) c.add(Restrictions.isNull("akterprodaje")).uniqueResult();
 		return a;
+	}
+	
+	public boolean moguceBrisanje(Akterprodaje a){
+		Criteria c = s.createCriteria(Narudzba.class);
+		c.add(Restrictions.eq("akterprodaje", a));
+		c.add(Restrictions.eq("status", "Potvrđena"));
+		List<Narudzba> lista = c.list();
+		if(lista == null) return true;
+		if(lista.size()==0) return true;
+		return false;
 	}
 }
