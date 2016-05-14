@@ -148,10 +148,12 @@ public class PrikazNarudzbaKomGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				
-				/*String status = (String)comboBoxStatus.getSelectedItem();
+				String status = (String)comboBoxStatus.getSelectedItem();
 				Narudzba n = ns.dajNarudzbu(id);
-				n.setStatus(status);*/
-				
+				if(!ns.izmijeniStatusNarudzbe(n, status))
+				{
+					JOptionPane.showMessageDialog(null, "Nije moguće potvrditi odabranu narudžbu jer nema dovoljno proizvoda na stanju!");
+				}
 			}
 		});
 		prikaziPodatke();
