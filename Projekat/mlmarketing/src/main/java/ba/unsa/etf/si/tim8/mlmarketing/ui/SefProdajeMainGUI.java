@@ -187,13 +187,19 @@ public class SefProdajeMainGUI {
 			public void actionPerformed(ActionEvent arg0) {
 				if(tableMenadzeri.getSelectedRow() != -1)
 				{
-					int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
-					if(rez == JOptionPane.YES_OPTION){
-						int id = (Integer)tableMenadzeri.getModel().getValueAt(tableMenadzeri.getSelectedRow(), 5);
-						aks.izbrisiAktera(id);
-						refreshajTabeluMenadzeri();
+					int id = odaberiIdKolonu(tableMenadzeri, 5);
+					Akterprodaje a = aks.dajAktera(id);
+					if(a.getAkterprodajes().size()==0){
+						int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+						if(rez == JOptionPane.YES_OPTION){
+							aks.izbrisiAktera(id);
+							refreshajTabeluMenadzeri();
+						}
 					}
-					
+					else{
+						JOptionPane.showMessageDialog(null, "Nije moguce obrisati regionalnog menadžera"
+								+ " dok je isti nadležan za neke prodavače.");
+					}
 				}
 				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednog menadžera iz tabele.");
 				
@@ -228,29 +234,24 @@ public class SefProdajeMainGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(tableMenadzeri.getSelectedRow() != -1){
-					int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
-					if(rez == JOptionPane.YES_OPTION){
-						int id = odaberiIdKolonu(tableMenadzeri, 5);
-						Akterprodaje a = aks.dajAktera(id);
-						int brojZaKojeJeNadlezan = a.getAkterprodajes().size();
-						if(brojZaKojeJeNadlezan == 0)
-						{
+					int id = odaberiIdKolonu(tableMenadzeri, 5);
+					Akterprodaje a = aks.dajAktera(id);
+					if(a.getAkterprodajes().size()==0){
+						int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+						if(rez == JOptionPane.YES_OPTION){
 							
-							a.setTip("prodavac");
-							aks.izmjeniAktera(a);
-							DodjelaMenadzeraGUI dodjelamenadzera= new DodjelaMenadzeraGUI(s,ref,a.getId());
-							dodjelamenadzera.startDodjelaMenadzera();
-						}
-						else {
-							JOptionPane.showMessageDialog(null, "Nije moguce unazaditi regionalnog menadžera"
-									+ " dok je isti nadležan za neke prodavače.");
+								a.setTip("prodavac");
+								aks.izmjeniAktera(a);
+								DodjelaMenadzeraGUI dodjelamenadzera= new DodjelaMenadzeraGUI(s,ref,a.getId());
+								dodjelamenadzera.startDodjelaMenadzera();
 						}
 					}
-					
+					else{
+							JOptionPane.showMessageDialog(null, "Nije moguce unazaditi regionalnog menadžera"
+									+ " dok je isti nadležan za neke prodavače.");
+					}
 				}
 				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednog menadžera iz tabele.");
-				
-		
 			}
 		});
 		panel_1.add(btnUnazadi);
