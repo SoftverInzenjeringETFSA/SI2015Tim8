@@ -179,11 +179,16 @@ public class DodavanjeNarudzbeGUI {
 				if(SesijaServis.dajTipKorisnika().equals("komercijalista"))
 				{
 					if(n == null) n = new Narudzba();
+					ProizvodNarudzba[] pn = n.getProizvodNarudzbas().toArray(new ProizvodNarudzba[n.getProizvodNarudzbas().size()]);
+					if(pn.length == 0)
+					{
+						JOptionPane.showMessageDialog(null, "Nije moguće kreirati praznu narudžbu. Molimo vas da dodate neki od proizvoda.");
+						return;
+					}
 					n.setAkterprodaje((Akterprodaje)comboBox.getSelectedItem());
 					n.setDatum(new Date());
 					n.setStatus("Na čekanju");
 					ns.kreirajNarudzbu(n);
-					ProizvodNarudzba[] pn = n.getProizvodNarudzbas().toArray(new ProizvodNarudzba[n.getProizvodNarudzbas().size()]);
 					for(int i = 0; i < pn.length; i++)
 					{
 						ns.dodajProizvod(pn[i]);
@@ -193,7 +198,7 @@ public class DodavanjeNarudzbeGUI {
 					refreshajTabeluProizvodNarudzbe();
 					refreshajTabeluProizvodi();
 				}
-				else JOptionPane.showMessageDialog(null, "Unijeli ste nedozvoljenu količinu!");
+				else JOptionPane.showMessageDialog(null, "Niste ulogovani sa odgovarajućim privilegijama.");
 			}
 		});
 		btnNewButton_1.setBounds(125, 445, 97, 25);
