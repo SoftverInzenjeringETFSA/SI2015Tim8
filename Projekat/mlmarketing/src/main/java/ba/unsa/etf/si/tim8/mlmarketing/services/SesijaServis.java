@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
+import ba.unsa.etf.si.tim8.mlmarketing.services.SifraServis;
 
 
 public class SesijaServis {
@@ -31,9 +32,13 @@ public class SesijaServis {
 	public static boolean prijava(String Username, String Password){
 		Criteria criteria = s.createCriteria(Korisnik.class);
 		Korisnik k = (Korisnik) criteria.add(Restrictions.eq("username", Username)).uniqueResult();
-		if(k.getPassword().equals(Password)){
-			korisnik=k;
-			return true;
+		if(k!=null){
+			if(SifraServis.provjeriPassword(Password, k.getPassword())){
+				System.out.println("to je to");
+				korisnik=k;
+				return true;
+			}
+			else return false;
 		}
 		else return false;
 	}

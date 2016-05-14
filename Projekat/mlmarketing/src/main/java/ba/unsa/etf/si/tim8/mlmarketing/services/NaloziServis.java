@@ -17,7 +17,9 @@ import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
 	}
 	
 	public int kreirajNalog(Korisnik k) {
+		//Prosljedjuje se nalog sa obicnim passwordom, koji se onda reheshira i postavlja!
 		Transaction t = s.beginTransaction();
+		k.setPassword(SifraServis.heshirajPassword(k.getPassword()));
 		int id =(Integer) s.save(k);
 		t.commit();
 		return id;
