@@ -30,6 +30,7 @@ import ba.unsa.etf.si.tim8.mlmarketing.models.ProizvodNarudzba;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NarudzbaServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 
 public class DodavanjeNarudzbeGUI {
 
@@ -120,8 +121,7 @@ public class DodavanjeNarudzbeGUI {
 		comboBox_1.setBounds(72, 25, 111, 22);
 		panel.add(comboBox_1);
 		
-		// za ovo ce se kasnije koristiti service ProizvodServis 
-		List<Proizvod> proizvodi = s.createCriteria(Proizvod.class).list();
+		List<Proizvod> proizvodi = ps.dajSveProizvode();
 		for(int i = 0; i < proizvodi.size(); i++) comboBox_1.addItem(proizvodi.get(i));
 		
 		
@@ -140,19 +140,27 @@ public class DodavanjeNarudzbeGUI {
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				if(n == null) n = new Narudzba();
-				if(Integer.parseInt(textField.getText())  <= ((Proizvod)comboBox_1.getSelectedItem()).getKolicina())
+				if(SesijaServis.dajTipKorisnika().equals("komercijalista"))
 				{
-					pn = new ProizvodNarudzba();
-					pn.setKolicina(Integer.parseInt(textField.getText()));
-					pn.setNarudzba(n);
-					pn.setProizvod((Proizvod)comboBox_1.getSelectedItem());
-					//pn.getProizvod().setKolicina(pn.getProizvod().getKolicina() - Integer.parseInt(textField.getText()));
-					n.getProizvodNarudzbas().add(pn);
-					refreshajTabeluProizvodNarudzbe();
-					refreshajTabeluProizvodi();
+					if(n == null) n = new Narudzba();
+					if(Integer.parseInt(textField.getText())  <= ((Proizvod)comboBox_1.getSelectedItem()).getKolicina())
+					{
+						pn = new ProizvodNarudzba();
+						pn.setKolicina(Integer.parseInt(textField.getText()));
+						pn.setNarudzba(n);
+						pn.setProizvod((Proizvod)comboBox_1.getSelectedItem());
+						//pn.getProizvod().setKolicina(pn.getProizvod().getKolicina() - Integer.parseInt(textField.getText()));
+						n.getProizvodNarudzbas().add(pn);
+						refreshajTabeluProizvodNarudzbe();
+						refreshajTabeluProizvodi();
+					}
+					else JOptionPane.showMessageDialog(null, "Unijeli ste nedozvoljenu količinu!");
 				}
-				else JOptionPane.showMessageDialog(null, "Unijeli ste nedozvoljenu količinu!");
+				else 
+				{
+					JOptionPane.showMessageDialog(null, "Niste logovani sa odgovarajućim privilegijama za ovu akciju.");
+					frmKreiranjeNarudbe.dispose();
+				}
 			}
 		});
 		btnNewButton.setBounds(72, 101, 111, 25);
@@ -164,20 +172,24 @@ public class DodavanjeNarudzbeGUI {
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				if(n == null) n = new Narudzba();
-				n.setAkterprodaje((Akterprodaje)comboBox.getSelectedItem());
-				n.setDatum(new Date());
-				n.setStatus("Na čekanju");
-				ns.kreirajNarudzbu(n);
-				ProizvodNarudzba[] pn = n.getProizvodNarudzbas().toArray(new ProizvodNarudzba[n.getProizvodNarudzbas().size()]);
-				for(int i = 0; i < pn.length; i++)
+				if(SesijaServis.dajTipKorisnika().equals("komercijalista"))
 				{
-					ns.dodajProizvod(pn[i]);
+					if(n == null) n = new Narudzba();
+					n.setAkterprodaje((Akterprodaje)comboBox.getSelectedItem());
+					n.setDatum(new Date());
+					n.setStatus("Na čekanju");
+					ns.kreirajNarudzbu(n);
+					ProizvodNarudzba[] pn = n.getProizvodNarudzbas().toArray(new ProizvodNarudzba[n.getProizvodNarudzbas().size()]);
+					for(int i = 0; i < pn.length; i++)
+					{
+						ns.dodajProizvod(pn[i]);
+					}
+					refreshajTabeluNarudzbe();
+					n = null;
+					refreshajTabeluProizvodNarudzbe();
+					refreshajTabeluProizvodi();
 				}
-				refreshajTabeluNarudzbe();
-				n = null;
-				refreshajTabeluProizvodNarudzbe();
-				refreshajTabeluProizvodi();
+				else JOptionPane.showMessageDialog(null, "Unijeli ste nedozvoljenu količinu!");
 			}
 		});
 		btnNewButton_1.setBounds(125, 445, 97, 25);
