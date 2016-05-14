@@ -742,21 +742,20 @@ public class SefProdajeMainGUI {
 				akteri.get(i).getAkterprodaje().getIme()+" "+ akteri.get(i).getAkterprodaje().getPrezime(),
 				akteri.get(i).getId()
 			};
-			
-			tableProdavaci.setModel(new MyTableModel(
-					data,					
-					new String[] {
-						"Ime i prezime",
-						"Broj telefona",
-						"Adresa",
-						"Email",
-						"Regija",
-						"Nadležni manager",
-						"ID"
-					}
-				));
-			tableProdavaci.getColumnModel().removeColumn(tableProdavaci.getColumnModel().getColumn(6));
 		}
+		tableProdavaci.setModel(new MyTableModel(
+				data,					
+				new String[] {
+					"Ime i prezime",
+					"Broj telefona",
+					"Adresa",
+					"Email",
+					"Regija",
+					"Nadležni manager",
+					"ID"
+				}
+			));
+		tableProdavaci.getColumnModel().removeColumn(tableProdavaci.getColumnModel().getColumn(6));
 	}
 	
 	public void refreshajTabeluKorisnici(){
