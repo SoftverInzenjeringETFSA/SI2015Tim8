@@ -13,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import ba.unsa.etf.si.tim8.mlmarketing.ui.MyTableModel;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
@@ -27,6 +28,7 @@ import javax.swing.DefaultComboBoxModel;
 
 public class PrikazNarudzbaKomGUI {
 	
+	final static Logger logger = Logger.getLogger(PrikazNarudzbaKomGUI.class);
 	private Session s;
 	private NarudzbaServis ns;
 	private int id;
@@ -48,7 +50,7 @@ public class PrikazNarudzbaKomGUI {
 					PrikazNarudzbaKomGUI window = new PrikazNarudzbaKomGUI(s, id);
 					window.frmNarudba.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 			}
 		});

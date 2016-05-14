@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
@@ -20,6 +20,7 @@ import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 
 public class PrikazMenadzerKomGUI {
 	
+	final static Logger logger = Logger.getLogger(PrikazMenadzerKomGUI.class);
 	private Session s;
 	private AkterServis aks;
 	private int id;
@@ -41,7 +42,7 @@ public class PrikazMenadzerKomGUI {
 					PrikazMenadzerKomGUI window = new PrikazMenadzerKomGUI(s, id);
 					window.frmRegionalniMenader.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 			}
 		});

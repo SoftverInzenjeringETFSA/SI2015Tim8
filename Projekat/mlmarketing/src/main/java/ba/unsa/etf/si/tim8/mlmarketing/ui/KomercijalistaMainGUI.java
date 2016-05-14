@@ -26,6 +26,8 @@ import ba.unsa.etf.si.tim8.mlmarketing.services.NarudzbaServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 
+import org.apache.log4j.Logger;
+
 /*import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
@@ -36,6 +38,7 @@ import org.hibernate.Session;
 
 public class KomercijalistaMainGUI {
 	
+	final static Logger logger = Logger.getLogger(KomercijalistaMainGUI.class);
 	private Session s;
 	private NarudzbaServis ns;
 	private AkterServis aks;
@@ -59,7 +62,7 @@ public class KomercijalistaMainGUI {
 					KomercijalistaMainGUI window = new KomercijalistaMainGUI(s, roditelj);
 					window.frmKomercijalista.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 			}
 		});

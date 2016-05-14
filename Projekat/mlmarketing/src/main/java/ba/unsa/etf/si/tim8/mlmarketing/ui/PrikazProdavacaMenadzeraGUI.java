@@ -9,6 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import ba.unsa.etf.si.tim8.mlmarketing.ui.MyTableModel;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
@@ -16,6 +17,7 @@ import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 
 public class PrikazProdavacaMenadzeraGUI {
 	
+	final static Logger logger = Logger.getLogger(PrikazProdavacaMenadzeraGUI.class);
 	private Session s;
 	private AkterServis aks;
 	private int id;
@@ -34,7 +36,7 @@ public class PrikazProdavacaMenadzeraGUI {
 					PrikazProdavacaMenadzeraGUI window = new PrikazProdavacaMenadzeraGUI(s, id);
 					window.frmProdavai.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 			}
 		});

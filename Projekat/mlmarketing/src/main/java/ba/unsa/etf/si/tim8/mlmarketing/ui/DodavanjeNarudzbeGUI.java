@@ -18,6 +18,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import ba.unsa.etf.si.tim8.mlmarketing.ui.MyTableModel;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
@@ -35,6 +36,7 @@ import javax.swing.JScrollPane;
 
 public class DodavanjeNarudzbeGUI {
 
+	final static Logger logger = Logger.getLogger(DodavanjeNarudzbeGUI.class);
 	private Session s;
 	private NarudzbaServis ns;
 	private AkterServis aks;
@@ -58,7 +60,7 @@ public class DodavanjeNarudzbeGUI {
 					DodavanjeNarudzbeGUI window = new DodavanjeNarudzbeGUI(s, table1, tableProizvodi);
 					window.frmKreiranjeNarudbe.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 			}
 		});

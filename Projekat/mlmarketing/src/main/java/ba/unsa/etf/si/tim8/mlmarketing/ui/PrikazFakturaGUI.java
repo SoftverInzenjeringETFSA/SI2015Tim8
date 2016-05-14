@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Faktura;
@@ -21,6 +22,7 @@ import ba.unsa.etf.si.tim8.mlmarketing.services.NarudzbaServis;
 
 public class PrikazFakturaGUI {
 	
+	final static Logger logger = Logger.getLogger(PrikazFakturaGUI.class);
 	private Session s;
 	private int id;
 	//private Faktura f;
@@ -43,7 +45,7 @@ public class PrikazFakturaGUI {
 					PrikazFakturaGUI window = new PrikazFakturaGUI(s, id);
 					window.frmFaktura.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 			}
 		});

@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
@@ -15,6 +16,7 @@ import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
 
 public class PrikazProizvodKomGUI {
 	
+	final static Logger logger = Logger.getLogger(PrikazProizvodKomGUI.class);
 	private int id;
 	private Session s;
 	private ProizvodServis ps;
@@ -35,7 +37,7 @@ public class PrikazProizvodKomGUI {
 					PrikazProizvodKomGUI window = new PrikazProizvodKomGUI(s, id);
 					window.frmProizvod.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 			}
 		});
