@@ -104,7 +104,7 @@ public class PrikazFakturaAkterGUI {
 		for(int i = 0; i<fakture.size();i++)
 			data[i]= new Object[]
 			{
-				fakture.get(i).getId(),fakture.get(i).getAkterprodaje().getIme() + " " + fakture.get(i).getAkterprodaje().getPrezime(),
+				fakture.get(i).getId(),fakture.get(i).getImeaktera(),
 				fakture.get(i).getDatum(),fakture.get(i).getUkupnacijena()
 					
 			};

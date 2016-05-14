@@ -1,6 +1,7 @@
 package ba.unsa.etf.si.tim8.mlmarketing.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -8,6 +9,7 @@ import org.hibernate.Transaction;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Faktura;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Narudzba;
+import ba.unsa.etf.si.tim8.mlmarketing.models.ProizvodFaktura;
 import ba.unsa.etf.si.tim8.mlmarketing.models.ProizvodNarudzba;
 
 
@@ -69,28 +71,37 @@ public class NarudzbaServis
 	
 	public boolean kreirajFakturu(Narudzba n)
 	{
+		Transaction t = s.beginTransaction();
 		//Kasnije ce ici if(n.getStatus() == "Potvrđena"
-	/*	if(n.getStatus() == "Na čekanju")
+		if(n.getStatus().equals("Na čekanju"))
 		{
-			Transaction t = s.beginTransaction();
+			//Transaction t = s.beginTransaction();
 			Faktura f = new Faktura();
 			double ukupnacijena=0;
 			f.setAkterprodaje(n.getAkterprodaje());
+			f.setImeaktera(n.getAkterprodaje().getIme() + " " + n.getAkterprodaje().getPrezime());
+			f.setRegija(n.getAkterprodaje().getRegija());
+			f.setImeregije(n.getAkterprodaje().getRegija().getIme());
 			f.setDatum(new Date());
 			f.setUkupnacijena(0);
 			int id = (Integer)s.save(f);
-			f=s.get(Faktura.class, id);
+			//f=s.get(Faktura.class, id);
+			f = s.get(Faktura.class, id);
 			ProizvodNarudzba[] pn = n.getProizvodNarudzbas().toArray(new ProizvodNarudzba[n.getProizvodNarudzbas().size()]);
 			for(int i=0; i<pn.length;i++)
 			{
 				ProizvodFaktura pf = new ProizvodFaktura();
 				pf.setFaktura(f);
+				
 				pf.setProizvod(pn[i].getProizvod());
+				pf.setNazivproizvoda(pn[i].getProizvod().getNaziv());
+				pf.setNabavnacijena(pn[i].getProizvod().getNabavnacijena());
+				pf.setProdajnacijena(pn[i].getProizvod().getProdajnacijena());
+				
 				pf.setKolicina(pn[i].getKolicina());
-				pf.setCijena(pn[i].getProizvod().getNabavnacijena()*pn[i].getKolicina());
 				pf.getProizvod().setKolicina(pf.getProizvod().getKolicina() - pf.getKolicina());
 				f.getProizvodFakturas().add(pf);
-				ukupnacijena+=pf.getCijena();
+				ukupnacijena = pf.getNabavnacijena() * pf.getKolicina();
 				s.save(pf);
 			}
 			f.setUkupnacijena(ukupnacijena);
@@ -100,8 +111,7 @@ public class NarudzbaServis
 			t.commit();
 			return true;
 		}
-		else return false;*/
-		return true;
+		else return false;
 	}
 	
 	public Faktura dajFakturu(int id)

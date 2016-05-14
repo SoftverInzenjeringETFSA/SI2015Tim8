@@ -23,7 +23,6 @@ public class PrikazFakturaGUI {
 	final static Logger logger = Logger.getLogger(PrikazFakturaGUI.class);
 	private Session s;
 	private int id;
-	//private Faktura f;
 	private NarudzbaServis ns;
 
 	private JFrame frmFaktura;
@@ -142,7 +141,7 @@ public class PrikazFakturaGUI {
 		{
 			textFieldId.setText(prikaz.getId().toString());
 			textFieldDatum.setText(prikaz.getDatum().toString());
-			textFieldNarucilac.setText(prikaz.getAkterprodaje().getIme() + " " + prikaz.getAkterprodaje().getPrezime());
+			textFieldNarucilac.setText(prikaz.getImeaktera());
 			textFieldUkupnaCijena.setText(Double.toString(prikaz.getUkupnacijena()));
 			
 		}
@@ -158,7 +157,7 @@ public class PrikazFakturaGUI {
 			for(int i = 0; i<pf.length;i++)
 				data[i]= new Object[]
 				{
-					pf[i].getProizvod().getNaziv(), pf[i].getKolicina()
+					pf[i].getNazivproizvoda(), pf[i].getKolicina()
 				};
 			
 			table.setModel(new MyTableModel(
