@@ -26,6 +26,8 @@ public class NarudzbaServis
 		Transaction t = s.beginTransaction();
 		s.save(n);
 		t.commit();
+		s.flush();
+		s.clear();
 		return true;
 	}
 	
@@ -53,6 +55,8 @@ public class NarudzbaServis
 			s.delete(n);
 		}
 		t.commit();
+		s.flush();
+		s.clear();
 		return true;
 	}
 	
