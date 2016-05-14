@@ -133,14 +133,24 @@ public class SefProdajeMainGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(tableKorisnici.getSelectedRow()!=-1){
-					
-					int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
-					if(rez == JOptionPane.YES_OPTION){
-						int id = odaberiIdKolonu(tableKorisnici, 5);
-						ns.obrisiNalog(id);
-						refreshajTabeluKorisnici();
+					int id = odaberiIdKolonu(tableKorisnici, 5);
+					Korisnik k = s.get(Korisnik.class, id);
+					if(k!=null){
+						if(k.getUsername().equals("master")){
+							JOptionPane.showMessageDialog(null, "Nije moguce obrisati master nalog!");
+						}
+						else if(k.getId()==SesijaServis.dajIdKorisnika()){
+							JOptionPane.showMessageDialog(null, "Ne mozete obrisati vlastiti nalog!");
+						}
+						else{
+							int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+							if(rez == JOptionPane.YES_OPTION){
+								
+								ns.obrisiNalog(id);
+								refreshajTabeluKorisnici();
+							}						}
+						
 					}
-					
 				}
 				else JOptionPane.showMessageDialog(null, "Niste odabrali nalog");
 				
@@ -175,8 +185,14 @@ public class SefProdajeMainGUI {
 		btnDodajMenadzera.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				RegMenadzerDodajIzmjeniGUI rmdodaj = new RegMenadzerDodajIzmjeniGUI("dodaj",s,ref);
-				rmdodaj.pokreniRegMenDodajIzmjeni("dodaj");
+				if(rs.dajBrojRegija()==0){
+					JOptionPane.showMessageDialog(null, "Potrebno je da postoji barem jedna regija, kako bi bilo moguce dodati menadzera");
+				}
+				else
+				{
+					RegMenadzerDodajIzmjeniGUI rmdodaj = new RegMenadzerDodajIzmjeniGUI("dodaj",s,ref);
+					rmdodaj.pokreniRegMenDodajIzmjeni("dodaj");
+				}
 			}
 		});
 		

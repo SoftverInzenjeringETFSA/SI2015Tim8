@@ -56,5 +56,10 @@ public class SesijaServis {
 		if(korisnik!=null) return korisnik.getTip();
 		else return "";
 	}
+	
+	public static int dajIdKorisnika(){
+		if(korisnik!=null) return korisnik.getId();
+		else return -1;
+	}
 		
 }
