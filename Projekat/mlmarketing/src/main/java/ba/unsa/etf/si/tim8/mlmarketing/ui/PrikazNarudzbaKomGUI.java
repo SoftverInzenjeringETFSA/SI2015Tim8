@@ -2,11 +2,14 @@ package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -18,6 +21,10 @@ import org.hibernate.Session;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Narudzba;
 import ba.unsa.etf.si.tim8.mlmarketing.models.ProizvodNarudzba;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NarudzbaServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.ValidacijeServis;
+
+import javax.swing.JButton;
 
 public class PrikazNarudzbaKomGUI {
 	
@@ -25,13 +32,14 @@ public class PrikazNarudzbaKomGUI {
 	private Session s;
 	private NarudzbaServis ns;
 	private int id;
+	
 
 	private JFrame frmNarudba;
 	private JTextField textFieldId;
 	private JTextField textFieldDatum;
 	private JTextField textFieldNarucilac;
 	private JComboBox comboBoxStatus;
-	private JTable table;
+	private JTable table;	
 
 	/**
 	 * Launch the application.
@@ -126,9 +134,26 @@ public class PrikazNarudzbaKomGUI {
 		
 		comboBoxStatus = new JComboBox();
 		comboBoxStatus.setEditable(true);
-		comboBoxStatus.setModel(new DefaultComboBoxModel(new String[] {"Potvr\u0111ena", "Odbijena", "Na \u010Dekanju"}));
+		comboBoxStatus.setModel(new DefaultComboBoxModel(new String[] {"Potvr\u0111ena", "Odbijena", "Na \u010Dekanju", "Fakturisana"}));
 		comboBoxStatus.setBounds(159, 342, 145, 22);
+		comboBoxStatus.setEditable(false);
 		frmNarudba.getContentPane().add(comboBoxStatus);
+		
+		JButton btnPromijeniStatus = new JButton("Promijeni status");
+		btnPromijeniStatus.setBounds(127, 391, 177, 23);		
+		frmNarudba.getContentPane().add(btnPromijeniStatus);
+		if(!SesijaServis.dajTipKorisnika().equals("sef"))
+			btnPromijeniStatus.setVisible(false);		
+		btnPromijeniStatus.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				
+				/*String status = (String)comboBoxStatus.getSelectedItem();
+				Narudzba n = ns.dajNarudzbu(id);
+				n.setStatus(status);*/
+				
+			}
+		});
 		prikaziPodatke();
 		refreshajTabeluProizvodi();
 	}
