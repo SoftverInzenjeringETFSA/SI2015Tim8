@@ -143,18 +143,22 @@ public class DodavanjeNarudzbeGUI {
 				if(SesijaServis.dajTipKorisnika().equals("komercijalista"))
 				{
 					if(n == null) n = new Narudzba();
-					if(Integer.parseInt(textField.getText())  <= ((Proizvod)comboBox_1.getSelectedItem()).getKolicina())
+					if(comboBox_1.getItemCount() > 0)
 					{
 						pn = new ProizvodNarudzba();
 						pn.setKolicina(Integer.parseInt(textField.getText()));
 						pn.setNarudzba(n);
 						pn.setProizvod((Proizvod)comboBox_1.getSelectedItem());
-						//pn.getProizvod().setKolicina(pn.getProizvod().getKolicina() - Integer.parseInt(textField.getText()));
+						comboBox_1.removeItem(comboBox_1.getSelectedItem());
 						n.getProizvodNarudzbas().add(pn);
 						refreshajTabeluProizvodNarudzbe();
 						refreshajTabeluProizvodi();
 					}
-					else JOptionPane.showMessageDialog(null, "Unijeli ste nedozvoljenu količinu!");
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Niste odabrali proizvod za dodavanje.");
+					}
+
 				}
 				else 
 				{

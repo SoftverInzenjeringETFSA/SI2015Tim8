@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Faktura;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Narudzba;
@@ -45,14 +49,24 @@ public class NarudzbaServis
 		Narudzba n = (Narudzba) s.get(Narudzba.class, id);
 		if(n!=null) 
 		{
-			
-			ProizvodNarudzba[] pn = n.getProizvodNarudzbas().toArray(new ProizvodNarudzba[n.getProizvodNarudzbas().size()]);
-			for(int i = 0; i < pn.length; i++)
-			{
-				//pn[i].getProizvod().setKolicina(pn[i].getProizvod().getKolicina() + pn[i].getKolicina());
-				s.delete(pn[i]);
+			if(n.getStatus().equals("Potvrđena"))
+			{	
+				JOptionPane.showMessageDialog(null, "Nije moguće obrisati narudžbu koja je potvrđena, a nije fakturisana.");
+				t.commit();
+				return false;
+				
 			}
-			s.delete(n);
+			else
+			{
+				ProizvodNarudzba[] pn = n.getProizvodNarudzbas().toArray(new ProizvodNarudzba[n.getProizvodNarudzbas().size()]);
+				for(int i = 0; i < pn.length; i++)
+				{
+					//pn[i].getProizvod().setKolicina(pn[i].getProizvod().getKolicina() + pn[i].getKolicina());
+					s.delete(pn[i]);
+				}
+				s.delete(n);
+			}
+			
 		}
 		t.commit();
 		s.flush();
@@ -73,11 +87,52 @@ public class NarudzbaServis
 		return new ArrayList<Narudzba>(n);
 	}
 	
+	public boolean izmijeniStatusNarudzbe(Narudzba n, String noviStatus)
+	{
+		boolean moguce = true;
+		Transaction t = s.beginTransaction();
+		if(noviStatus.equals("Potvrđena"))
+		{
+			Criteria c = s.createCriteria(ProizvodNarudzba.class);
+			List<ProizvodNarudzba>lista = c.add(Restrictions.eq("narudzba", n)).list();
+			ArrayList<ProizvodNarudzba> pnlista = new ArrayList<ProizvodNarudzba>();
+			if(lista!=null) pnlista = new ArrayList<ProizvodNarudzba>(lista);
+			for(int i = 0; i < pnlista.size(); i++)
+			{
+				if(pnlista.get(i).getKolicina() > pnlista.get(i).getProizvod().getKolicina())
+				{
+					moguce = false;
+					break;
+				}
+			}
+			if(moguce)
+			{
+				s.clear();
+				for(int i = 0; i < pnlista.size(); i++)
+				{
+					pnlista.get(i).getProizvod().setKolicina(pnlista.get(i).getProizvod().getKolicina() - pnlista.get(i).getKolicina());
+					s.update(pnlista.get(i).getProizvod());
+				}
+				n.setStatus(noviStatus);
+				s.update(n);
+			}	
+		}
+		else if(noviStatus.equals("Odbijena"))
+		{
+			n.setStatus(noviStatus);
+			s.update(n);
+		}
+		t.commit();
+		s.flush();
+		s.clear();
+		return moguce;	
+	}
+	
 	public boolean kreirajFakturu(Narudzba n)
 	{
 		Transaction t = s.beginTransaction();
 		//Kasnije ce ici if(n.getStatus() == "Potvrđena"
-		if(n.getStatus().equals("Na čekanju"))
+		if(n.getStatus().equals("Potvrđena"))
 		{
 			//Transaction t = s.beginTransaction();
 			Faktura f = new Faktura();
@@ -103,13 +158,13 @@ public class NarudzbaServis
 				pf.setProdajnacijena(pn[i].getProizvod().getProdajnacijena());
 				
 				pf.setKolicina(pn[i].getKolicina());
-				pf.getProizvod().setKolicina(pf.getProizvod().getKolicina() - pf.getKolicina());
+				//pf.getProizvod().setKolicina(pf.getProizvod().getKolicina() - pf.getKolicina());
 				f.getProizvodFakturas().add(pf);
 				ukupnacijena = pf.getNabavnacijena() * pf.getKolicina();
 				s.save(pf);
 			}
 			f.setUkupnacijena(ukupnacijena);
-			n.setStatus("Potvrđena");
+			n.setStatus("Fakturisana");
 			s.update(f);
 			s.update(n);
 			t.commit();
