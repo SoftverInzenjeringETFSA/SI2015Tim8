@@ -1,0 +1,1 @@
+INSERT INTO `tim8`.`korisnik` (`Username`, `Password`, `Ime`, `Prezime`, `Adresa`, `Email`, `Telefon`, `Tip`) VALUES ('master', '$2a$12$BC5dX/8vtVJ0DpIxc1BmweHtQqGVzi1JJD4d6Blp6DtdOapSL2t7q', 'master', 'master', 'master', 'master', 'master', 'sef');
