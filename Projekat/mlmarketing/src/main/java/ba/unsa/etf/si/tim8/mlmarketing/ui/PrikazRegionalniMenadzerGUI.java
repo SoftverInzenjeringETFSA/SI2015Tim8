@@ -132,7 +132,7 @@ public class PrikazRegionalniMenadzerGUI {
 		frmPregledMenadera.getContentPane().add(scrollPane);
 		
 		tabelaPodredjenih = new JTable();
-		tabelaPodredjenih.setModel(new DefaultTableModel(
+		tabelaPodredjenih.setModel(new MyTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -185,7 +185,7 @@ public class PrikazRegionalniMenadzerGUI {
 			}
 			
 			
-			tabelaPodredjenih.setModel(new DefaultTableModel(
+			tabelaPodredjenih.setModel(new MyTableModel(
 					data,
 					new String[] {
 						"Ime i prezime",

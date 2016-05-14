@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
+import ba.unsa.etf.si.tim8.mlmarketing.models.Faktura;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Narudzba;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
@@ -49,7 +50,7 @@ public class SefProdajeMainGUI {
 	private JTable tableProizvodi;
 	private JTable tableRegije;
 	private JTable tableNarudzbe;
-	private JTable table_6;
+	private JTable tableFaktura;
 
 	/**
 	 * Launch the application.
@@ -623,23 +624,33 @@ public class SefProdajeMainGUI {
 		scrollPane_6.setBounds(12, 13, 587, 193);
 		panel_6.add(scrollPane_6);
 		
-		table_6 = new JTable();
-		table_6.setModel(new DefaultTableModel(
+		tableFaktura = new JTable();
+		tableFaktura.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
 				"ID", "Naru\u010Dilac", "Datum", "Ukupna cijena"
 			}
 		));
-		table_6.getColumnModel().getColumn(0).setPreferredWidth(96);
-		table_6.getColumnModel().getColumn(1).setPreferredWidth(96);
-		table_6.getColumnModel().getColumn(2).setPreferredWidth(102);
-		table_6.getColumnModel().getColumn(3).setPreferredWidth(113);
-		scrollPane_6.setViewportView(table_6);
+		tableFaktura.getColumnModel().getColumn(0).setPreferredWidth(96);
+		tableFaktura.getColumnModel().getColumn(1).setPreferredWidth(96);
+		tableFaktura.getColumnModel().getColumn(2).setPreferredWidth(102);
+		tableFaktura.getColumnModel().getColumn(3).setPreferredWidth(113);
+		scrollPane_6.setViewportView(tableFaktura);
 		
-		JButton btnNewButton_11 = new JButton("Prika\u017Ei fakturu");
-		btnNewButton_11.setBounds(454, 219, 145, 25);
-		panel_6.add(btnNewButton_11);
+		JButton btnPrikaziFakturu = new JButton("Prika\u017Ei fakturu");
+		btnPrikaziFakturu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(tableFaktura.getSelectedRow() != -1){
+					int id = odaberiIdKolonu(tableFaktura, 0);
+					PrikazFakturaGUI frmFak = new PrikazFakturaGUI(s, id);
+					frmFak.startPrikazFakture();
+				}
+				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednu fakturu iz tabele.");
+			}
+		});
+		btnPrikaziFakturu.setBounds(454, 219, 145, 25);
+		panel_6.add(btnPrikaziFakturu);
 		
 		JPanel panel_7 = new JPanel();
 		panel_7.setBackground(Color.WHITE);
@@ -652,6 +663,7 @@ public class SefProdajeMainGUI {
 		refreshajTabeluProdavaci();
 		refreshajTabeluProizvodi();
 		refreshajTabeluNarudzba();
+		refreshajTabeluFakture();
 	}
 	
 	public void refreshajTabeluRegije(){
@@ -776,6 +788,28 @@ public class SefProdajeMainGUI {
 		}));
 	}
 
+	public void refreshajTabeluFakture(){
+		ArrayList<Faktura> fakture = nfs.dajFakture();
+		Object[][] data = new Object[fakture.size()][];
+		for (int i = 0; i < fakture.size(); i++){
+			data[i] = new Object[] {
+					fakture.get(i).getId(), 
+					fakture.get(i).getAkterprodaje().getIme() + " " + fakture.get(i).getAkterprodaje().getPrezime(),
+					fakture.get(i).getDatum(),
+					fakture.get(i).getUkupnacijena()
+			};
+		}
+		
+		tableFaktura.setModel(new MyTableModel(
+				data,
+				new String[] {
+						"ID",
+						"Naručilac",
+						"Datum",
+						"Ukupna cijena"					
+						
+				}));
+	}
 	
 	public int odaberiIdKolonu(JTable tabela,int brojKolone){
 		int id = (Integer)tabela.getModel().getValueAt(tabela.getSelectedRow(),brojKolone);
