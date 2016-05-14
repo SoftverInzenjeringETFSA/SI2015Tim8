@@ -166,27 +166,21 @@ public class PrikazRegionalniMenadzerGUI {
 			textFieldBrojTelefona.setText(prikaz.getBrojtelefona());
 			textFieldRegija.setText(prikaz.getRegija().getIme());
 				 
-			ArrayList<Akterprodaje> sviAkteri = aks.dajSveAkterePoTipu("prodavac");
-			ArrayList<Akterprodaje> akteri = new ArrayList<Akterprodaje>();
 			
-			for(int i = 0; i < sviAkteri.size(); i++)
-			{
-				if(sviAkteri.get(i).getAkterprodaje() == prikaz)
-				{
-					akteri.add(sviAkteri.get(i));
-				}
-			}
+			Akterprodaje[] akteri = prikaz.getAkterprodajes().toArray(new Akterprodaje[prikaz.getAkterprodajes().size()]);
+			
+	
 			
 			
-			Object[][] data = new Object[akteri.size()][];
-			for(int i = 0; i < akteri.size(); i++)
+			Object[][] data = new Object[akteri.length][];
+			for(int i = 0; i < akteri.length; i++)
 			{
 				data[i] = new Object[]{
-						akteri.get(i).getIme() + " " + akteri.get(i).getPrezime(),
-						akteri.get(i).getBrojtelefona(),
-						akteri.get(i).getAdresa(),
-						akteri.get(i).getEmail(),
-						akteri.get(i).getRegija().getIme()
+						akteri[i].getIme() + " " + akteri[i].getPrezime(),
+						akteri[i].getBrojtelefona(),
+						akteri[i].getAdresa(),
+						akteri[i].getEmail(),
+						akteri[i].getRegija().getIme()
 				};
 			}
 			
