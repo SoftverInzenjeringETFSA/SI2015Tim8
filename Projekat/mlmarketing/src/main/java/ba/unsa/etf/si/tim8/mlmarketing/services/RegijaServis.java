@@ -65,4 +65,12 @@ public class RegijaServis {
 		Regija r =(Regija) s.get(Regija.class, id);
 		return r.getAkterprodajes().size();
 	}
+	
+	public boolean daLiPostojiRegija(String regija)
+	{
+		Criteria c = s.createCriteria(Regija.class);
+		if(c.add(Restrictions.eq("ime", regija)).uniqueResult() == null)
+			return false;
+		return true;
+	}
 }

@@ -81,4 +81,12 @@ public class ProizvodServis {
 		List nesto = c.list();
 		return (nesto.size()==0);
 	}
+	
+	public boolean daLiPostojiProizvod(String nazivProizvoda)
+	{
+		Criteria c = s.createCriteria(Proizvod.class);
+		if(c.add(Restrictions.eq("naziv", nazivProizvoda)).uniqueResult()== null)
+			return false;
+		return true;
+	}
 }
