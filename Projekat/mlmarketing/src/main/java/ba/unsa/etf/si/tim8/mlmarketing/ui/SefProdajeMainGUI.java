@@ -26,6 +26,7 @@ import ba.unsa.etf.si.tim8.mlmarketing.models.Narudzba;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.IzvjestajServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NaloziServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NarudzbaServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
@@ -41,6 +42,7 @@ public class SefProdajeMainGUI {
 	private NaloziServis ns;
 	private ProizvodServis ps;
 	private NarudzbaServis nfs;
+	private IzvjestajServis is;
 	private LoginGUI roditelj;
 	
 	private JFrame frmSefProdaje;
@@ -78,6 +80,7 @@ public class SefProdajeMainGUI {
 		this.ns = new NaloziServis(s);
 		this.ps = new ProizvodServis(s);
 		this.nfs = new NarudzbaServis(s);
+		this.is = new IzvjestajServis(s);
 		this.roditelj=roditelj;
 		initialize();
 	}
@@ -696,6 +699,11 @@ public class SefProdajeMainGUI {
 		panel_7.setLayout(null);
 		
 		JButton btnPojedinacniIzvjestaj = new JButton("Pojedinacni izvjestaj");
+		btnPojedinacniIzvjestaj.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				is.pojedinacniIzvjesta("Za isplatu", "05", 2016, 183);
+			}
+		});
 		btnPojedinacniIzvjestaj.setBounds(114, 43, 152, 140);
 		panel_7.add(btnPojedinacniIzvjestaj);
 		

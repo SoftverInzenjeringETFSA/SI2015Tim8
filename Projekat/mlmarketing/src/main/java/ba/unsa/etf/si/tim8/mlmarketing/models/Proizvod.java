@@ -117,5 +117,10 @@ public class Proizvod implements java.io.Serializable {
 	public void setProizvodFakturas(Set<ProizvodFaktura> proizvodFakturas) {
 		this.proizvodFakturas = proizvodFakturas;
 	}
+	
+	@Override
+	public String toString() {
+		return naziv;
+	}
 
 }

@@ -160,7 +160,7 @@ public class NarudzbaServis
 				pf.setKolicina(pn[i].getKolicina());
 				//pf.getProizvod().setKolicina(pf.getProizvod().getKolicina() - pf.getKolicina());
 				f.getProizvodFakturas().add(pf);
-				ukupnacijena = ukupnacijena + pf.getNabavnacijena() * pf.getKolicina();
+				ukupnacijena = ukupnacijena + pf.getProdajnacijena() * pf.getKolicina();
 				s.save(pf);
 			}
 			f.setUkupnacijena(ukupnacijena);
