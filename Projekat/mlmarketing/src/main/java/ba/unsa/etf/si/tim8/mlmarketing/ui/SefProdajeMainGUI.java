@@ -330,7 +330,7 @@ public class SefProdajeMainGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(rs.dajBrojRegija()!=0){
-					if(aks.dajSveAkterePoTipu("regmen")!=null){
+					if(!aks.dajSveAkterePoTipu("regmen").isEmpty()){
 						ProdavacDodajIzmjeni prodavacdodaj= new ProdavacDodajIzmjeni("dodaj", s, ref);
 						prodavacdodaj.startProdavacDodajIzmjeni("dodaj");
 					}
