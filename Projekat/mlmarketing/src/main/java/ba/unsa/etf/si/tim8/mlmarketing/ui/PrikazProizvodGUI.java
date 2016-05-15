@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -16,6 +17,7 @@ import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
 import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.ValidacijeServis;
 
 public class PrikazProizvodGUI {
 	
@@ -115,9 +117,15 @@ public class PrikazProizvodGUI {
 		btnPromjenaStanja.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Proizvod p = ps.dajProizvod(id);
-				p.setKolicina(Integer.parseInt(textFieldStanjeNaSkladistu.getText()));
-				ps.izmijeniProizvod(p);
-				refreshableRoditelj.refreshajTabeluProizvodi();				
+				if(ValidacijeServis.daLiJeInt(textFieldStanjeNaSkladistu.getText().trim()))
+				{
+					p.setKolicina(Integer.parseInt(textFieldStanjeNaSkladistu.getText()));
+					ps.izmijeniProizvod(p);
+					refreshableRoditelj.refreshajTabeluProizvodi();
+					frmProizvod.dispose();
+				}
+				else JOptionPane.showMessageDialog(null, "Stanje na skladištu mora biti cijeli broj, ne može biti negativno niti može ostati nepopunjeno.\n");
+								
 			}
 		});
 		btnPromjenaStanja.setBounds(94, 269, 231, 25);

@@ -3,6 +3,7 @@ package ba.unsa.etf.si.tim8.mlmarketing.ui;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,6 +18,7 @@ import org.jboss.logging.Logger;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
 import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.ValidacijeServis;
 
 public class IzmjenaProizvodaGUI {
 
@@ -121,16 +123,33 @@ public class IzmjenaProizvodaGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(SesijaServis.dajTipKorisnika().equals("sef")){
-					int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
-					if(rez == JOptionPane.YES_OPTION){
+					
+					
+						
 						Proizvod p = ps.dajProizvod(id);
-						p.setNaziv(textFieldNazivProizvoda.getText());
-						p.setNabavnacijena(Double.parseDouble(textFieldNabavnaCijena.getText()));
-						p.setProdajnacijena(Double.parseDouble(textFieldProdajnaCijena.getText()));
-						p.setKolicina(Integer.parseInt(textFieldStanjeSkladista.getText()));
-						ps.izmijeniProizvod(p);
-						refreshableRoditelj.refreshajTabeluProizvodi();
-					}
+						boolean[] validacije = {false, false, false, false};
+						String errorMessage = validirajPolja(validacije);
+						if(errorMessage.equals(""))
+						{
+							if(!daLiPostoji(textFieldNazivProizvoda.getText().trim()))
+							{
+								int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+								if(rez == JOptionPane.YES_OPTION){
+								p.setNaziv(textFieldNazivProizvoda.getText().trim());
+								p.setNabavnacijena(Double.parseDouble(textFieldNabavnaCijena.getText().trim()));
+								p.setProdajnacijena(Double.parseDouble(textFieldProdajnaCijena.getText().trim()));
+								p.setKolicina(Integer.parseInt(textFieldStanjeSkladista.getText().trim()));
+								ps.izmijeniProizvod(p);
+								refreshableRoditelj.refreshajTabeluProizvodi();
+								frmIzmijeni.dispose();
+							}
+							
+							}
+							else JOptionPane.showMessageDialog(null, "Proizvod " + textFieldNazivProizvoda.getText() + " već postoji." );
+						}
+						else JOptionPane.showMessageDialog(null, errorMessage);
+						
+					
 					
 				}
 				else {
@@ -142,6 +161,50 @@ public class IzmjenaProizvodaGUI {
 			}
 		});
 		frmIzmijeni.getContentPane().add(btnIzmijeniProizvod);
+	}
+	
+	private boolean daLiPostoji(String nazivProizvoda)
+	{
+		ArrayList<Proizvod> proizvodi = ps.dajSveProizvode();
+		for(int i = 0; i < proizvodi.size(); i++)
+		{
+			if(proizvodi.get(i).getNaziv().equals(nazivProizvoda))
+				return true;
+		}
+		return false;
+	}
+	
+	private String validirajPolja(boolean[] validacije)
+	{
+		String errorMessage = "";
+		String[] greske = new String[]{
+				"Naziv proizvoda može sadržavati samo slova, brojeve i razmake. (ne može ostati nepopunjen)\n",
+				"Nabavna cijena mora biti broj, ne može biti negativna niti ostati nepopunjena.\n",
+				"Prodajna cijena mora biti broj, ne može biti negativna niti ostati nepopunjena.\n",
+				"Stanje na skladištu mora cijeli biti broj, ne može biti negativno niti može ostati nepopunjeno.\n"
+		};
+		validacije[0] = ValidacijeServis.validirajNazivProizvoda(textFieldNazivProizvoda.getText());
+		validacije[1] = ValidacijeServis.daLiJeDouble(textFieldNabavnaCijena.getText());
+		validacije[2] = ValidacijeServis.daLiJeDouble(textFieldProdajnaCijena.getText());
+		
+		validacije[3] = ValidacijeServis.daLiJeInt(textFieldStanjeSkladista.getText());
+		for(int i = 0; i < validacije.length; i++)
+		{
+			if(!validacije[i])
+			{
+				errorMessage += greske[i];
+			}				
+		}
+		boolean poredakCijena = ValidacijeServis.nabavnaManjaOdProdajne(textFieldNabavnaCijena.getText(), textFieldProdajnaCijena.getText());
+		if(!poredakCijena)
+		{
+			if(validacije[1] && validacije[2])
+			{
+				errorMessage += "Nabavna cijena mora biti manja od prodajne cijene.\n";
+			}			
+		}			
+		return errorMessage;
+			
 	}
 
 }

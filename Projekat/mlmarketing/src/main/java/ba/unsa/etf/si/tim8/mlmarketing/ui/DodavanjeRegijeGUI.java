@@ -18,6 +18,7 @@ import org.jboss.logging.Logger;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
 import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.ValidacijeServis;
 
 public class DodavanjeRegijeGUI {
 	
@@ -25,8 +26,8 @@ public class DodavanjeRegijeGUI {
 	Session s;
 	SefProdajeMainGUI refreshableRoditelj;
 	private JFrame frmDodavanjeRegije;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField textFieldNazivRegije;
+	private JTextField textFieldDrzava;
 
 	/**
 	 * Launch the application.
@@ -74,15 +75,15 @@ public class DodavanjeRegijeGUI {
 		lblNewLabel.setBounds(58, 125, 56, 16);
 		frmDodavanjeRegije.getContentPane().add(lblNewLabel);
 		
-		textField = new JTextField();
-		textField.setBounds(147, 64, 116, 22);
-		frmDodavanjeRegije.getContentPane().add(textField);
-		textField.setColumns(10);
+		textFieldNazivRegije = new JTextField();
+		textFieldNazivRegije.setBounds(147, 64, 116, 22);
+		frmDodavanjeRegije.getContentPane().add(textFieldNazivRegije);
+		textFieldNazivRegije.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(147, 122, 116, 22);
-		frmDodavanjeRegije.getContentPane().add(textField_1);
-		textField_1.setColumns(10);
+		textFieldDrzava = new JTextField();
+		textFieldDrzava.setBounds(147, 122, 116, 22);
+		frmDodavanjeRegije.getContentPane().add(textFieldDrzava);
+		textFieldDrzava.setColumns(10);
 		
 		JButton btnNewButton = new JButton("Dodaj");
 		btnNewButton.setBounds(147, 170, 116, 25);
@@ -90,16 +91,23 @@ public class DodavanjeRegijeGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(SesijaServis.dajTipKorisnika().equals("sef")){
-					if(!textField.getText().equals("") && !textField_1.getText().equals("")){
+					
+					
+						boolean[] validacije = {false, false};
+						String errorMessage = validirajPolja(validacije);
+						if(errorMessage.equals(""))
+						{
+							RegijaServis r= new RegijaServis(s);
+							Regija nova = new Regija();
+							nova.setIme(textFieldNazivRegije.getText().trim());
+							nova.setDrzava(textFieldDrzava.getText().trim());							
+							r.dodajRegiju(nova);
+							refreshableRoditelj.refreshajTabeluRegije();
+							frmDodavanjeRegije.dispose();
+						}
+						else JOptionPane.showMessageDialog(null, errorMessage);
 						
-						RegijaServis r= new RegijaServis(s);
-						Regija nova = new Regija();
-						nova.setIme(textField.getText());
-						nova.setDrzava(textField_1.getText());
-						
-						r.dodajRegiju(nova);
-						refreshableRoditelj.refreshajTabeluRegije();
-					}
+					
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Niste logovani sa odgovarajućim privilegijama za ovu akciju.");
@@ -111,5 +119,21 @@ public class DodavanjeRegijeGUI {
 		});
 		frmDodavanjeRegije.getContentPane().add(btnNewButton);
 	}
-
+	
+	private String validirajPolja(boolean[] validacije)
+	{
+		String errorMessage = "";
+		String[] greske = new String[]{
+				"Naziv regije ne može ostati nepopunjen. Može sadržavati slova i razmake.\n",
+				"Država ne može ostati nepopunjena. Može sadržavati slova i razmake.\n"
+		};
+		validacije[0] = ValidacijeServis.validirajRegiju(textFieldNazivRegije.getText());
+		validacije[1] = ValidacijeServis.validirajRegiju(textFieldDrzava.getText());
+		for(int i = 0; i < validacije.length; i++)
+		{
+			if(!validacije[i])
+				errorMessage += greske[i];
+		}
+		return errorMessage;
+	}
 }

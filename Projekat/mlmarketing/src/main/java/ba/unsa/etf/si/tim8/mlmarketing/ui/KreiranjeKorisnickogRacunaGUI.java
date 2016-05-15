@@ -19,6 +19,7 @@ import org.jboss.logging.Logger;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NaloziServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.ValidacijeServis;
 
 public class KreiranjeKorisnickogRacunaGUI {
 	
@@ -134,21 +135,32 @@ public class KreiranjeKorisnickogRacunaGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(SesijaServis.dajTipKorisnika().equals("sef")){
-					if(passwordFieldSifra.getText().equals(passwordFieldSifraPonovo.getText()) && !passwordFieldSifra.getText().equals("")){
+					
+					boolean[] validacije = {false, false, false, false, false, false, false};
+										
 						Korisnik k = new Korisnik();
-						k.setIme(textFieldIme.getText());
-						k.setPrezime(textFieldPrezime.getText());
-						k.setUsername(textFieldKorisnickoIme.getText());
-						k.setAdresa(textFieldAdresa.getText());
-						if(comboBox.getSelectedItem()=="Komercijalista") k.setTip("komercijalista");
-						else k.setTip("sef");
-						k.setTelefon(textFieldTelefon.getText());
-						k.setEmail(textFieldEmail.getText());
-						k.setPassword(passwordFieldSifra.getText());
-						ns.kreirajNalog(k);
-						refreshableRoditelj.refreshajTabeluKorisnici();
+						String errorMessage = validirajPolja(validacije);
+						if(errorMessage.equals(""))
+						{
+							k.setIme(textFieldIme.getText());					
+							k.setPrezime(textFieldPrezime.getText());
+							k.setUsername(textFieldKorisnickoIme.getText());
+							k.setAdresa(textFieldAdresa.getText());
+							if(comboBox.getSelectedItem()=="Komercijalista") k.setTip("komercijalista");
+							else k.setTip("sef");
+							k.setTelefon(textFieldTelefon.getText());
+							k.setEmail(textFieldEmail.getText());
+							k.setPassword(passwordFieldSifra.getText());							
+							ns.kreirajNalog(k);
+							refreshableRoditelj.refreshajTabeluKorisnici();
+							frmDodajKorisnika.dispose();
+						}
+						else JOptionPane.showMessageDialog(null, errorMessage);
+						
+				
 					}
-				}
+					
+				
 				else {
 					JOptionPane.showMessageDialog(null, "Niste logovani sa odgovarajućim privilegijama za ovu akciju.");
 					frmDodajKorisnika.dispose();
@@ -190,5 +202,33 @@ public class KreiranjeKorisnickogRacunaGUI {
 		textFieldTelefon.setColumns(10);
 		textFieldTelefon.setBounds(146, 323, 124, 20);
 		frmDodajKorisnika.getContentPane().add(textFieldTelefon);
+	}
+	
+	private String validirajPolja(boolean[] validacije)
+	{
+		String[] greske = new String[]{
+				"Morate unijeti username od minimalno 3 karaktera (bez razmaka). Pred slova i brojeva može sadržavati . , - i _\n",
+				"Passwordi se moraju podudarati, ne mogu biti prazni niti sadržavati razmak!\n",
+				"Ime može sadržavati samo slova (bez razmaka).\n",
+				"Prezime može sadržavati samo slova (bez razmaka).\n",
+				"Adresa ne može biti prazna, niti može sadržavati samo razmak\n",
+				"Email mora biti u ispravnom formatu (example@nesto.nesto).\n",
+				"Telefon može sadržavati samo brojeve (bez razmaka).\n"
+		};
+		String returnMessage = "";
+		validacije[0] = ValidacijeServis.validirajUsername(textFieldKorisnickoIme.getText());
+		validacije[1] = ValidacijeServis.validirajPassword(passwordFieldSifra.getText(), passwordFieldSifraPonovo.getText());
+		validacije[2] = ValidacijeServis.validirajIme(textFieldIme.getText());
+		validacije[3] = ValidacijeServis.validirajPrezime(textFieldPrezime.getText());
+		validacije[4] = ValidacijeServis.validirajAdresu(textFieldAdresa.getText());
+		validacije[5] = ValidacijeServis.validirajEmail(textFieldEmail.getText());
+		validacije[6] = ValidacijeServis.validirajBrojTelefona(textFieldTelefon.getText());
+		for (int i = 0; i < validacije.length; i++)
+		{
+			if(!validacije[i])
+				returnMessage += greske[i];
+		}
+		return returnMessage;
+				
 	}
 }
