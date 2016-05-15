@@ -147,9 +147,10 @@ public class NarudzbaServisTest {
 		ns.kreirajFakturu(n);
 		ns.izmijeniStatusNarudzbe(n, "Odbijena");
 		listaFaktura= ns.dajFakture();
-		int id= listaFaktura.get(0).getId();
+		int vel	= listaFaktura.size()-1;
+		int id = listaFaktura.get(vel).getId();
 		f= ns.dajFakturu(id);
-		Assert.assertEquals(f.getAkterprodaje(), n.getAkterprodaje());
+		Assert.assertEquals(f.getAkterprodaje().getIme(),n.getAkterprodaje().getIme());
 	}
 	
 	@Test

@@ -197,6 +197,8 @@ public class DodavanjeNarudzbeGUI {
 					n = null;
 					refreshajTabeluProizvodNarudzbe();
 					refreshajTabeluProizvodi();
+					JOptionPane.showMessageDialog(null, "Uspješno ste kreirali narudžbu.");
+					frmKreiranjeNarudbe.dispose();
 				}
 				else JOptionPane.showMessageDialog(null, "Niste ulogovani sa odgovarajućim privilegijama.");
 			}
