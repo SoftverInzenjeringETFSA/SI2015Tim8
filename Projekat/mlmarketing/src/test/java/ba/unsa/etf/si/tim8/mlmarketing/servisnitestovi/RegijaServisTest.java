@@ -116,11 +116,5 @@ public class RegijaServisTest {
 			fail("testDajRegije():fail ---"+e.getMessage());
 		}
 	}
-	
-	@Ignore
-	@Test
-	public void testDajBrojAkteraZaRegiju(){
-		
-	}
 
 }

@@ -19,23 +19,6 @@ public class ValidacijeServisTest {
 		assertEquals(true,ispravnoIme);
 	}
 	
-	@Ignore
-	@Test
-	public void testImeLowerCase(){
-		//String ispravan="Tim";
-		ValidacijeServis validacijeS=new ValidacijeServis();
-		boolean lowerCase=validacijeS.validirajIme("timoscuk");
-		assertEquals(false,lowerCase);
-		}
-	
-	@Ignore
-	@Test
-	public void testImeUperCase(){
-		ValidacijeServis validacijeS=new ValidacijeServis();
-		boolean uperCase=validacijeS.validirajIme("TIMOSAM");
-		assertEquals(false,uperCase);
-	}
-	
 	@Test
 	public void testNeispravnoIme(){
 		ValidacijeServis validacijeS=new ValidacijeServis();
@@ -84,7 +67,7 @@ public class ValidacijeServisTest {
 		assertEquals(false,kombinacija);
 		
 		boolean intSaRazmakom=validacijeS.daLiJeInt(" 1234");
-		assertEquals(false,intSaRazmakom);
+		assertEquals(true,intSaRazmakom);
 		
 		boolean intSaTackom=validacijeS.daLiJeInt("12.34");
 		assertEquals(false,intSaTackom);
@@ -115,7 +98,7 @@ public class ValidacijeServisTest {
 		boolean doubleSaDvijeTacke=validacijeS.daLiJeDouble("12.43.14");
 		
 		assertEquals(false,doubleSaZnakovima);
-		assertEquals(false,doubleSaBlank);
+		assertEquals(true,doubleSaBlank);
 		assertEquals(false,doubleSaDvijeTacke);	
 	}
 	
