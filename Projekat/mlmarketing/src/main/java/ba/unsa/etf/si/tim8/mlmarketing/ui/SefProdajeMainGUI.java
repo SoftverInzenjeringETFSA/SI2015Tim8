@@ -330,7 +330,7 @@ public class SefProdajeMainGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(rs.dajBrojRegija()!=0){
-					if(aks.dajSveAkterePoTipu("regmen")!=null){
+					if(!aks.dajSveAkterePoTipu("regmen").isEmpty()){
 						ProdavacDodajIzmjeni prodavacdodaj= new ProdavacDodajIzmjeni("dodaj", s, ref);
 						prodavacdodaj.startProdavacDodajIzmjeni("dodaj");
 					}
@@ -510,12 +510,17 @@ public class SefProdajeMainGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(tableProizvodi.getSelectedRow() != -1){
-					int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
-					if(rez == JOptionPane.YES_OPTION){
-						int id = odaberiIdKolonu(tableProizvodi, 4);
-						Proizvod p = ps.dajProizvod(id);
-						ps.obrisiProizvod(p);
-						refreshajTabeluProizvodi();
+					int id = odaberiIdKolonu(tableProizvodi, 4);
+					Proizvod p = ps.dajProizvod(id);
+					if(ps.moguceObrisati(p)){
+						int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+						if(rez == JOptionPane.YES_OPTION){
+							ps.obrisiProizvod(p);
+							refreshajTabeluProizvodi();
+						}
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Nije moguce obrisati proizvod dok se ne fakturisu narudzbe kojim pripada, a koje su potvrđene");
 					}
 					
 				}
@@ -690,6 +695,14 @@ public class SefProdajeMainGUI {
 		tabbedPane.addTab("Izvje\u0161taji", null, panel_7, null);
 		panel_7.setLayout(null);
 		
+		JButton btnPojedinacniIzvjestaj = new JButton("Pojedinacni izvjestaj");
+		btnPojedinacniIzvjestaj.setBounds(114, 43, 152, 140);
+		panel_7.add(btnPojedinacniIzvjestaj);
+		
+		JButton btnSumarniIzvjestaj = new JButton("Sumarni izvjestaj");
+		btnSumarniIzvjestaj.setBounds(284, 43, 140, 140);
+		panel_7.add(btnSumarniIzvjestaj);
+		
 		refreshajTabeluRegije();
 		refreshajTabeluMenadzeri();
 		refreshajTabeluKorisnici();
@@ -847,5 +860,4 @@ public class SefProdajeMainGUI {
 		int id = (Integer)tabela.getModel().getValueAt(tabela.getSelectedRow(),brojKolone);
 		return id;
 	}
-
 }
