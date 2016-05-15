@@ -702,6 +702,8 @@ public class SefProdajeMainGUI {
 		btnPojedinacniIzvjestaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				is.pojedinacniIzvjesta("Za isplatu", "05", 2016, 183);
+				PojedinacniIzvjestajKreiranjeGUI pkg = new PojedinacniIzvjestajKreiranjeGUI(s);
+				pkg.startPojedinacniIzvjestaj();
 			}
 		});
 		btnPojedinacniIzvjestaj.setBounds(114, 43, 152, 140);

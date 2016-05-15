@@ -9,25 +9,34 @@ import javax.swing.SwingConstants;
 
 import org.hibernate.Session;
 
+import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
+import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.IzvjestajServis;
+
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.awt.event.ActionEvent;
 
 public class PojedinacniIzvjestajKreiranjeGUI {
 
 	private JFrame frmPojedinacniIzvjestaj;
 	private JTextField textField;
 	private Session s;
+	private AkterServis aks;
+	private IzvjestajServis is;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public void startPojedinacniIzvjestaj() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PojedinacniIzvjestajKreiranjeGUI window = new PojedinacniIzvjestajKreiranjeGUI();
+					PojedinacniIzvjestajKreiranjeGUI window = new PojedinacniIzvjestajKreiranjeGUI(s);
 					window.frmPojedinacniIzvjestaj.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,8 +48,10 @@ public class PojedinacniIzvjestajKreiranjeGUI {
 	/**
 	 * Create the application.
 	 */
-	public PojedinacniIzvjestajKreiranjeGUI() {
-		
+	public PojedinacniIzvjestajKreiranjeGUI(Session s) {
+		this.s=s;
+		this.aks= new AkterServis(s);
+		this.is = new IzvjestajServis(s);
 		initialize();
 	}
 
@@ -92,6 +103,12 @@ public class PojedinacniIzvjestajKreiranjeGUI {
 		frmPojedinacniIzvjestaj.getContentPane().add(lblNewLabel);
 		
 		JButton btnGenerisi = new JButton("Generiši");
+		btnGenerisi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//int id = comboBoxEntitet.getSelectedIndex()
+				//is.pojedinacniIzvjesta(comboBoxTip.getSelectedItem(), comboBoxMjesec.getSelectedItem(),Integer.parseInt(textField.getText()), id);
+			}
+		});
 		btnGenerisi.setBounds(264, 177, 89, 23);
 		frmPojedinacniIzvjestaj.getContentPane().add(btnGenerisi);
 		

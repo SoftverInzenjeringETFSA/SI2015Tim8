@@ -44,6 +44,7 @@ public class IzvjestajServis {
 					ukupnaCijena-=nizpf[j].getNabavnacijena()*nizpf[j].getKolicina();
 				}
 			}
+			
 			System.out.println(ukupnaCijena);
 		}
 	}
