@@ -695,6 +695,14 @@ public class SefProdajeMainGUI {
 		tabbedPane.addTab("Izvje\u0161taji", null, panel_7, null);
 		panel_7.setLayout(null);
 		
+		JButton btnPojedinacniIzvjestaj = new JButton("Pojedinacni izvjestaj");
+		btnPojedinacniIzvjestaj.setBounds(114, 43, 152, 140);
+		panel_7.add(btnPojedinacniIzvjestaj);
+		
+		JButton btnSumarniIzvjestaj = new JButton("Sumarni izvjestaj");
+		btnSumarniIzvjestaj.setBounds(284, 43, 140, 140);
+		panel_7.add(btnSumarniIzvjestaj);
+		
 		refreshajTabeluRegije();
 		refreshajTabeluMenadzeri();
 		refreshajTabeluKorisnici();
@@ -852,5 +860,4 @@ public class SefProdajeMainGUI {
 		int id = (Integer)tabela.getModel().getValueAt(tabela.getSelectedRow(),brojKolone);
 		return id;
 	}
-
 }
