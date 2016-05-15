@@ -32,16 +32,16 @@ public class ProizvodServisTest {
 			 s = HibernateUtil.getSessionFactory().openSession();
 			 proizvodS=new ProizvodServis(s);
 			 
-			 proizvodM1=new Proizvod("karmin22_test",23.10,56.95,110);
+			 proizvodM1=new Proizvod("karmin22_test1",23.10,56.95,110);
 			 proizvodM1.setId(proizvodS.kreirajProizvod(proizvodM1));
 			 id1=proizvodM1.getId();
 			 
-			 proizvodM2=new Proizvod("krema_test1",23.10,56.95,110);
+			 proizvodM2=new Proizvod("krema_test12",23.10,56.95,110);
 			 proizvodM2.setId(proizvodS.kreirajProizvod(proizvodM2));
 			 id2=proizvodM2.getId();
 			 
 			
-			 proizvodM3=new Proizvod("sampon_test",13.0,31.95,110);
+			 proizvodM3=new Proizvod("sampon_test2",13.0,31.95,110);
 			 proizvodM3.setId(proizvodS.kreirajProizvod(proizvodM3));
 			 id3=proizvodM3.getId();
 	}
@@ -123,7 +123,7 @@ public class ProizvodServisTest {
 	public void testObrisiProizvod() {
 		
 		ArrayList<Proizvod>  listaProizvoda = new ArrayList<Proizvod>();
-		Proizvod proizvodLokal=new Proizvod("kremaZaSuncanje_test1",13.10,36.95,110);
+		Proizvod proizvodLokal=new Proizvod("kremaZaSunca5nje_test1",13.10,36.95,110);
 		
 		try{
 			// dodajemo proizvod u listu, i dobijemo broj elemenata sa ubacenim prozivodom

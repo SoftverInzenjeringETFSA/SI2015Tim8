@@ -33,6 +33,8 @@ public class ProizvodServis {
 		Transaction t = s.beginTransaction();
 		int id = (Integer)s.save(p);
 		t.commit();
+		s.flush();
+		s.clear();
 		return id;
 	}
 	
