@@ -98,4 +98,9 @@ public class IzvjestajServis {
 		return d;
 	}
 
+	public MyTableModel sumarniIzvjesta(String tip, String mjesec, int godina, int id){
+		Object[][] data=new Object[1][];
+		data[0]=new Object[]{"",""};
+		return new MyTableModel(data, new String[]{"",""});
+	}
 }
