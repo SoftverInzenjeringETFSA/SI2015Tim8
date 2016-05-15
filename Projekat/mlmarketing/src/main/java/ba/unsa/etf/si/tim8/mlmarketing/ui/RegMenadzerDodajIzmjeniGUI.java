@@ -21,6 +21,7 @@ import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.ValidacijeServis;
 
 public class RegMenadzerDodajIzmjeniGUI {
 	
@@ -159,6 +160,10 @@ public class RegMenadzerDodajIzmjeniGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(SesijaServis.dajTipKorisnika().equals("sef")){
+					boolean[] validacije = {false, false, false, false, false};
+					String errorMessage = validirajPolja(validacije);
+					if(errorMessage.equals(""))
+					{
 						if(id==-1){
 							Akterprodaje a = new Akterprodaje();
 							a.setIme(textFieldIme.getText());
@@ -184,7 +189,11 @@ public class RegMenadzerDodajIzmjeniGUI {
 							aks.izmjeniAktera(a);
 							}
 						}
+						frmDodajizmijeni.dispose();						
 						refreshableRoditelj.refreshajTabeluMenadzeri();
+					}
+					else JOptionPane.showMessageDialog(null, errorMessage);
+						
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Niste logovani sa odgovarajućim privilegijama za ovu akciju.");
@@ -206,5 +215,31 @@ public class RegMenadzerDodajIzmjeniGUI {
 		lblPrezime.setBounds(84, 60, 46, 14);
 		frmDodajizmijeni.getContentPane().add(lblPrezime);
 		
+	}
+	private String validirajPolja(boolean[] validacija)
+	{
+		String errorMessage = "";
+		String[] greske = new String[]{
+				"Ime može sadržavati samo slova (bez razmaka).\n",
+				"Prezime može sadržavati samo slova (bez razmaka).\n",
+				"Telefon može sadržavati samo brojeve (bez razmaka).\n",
+				"Adresa ne može biti prazna, niti može sadržavati samo razmak\n",
+				"Email mora biti u ispravnom formatu (example@nesto.nesto).\n"
+				
+		};
+		validacija[0] = ValidacijeServis.validirajIme(textFieldIme.getText());
+		validacija[1] = ValidacijeServis.validirajPrezime(textFieldPrezime.getText());
+		validacija[2] = ValidacijeServis.validirajBrojTelefona(textFieldBrojTelefona.getText());
+		validacija[3] = ValidacijeServis.validirajAdresu(textFieldAdresa.getText());
+		validacija[4] = ValidacijeServis.validirajEmail(textFieldEmail.getText());
+		
+		for(int i = 0; i < validacija.length; i++)
+		{
+			if(!validacija[i])
+			{
+				errorMessage += greske[i];
+			}
+		}
+		return errorMessage;
 	}
 }

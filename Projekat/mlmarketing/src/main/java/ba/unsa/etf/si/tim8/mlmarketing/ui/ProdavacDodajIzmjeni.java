@@ -21,6 +21,7 @@ import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.ValidacijeServis;
 
 public class ProdavacDodajIzmjeni {
 
@@ -187,37 +188,47 @@ public class ProdavacDodajIzmjeni {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				if(SesijaServis.dajTipKorisnika().equals("sef")){
-					int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
-					if(rez == JOptionPane.YES_OPTION){
-						if(id == -1)
-						{
-							Akterprodaje a = new Akterprodaje();
-							a.setIme(textFieldIme.getText());
-							a.setPrezime(textFieldPrezime.getText());
-							a.setAdresa(textFieldAdresa.getText());
-							a.setBrojtelefona(textFieldBrojTelefona.getText());
-							a.setEmail(textFieldEmail.getText());
-							a.setRegija((Regija) comboBoxRegije.getSelectedItem());
-							a.setAkterprodaje((Akterprodaje)comboBoxNM.getSelectedItem());
-							a.setTip("prodavac");
-							aks.kreirajAktera(a);
-						}
-						else
-						{
-							Akterprodaje ap = aks.dajAktera(id);
-							ap.setIme(textFieldIme.getText());
-							ap.setPrezime(textFieldPrezime.getText());
-							ap.setAdresa(textFieldAdresa.getText());
-							ap.setBrojtelefona(textFieldBrojTelefona.getText());
-							ap.setEmail(textFieldEmail.getText());
-							ap.setRegija((Regija) comboBoxRegije.getSelectedItem());
-							ap.setAkterprodaje((Akterprodaje)comboBoxNM.getSelectedItem());
-							aks.izmjeniAktera(ap);
-						}
+					
 						
+						boolean[] validacije = {false, false, false, false, false};
+						String errorMessage = validirajPolja(validacije);
+						if(errorMessage.equals(""))
+						{
+							if(id == -1)
+							{
+								Akterprodaje a = new Akterprodaje();
+								a.setIme(textFieldIme.getText());
+								a.setPrezime(textFieldPrezime.getText());
+								a.setAdresa(textFieldAdresa.getText());
+								a.setBrojtelefona(textFieldBrojTelefona.getText());
+								a.setEmail(textFieldEmail.getText());
+								a.setRegija((Regija) comboBoxRegije.getSelectedItem());
+								a.setAkterprodaje((Akterprodaje)comboBoxNM.getSelectedItem());
+								a.setTip("prodavac");
+								aks.kreirajAktera(a);
+							}
+							else
+							{
+								int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+								if(rez == JOptionPane.YES_OPTION){
+									Akterprodaje ap = aks.dajAktera(id);
+									ap.setIme(textFieldIme.getText());
+									ap.setPrezime(textFieldPrezime.getText());
+									ap.setAdresa(textFieldAdresa.getText());
+									ap.setBrojtelefona(textFieldBrojTelefona.getText());
+									ap.setEmail(textFieldEmail.getText());
+									ap.setRegija((Regija) comboBoxRegije.getSelectedItem());
+									ap.setAkterprodaje((Akterprodaje)comboBoxNM.getSelectedItem());
+									aks.izmjeniAktera(ap);
+								}
+								
+							}							
+							frmDodajizmijeni.dispose();
+							refreshableRoditelj.refreshajTabeluProdavaci();
+						}
+						else JOptionPane.showMessageDialog(null, errorMessage);
 						
-						refreshableRoditelj.refreshajTabeluProdavaci();
-					}
+					
 					
 				}
 				else {
@@ -240,5 +251,32 @@ public class ProdavacDodajIzmjeni {
 		lblNewLabel_6.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel_6.setBounds(93, 25, 46, 14);
 		frmDodajizmijeni.getContentPane().add(lblNewLabel_6);
+	}
+	
+	private String validirajPolja(boolean[] validacija)
+	{
+		String errorMessage = "";
+		String[] greske = new String[]{
+				"Ime može sadržavati samo slova (bez razmaka).\n",
+				"Prezime može sadržavati samo slova (bez razmaka).\n",
+				"Telefon može sadržavati samo brojeve (bez razmaka).\n",
+				"Adresa ne može biti prazna, niti može sadržavati samo razmak\n",
+				"Email mora biti u ispravnom formatu (example@nesto.nesto).\n"
+				
+		};
+		validacija[0] = ValidacijeServis.validirajIme(textFieldIme.getText());
+		validacija[1] = ValidacijeServis.validirajPrezime(textFieldPrezime.getText());
+		validacija[2] = ValidacijeServis.validirajBrojTelefona(textFieldBrojTelefona.getText());
+		validacija[3] = ValidacijeServis.validirajAdresu(textFieldAdresa.getText());
+		validacija[4] = ValidacijeServis.validirajEmail(textFieldEmail.getText());
+		
+		for(int i = 0; i < validacija.length; i++)
+		{
+			if(!validacija[i])
+			{
+				errorMessage += greske[i];
+			}
+		}
+		return errorMessage;
 	}
 }

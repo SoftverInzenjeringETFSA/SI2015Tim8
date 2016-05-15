@@ -156,6 +156,7 @@ public class KreiranjeKorisnickogRacunaGUI {
 								ns.kreirajNalog(k);
 								refreshableRoditelj.refreshajTabeluKorisnici();
 								frmDodajKorisnika.dispose();
+								JOptionPane.showMessageDialog(null, "Novi korisnik uspješno dodan");
 							}
 							else JOptionPane.showMessageDialog(null, "Korisnik sa usernameom " + textFieldKorisnickoIme.getText() + " već postoji." );
 							
