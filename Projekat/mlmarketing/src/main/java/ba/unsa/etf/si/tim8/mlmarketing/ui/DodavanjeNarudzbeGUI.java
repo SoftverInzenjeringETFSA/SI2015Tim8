@@ -31,6 +31,7 @@ import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NarudzbaServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.ValidacijeServis;
 
 public class DodavanjeNarudzbeGUI {
 
@@ -146,7 +147,16 @@ public class DodavanjeNarudzbeGUI {
 					if(comboBox_1.getItemCount() > 0)
 					{
 						pn = new ProizvodNarudzba();
-						pn.setKolicina(Integer.parseInt(textField.getText()));
+						if(!(ValidacijeServis.daLiJeInt(textField.getText())))
+						{
+							JOptionPane.showMessageDialog(null, "Količina proizvoda mora biti cjelobrojna vrijednost. Molimo unesite ponovo.");
+							textField.setText("");
+							return;
+						}
+						else
+						{
+							pn.setKolicina(Integer.parseInt(textField.getText()));
+						}
 						pn.setNarudzba(n);
 						pn.setProizvod((Proizvod)comboBox_1.getSelectedItem());
 						comboBox_1.removeItem(comboBox_1.getSelectedItem());
