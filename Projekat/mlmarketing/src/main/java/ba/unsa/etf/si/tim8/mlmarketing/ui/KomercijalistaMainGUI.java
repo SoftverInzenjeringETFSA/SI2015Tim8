@@ -150,9 +150,25 @@ public class KomercijalistaMainGUI {
 		panel.add(btnKreirajNarudzu);
 		btnKreirajNarudzu.addActionListener(new ActionListener() {
 			
-			public void actionPerformed(ActionEvent e) {
-				DodavanjeNarudzbeGUI dodavanjenarudzbe = new DodavanjeNarudzbeGUI(s, table, table_1);
-				dodavanjenarudzbe.startDodavanjeNarudzbe();
+			public void actionPerformed(ActionEvent e) 
+			{
+				if(ps.dajSveProizvode().size() == 0 && ((aks.dajSveAkterePoTipu("regmen").size() + aks.dajSveAkterePoTipu("prodavac").size()) == 0))
+				{
+					JOptionPane.showMessageDialog(null, "Nije moguće kreirati narudžbu jer nema nijednog prodavača, regionalnog menadžera, niti proizvoda.");
+				}
+				else if(ps.dajSveProizvode().size() == 0)
+				{
+					JOptionPane.showMessageDialog(null, "Nije moguće kreirati narudžbu jer nema nijednog proizvoda.");
+				}
+				else if((aks.dajSveAkterePoTipu("regmen").size() + aks.dajSveAkterePoTipu("prodavac").size()) == 0)
+				{
+					JOptionPane.showMessageDialog(null, "Nije moguće kreirati narudžbu jer nema nijednog prodavača ni regionalnog menadžera.");
+				}
+				else
+				{
+					DodavanjeNarudzbeGUI dodavanjenarudzbe = new DodavanjeNarudzbeGUI(s, table, table_1);
+					dodavanjenarudzbe.startDodavanjeNarudzbe();
+				}	
 			}
 		});
 		
@@ -181,9 +197,13 @@ public class KomercijalistaMainGUI {
 					Narudzba n = ns.dajNarudzbu(id);
 					if(!ns.kreirajFakturu(n)) 
 						JOptionPane.showMessageDialog(null, "Narudžba mora biti potvrđena da biste kreirali fakturu.");
-					refreshajTabeluFakture();
-					refreshajTabeluNarudzbe();
-					refreshajTabeluProizvodi();
+					else
+					{
+						refreshajTabeluFakture();
+						refreshajTabeluNarudzbe();
+						refreshajTabeluProizvodi();
+						JOptionPane.showMessageDialog(null, "Uspješno ste kreirali fakturu.");
+					}
 				}
 				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednu narudžbu iz tabele.");
 			}
