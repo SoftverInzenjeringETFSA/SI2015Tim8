@@ -7,6 +7,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
@@ -28,7 +29,7 @@ public class PojedinacniIzvjestajKreiranjeGUI {
 	private Session s;
 	private AkterServis aks;
 	private IzvjestajServis is;
-
+	final static Logger logger = Logger.getLogger(PojedinacniIzvjestajKreiranjeGUI.class);
 	/**
 	 * Launch the application.
 	 */
@@ -39,7 +40,7 @@ public class PojedinacniIzvjestajKreiranjeGUI {
 					PojedinacniIzvjestajKreiranjeGUI window = new PojedinacniIzvjestajKreiranjeGUI(s);
 					window.frmPojedinacniIzvjestaj.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 			}
 		});

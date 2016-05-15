@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import javax.swing.JButton;
@@ -16,6 +17,7 @@ public class IzvjestajPrikazForme {
 	private JTable table;
 	private MyTableModel m;
 	private Session s;
+	final static Logger logger = Logger.getLogger(IzvjestajPrikazForme.class);
 
 	/**
 	 * Launch the application.
@@ -27,7 +29,7 @@ public class IzvjestajPrikazForme {
 					IzvjestajPrikazForme window = new IzvjestajPrikazForme(m);
 					window.frmPrikazIzvjetaja.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e);;
 				}
 			}
 		});
