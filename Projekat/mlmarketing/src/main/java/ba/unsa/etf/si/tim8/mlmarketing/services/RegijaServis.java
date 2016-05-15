@@ -3,9 +3,12 @@ package ba.unsa.etf.si.tim8.mlmarketing.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
+import ba.unsa.etf.si.tim8.mlmarketing.models.Faktura;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
 
 public class RegijaServis {
@@ -26,10 +29,22 @@ public class RegijaServis {
 	}
 	
 	public boolean obrisi(int id){
-		Transaction t = s.beginTransaction();
-		
-		
 		Regija zaBrisanje = s.get(Regija.class,id);
+		
+		Criteria c = s.createCriteria(Faktura.class);
+		c.add(Restrictions.eq("regija", zaBrisanje));
+		List<Faktura> listafakture = c.list();
+		if(!listafakture.isEmpty()){
+			ArrayList<Faktura> ilistafakture = new ArrayList<Faktura>(listafakture);
+			for(int i=0; i<ilistafakture.size();i++){
+				ilistafakture.get(i).setRegija(null);
+				s.update(ilistafakture.get(i));
+			}
+		}
+		
+		Transaction t = s.beginTransaction();		
+		
+		
 		if(zaBrisanje!=null)s.delete(zaBrisanje);
 		
 		t.commit();

@@ -1,6 +1,7 @@
 package ba.unsa.etf.si.tim8.mlmarketing.services;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -9,6 +10,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
+import ba.unsa.etf.si.tim8.mlmarketing.models.Faktura;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Narudzba;
 
 public class AkterServis {
@@ -45,11 +47,30 @@ public class AkterServis {
 	
 	public boolean izbrisiAktera(int id)
 	{
+		NarudzbaServis ns = new NarudzbaServis(s);
 		Akterprodaje a = (Akterprodaje) s.get(Akterprodaje.class, id);
+		
 		Criteria cn = s.createCriteria(Narudzba.class);
 		cn.add(Restrictions.eq("akterprodaje", a));
 		List<Narudzba> listanarudzbi = cn.list();
-		//ArrayList<Naru>
+		if(!listanarudzbi.isEmpty()){
+			ArrayList<Narudzba> ilistanarudzbi= new ArrayList<Narudzba>(listanarudzbi);
+			for(int i=0;i<ilistanarudzbi.size();i++)  ns.izbrisiNarudzbu(ilistanarudzbi.get(i).getId());
+		}
+		
+		
+		Criteria cf = s.createCriteria(Faktura.class);
+		cf.add(Restrictions.eq("akterprodaje", a));
+		List<Faktura> listafaktura = cf.list();
+		if(!listafaktura.isEmpty()){
+			ArrayList<Faktura> ilistafaktura = new ArrayList<Faktura>(listafaktura);
+			for(int i = 0; i<ilistafaktura.size();i++){
+				ilistafaktura.get(i).setAkterprodaje(null);
+				s.update(ilistafaktura.get(i));
+			}
+		}
+		
+		
 		Transaction t = s.beginTransaction();
 		if(a!=null)s.delete(a);
 		t.commit();

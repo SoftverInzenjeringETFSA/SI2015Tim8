@@ -122,7 +122,6 @@ public class SefProdajeMainGUI {
 			public void actionPerformed(ActionEvent e) {
 				KreiranjeKorisnickogRacunaGUI kkr = new KreiranjeKorisnickogRacunaGUI(s,ref);
 				kkr.startKreiranjeRacuna();
-				
 			}
 		});
 		
@@ -330,8 +329,18 @@ public class SefProdajeMainGUI {
 		btnDodajProdavaca.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				ProdavacDodajIzmjeni prodavacdodaj= new ProdavacDodajIzmjeni("dodaj", s, ref);
-				prodavacdodaj.startProdavacDodajIzmjeni("dodaj");
+				if(rs.dajBrojRegija()!=0){
+					if(aks.dajSveAkterePoTipu("regmen")!=null){
+						ProdavacDodajIzmjeni prodavacdodaj= new ProdavacDodajIzmjeni("dodaj", s, ref);
+						prodavacdodaj.startProdavacDodajIzmjeni("dodaj");
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Potrebno je da postoji barem jedan regionalni menadzer \n kako bi mogli dodavati prodavace");
+					}
+				}
+				else{
+					JOptionPane.showMessageDialog(null,"Potrebno je da postoji barem jedna regija i jedan regionalni menadzer, kako bi bilo moguce dodati prodavaca");
+				}
 				
 			}
 		});
@@ -817,7 +826,7 @@ public class SefProdajeMainGUI {
 		for (int i = 0; i < fakture.size(); i++){
 			data[i] = new Object[] {
 					fakture.get(i).getId(), 
-					fakture.get(i).getAkterprodaje().getIme() + " " + fakture.get(i).getAkterprodaje().getPrezime(),
+					fakture.get(i).getImeaktera(),
 					fakture.get(i).getDatum(),
 					fakture.get(i).getUkupnacijena()
 			};

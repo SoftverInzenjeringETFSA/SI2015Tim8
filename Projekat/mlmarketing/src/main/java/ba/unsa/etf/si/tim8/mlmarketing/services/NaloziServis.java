@@ -3,8 +3,10 @@ package ba.unsa.etf.si.tim8.mlmarketing.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
 
@@ -34,5 +36,11 @@ import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
 	public ArrayList<Korisnik> dajSveNaloge(){
 		List<Korisnik> korisnici = s.createCriteria(Korisnik.class).list();
 		return new ArrayList<Korisnik>(korisnici);
+	}
+	
+	public boolean zauzetKorisnik(String username){
+		Criteria c = s.createCriteria(Korisnik.class);
+		if(c.add(Restrictions.eq("username", username)).uniqueResult()==null) return false;
+		else return true;
 	}
 }
