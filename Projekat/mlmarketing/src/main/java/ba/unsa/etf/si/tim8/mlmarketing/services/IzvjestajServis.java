@@ -22,7 +22,7 @@ public class IzvjestajServis {
 	public IzvjestajServis(Session s){
 		this.s=s;
 	}
-	public void pojedinacniIzvjesta(String tip, String mjesec, int godina, int id){
+	public MyTableModel pojedinacniIzvjesta(String tip, String mjesec, int godina, int id){
 		if(tip.equals("Za isplatu")){
 			
 			AkterServis aks = new AkterServis(s);
@@ -44,9 +44,28 @@ public class IzvjestajServis {
 					ukupnaCijena-=nizpf[j].getNabavnacijena()*nizpf[j].getKolicina();
 				}
 			}
-			
+			double bonus = 0;
+			Akterprodaje[] niza = a.getAkterprodajes().toArray(new Akterprodaje[a.getAkterprodajes().size()]);
+			for(int i=0;i<niza.length;i++){
+				Faktura[] nizf = niza[i].getFakturas().toArray(new Faktura[niza[i].getFakturas().size()]);
+				for(int j=0;j< nizf.length;j++){
+					bonus+=nizf[i].getUkupnacijena();
+				}
+			}
+			bonus/=20;
+			Object[][]data = new Object[5][];
+			data[0]= new Object[]{"Akter prodaje:",a.getIme()+" "+a.getPrezime()};
+			data[1]= new Object[]{"Mjesec:",mjesec.replaceFirst("^0+(?!$)", "")+", "+Integer.toString(godina)};
+			data[2]= new Object[]{"Iznos isplate:",Double.toString(ukupnaCijena)};
+			data[3]=new Object[]{"Bonus:",Double.toString(bonus)};
+			data[4]= new Object[]{"Ukupno",Double.toString(bonus+ukupnaCijena)};
+			MyTableModel m = new MyTableModel(data, new String[]{"Izvjestaj za isplatu",""});
 			System.out.println(ukupnaCijena);
+			return m;
 		}
+		Object[][]data = new Object[6][];
+		return new MyTableModel(data, new String[]{"",""});
+		
 	}
 	
 	private Date pocetniDatum(String mjesec,int godina){

@@ -22,7 +22,7 @@ public class IzvjestajPrikazForme {
 	/**
 	 * Launch the application.
 	 */
-	public  void main(String[] args) {
+	public void main() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -41,6 +41,7 @@ public class IzvjestajPrikazForme {
 	public IzvjestajPrikazForme(MyTableModel m) {
 		initialize();
 		this.m = m;
+		table.setModel(m);
 	}
 
 	/**
@@ -50,7 +51,7 @@ public class IzvjestajPrikazForme {
 		frmPrikazIzvjetaja = new JFrame();
 		frmPrikazIzvjetaja.setTitle("Prikaz izvještaja");
 		frmPrikazIzvjetaja.setBounds(100, 100, 450, 300);
-		frmPrikazIzvjetaja.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmPrikazIzvjetaja.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmPrikazIzvjetaja.getContentPane().setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();

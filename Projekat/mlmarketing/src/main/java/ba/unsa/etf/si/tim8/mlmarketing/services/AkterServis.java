@@ -94,6 +94,13 @@ public class AkterServis {
 		return new ArrayList<Akterprodaje>(akteri);
 	}
 	
+	public ArrayList<Akterprodaje> dajSveAktere(){
+		Criteria criteria = s.createCriteria(Akterprodaje.class);	
+	
+		List<Akterprodaje> akteri = (List<Akterprodaje>)criteria.list();
+		return new ArrayList<Akterprodaje>(akteri);
+	}
+	
 	public int dajBrojAktera(){
 		return s.createCriteria(Akterprodaje.class).list().size();
 	}

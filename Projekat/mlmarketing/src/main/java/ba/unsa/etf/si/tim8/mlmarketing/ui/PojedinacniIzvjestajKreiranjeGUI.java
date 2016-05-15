@@ -11,8 +11,11 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
+import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.IzvjestajServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.ProizvodServis;
+import ba.unsa.etf.si.tim8.mlmarketing.services.ValidacijeServis;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -29,6 +32,7 @@ public class PojedinacniIzvjestajKreiranjeGUI {
 	private Session s;
 	private AkterServis aks;
 	private IzvjestajServis is;
+	private ProizvodServis ps;
 	final static Logger logger = Logger.getLogger(PojedinacniIzvjestajKreiranjeGUI.class);
 	/**
 	 * Launch the application.
@@ -53,6 +57,7 @@ public class PojedinacniIzvjestajKreiranjeGUI {
 		this.s=s;
 		this.aks= new AkterServis(s);
 		this.is = new IzvjestajServis(s);
+		this.ps = new ProizvodServis(s);
 		initialize();
 	}
 
@@ -63,21 +68,24 @@ public class PojedinacniIzvjestajKreiranjeGUI {
 		frmPojedinacniIzvjestaj = new JFrame();
 		frmPojedinacniIzvjestaj.setTitle("Pojedinacni izvjestaj");
 		frmPojedinacniIzvjestaj.setBounds(100, 100, 450, 300);
-		frmPojedinacniIzvjestaj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmPojedinacniIzvjestaj.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmPojedinacniIzvjestaj.getContentPane().setLayout(null);
 		
-		JComboBox comboBoxTip = new JComboBox();
-		
+		final JComboBox comboBoxTip = new JComboBox();
+		//comboBoxTip.setModel(new DefaultComboBoxModel(new String[] {, "Naruceni proizvodi", "Po proizvodu"}));
 		comboBoxTip.addItem("Za isplatu");
+		comboBoxTip.addItem("Naruceni proizvodi");
+		comboBoxTip.addItem("Po proizvodu");
+		
 		comboBoxTip.setBounds(76, 46, 120, 20);
 		frmPojedinacniIzvjestaj.getContentPane().add(comboBoxTip);
 		
-		JComboBox comboBoxEntitet = new JComboBox();
-		comboBoxEntitet.setBounds(233, 46, 120, 20);
-		frmPojedinacniIzvjestaj.getContentPane().add(comboBoxEntitet);
+		final JComboBox comboBoxMenadzeri = new JComboBox();
+		comboBoxMenadzeri.setBounds(233, 46, 120, 20);
+		frmPojedinacniIzvjestaj.getContentPane().add(comboBoxMenadzeri);
 		
-		JComboBox comboBoxMjesec = new JComboBox();
-		comboBoxMjesec.setBounds(129, 95, 67, 20);
+		final JComboBox comboBoxMjesec = new JComboBox();
+		comboBoxMjesec.setBounds(129, 77, 67, 20);
 		comboBoxMjesec.addItem("01");
 		comboBoxMjesec.addItem("02");
 		comboBoxMjesec.addItem("03");
@@ -95,27 +103,77 @@ public class PojedinacniIzvjestajKreiranjeGUI {
 		
 		JLabel labelMjesec = new JLabel("Mjesec:");
 		labelMjesec.setHorizontalAlignment(SwingConstants.RIGHT);
-		labelMjesec.setBounds(73, 98, 46, 14);
+		labelMjesec.setBounds(24, 80, 46, 14);
 		frmPojedinacniIzvjestaj.getContentPane().add(labelMjesec);
 		
 		JLabel lblNewLabel = new JLabel("Godina:");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel.setBounds(233, 98, 46, 14);
+		lblNewLabel.setBounds(24, 111, 46, 14);
 		frmPojedinacniIzvjestaj.getContentPane().add(lblNewLabel);
+		
+		
+		
+		
+		textField = new JTextField();
+		textField.setBounds(129, 108, 67, 20);
+		frmPojedinacniIzvjestaj.getContentPane().add(textField);
+		textField.setColumns(10);
+		
+		final JComboBox comboBoxProizvodi = new JComboBox();
+		comboBoxProizvodi.setBounds(233, 77, 120, 20);
+		frmPojedinacniIzvjestaj.getContentPane().add(comboBoxProizvodi);
+		
+		JLabel lblTip = new JLabel("Tip:");
+		lblTip.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTip.setBounds(24, 49, 46, 14);
+		frmPojedinacniIzvjestaj.getContentPane().add(lblTip);
+		comboBoxMenadzeri.setEnabled(true);
+		comboBoxProizvodi.setEnabled(false);
+		
+		ArrayList<Akterprodaje> al = aks.dajSveAktere();
+		for(int i = 0; i< al.size();i++){
+			comboBoxMenadzeri.addItem(al.get(i));
+		}
+		
+		ArrayList<Proizvod> pl = ps.dajSveProizvode();
+		for(int i = 0; i< pl.size();i++){
+			comboBoxProizvodi.addItem(pl.get(i));
+		}
+		
+		comboBoxTip.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+		         if(comboBoxTip.getSelectedItem().equals("Po proizvodu")){
+		        	 comboBoxMenadzeri.setEnabled(false);
+		        	 comboBoxProizvodi.setEnabled(true);
+		         }
+		         else{
+		        	 comboBoxMenadzeri.setEnabled(true);
+		        	 comboBoxProizvodi.setEnabled(false);
+		         }
+			}
+		});
 		
 		JButton btnGenerisi = new JButton("Generiši");
 		btnGenerisi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//int id = comboBoxEntitet.getSelectedIndex()
-				//is.pojedinacniIzvjesta(comboBoxTip.getSelectedItem(), comboBoxMjesec.getSelectedItem(),Integer.parseInt(textField.getText()), id);
+				if(ValidacijeServis.daLiJeInt(textField.getText())){
+					int id;
+					if(comboBoxMenadzeri.isEnabled()){
+						id = ((Akterprodaje)comboBoxMenadzeri.getSelectedItem()).getId();
+					}
+					else{
+						id = ((Proizvod)comboBoxProizvodi.getSelectedItem()).getId();
+					}
+					String tip = comboBoxTip.getSelectedItem().toString();
+					String mjesec = comboBoxMjesec.getSelectedItem().toString();
+					IzvjestajPrikazForme izf = new IzvjestajPrikazForme(is.pojedinacniIzvjesta(tip, mjesec,Integer.parseInt(textField.getText()), id));
+					izf.main();
+				}
+				
 			}
 		});
-		btnGenerisi.setBounds(264, 177, 89, 23);
+		btnGenerisi.setBounds(264, 166, 89, 23);
 		frmPojedinacniIzvjestaj.getContentPane().add(btnGenerisi);
-		
-		textField = new JTextField();
-		textField.setBounds(286, 95, 67, 20);
-		frmPojedinacniIzvjestaj.getContentPane().add(textField);
-		textField.setColumns(10);
 	}
 }
