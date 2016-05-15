@@ -1,6 +1,8 @@
 package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -133,6 +135,13 @@ public class PrikazProdavacGUI {
 		JButton btnOk = new JButton("OK");
 		btnOk.setBounds(335, 227, 89, 23);
 		frmPregledProdavac.getContentPane().add(btnOk);
+		btnOk.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				frmPregledProdavac.dispose();
+				
+			}
+		});
 		prikazPodatakaProdavaca();
 	}
 	

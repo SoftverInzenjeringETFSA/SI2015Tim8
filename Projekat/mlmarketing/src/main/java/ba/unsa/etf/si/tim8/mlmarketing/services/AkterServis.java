@@ -114,4 +114,14 @@ public class AkterServis {
 		if(lista.size()==0) return true;
 		return false;
 	}
+	
+	public boolean daLiJeNadlezanZaMaxBroj(Akterprodaje a)
+	{
+		Transaction t = s.beginTransaction();
+		Akterprodaje ak = (Akterprodaje) s.get(Akterprodaje.class, a.getId());
+		t.commit();
+		if(ak.getAkterprodajes().size() == 10)
+			return true;
+		return false;
+	}
 }

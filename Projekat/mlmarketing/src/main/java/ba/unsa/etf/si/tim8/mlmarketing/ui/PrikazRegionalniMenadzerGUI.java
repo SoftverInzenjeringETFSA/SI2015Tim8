@@ -1,6 +1,8 @@
 package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -152,12 +154,19 @@ public class PrikazRegionalniMenadzerGUI {
 		btnOk = new JButton("OK");
 		btnOk.setBounds(550, 326, 89, 23);
 		frmPregledMenadera.getContentPane().add(btnOk);
+		btnOk.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				frmPregledMenadera.dispose();
+			}
+		});
 		prikaziPodatke();
 	}
 	
 	private void prikaziPodatke(){
 		Akterprodaje prikaz=aks.dajAktera(id);
-		JOptionPane.showMessageDialog(null, prikaz.getAkterprodajes().size());
+		
 		if(prikaz != null)
 		{
 			textFieldimePrezime.setText(prikaz.getIme() + " " + prikaz.getPrezime());

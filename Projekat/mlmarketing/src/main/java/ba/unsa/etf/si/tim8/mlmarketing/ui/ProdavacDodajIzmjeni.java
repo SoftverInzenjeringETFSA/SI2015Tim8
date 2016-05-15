@@ -194,37 +194,55 @@ public class ProdavacDodajIzmjeni {
 						String errorMessage = validirajPolja(validacije);
 						if(errorMessage.equals(""))
 						{
+							
 							if(id == -1)
 							{
 								Akterprodaje a = new Akterprodaje();
-								a.setIme(textFieldIme.getText());
-								a.setPrezime(textFieldPrezime.getText());
-								a.setAdresa(textFieldAdresa.getText());
-								a.setBrojtelefona(textFieldBrojTelefona.getText());
-								a.setEmail(textFieldEmail.getText());
-								a.setRegija((Regija) comboBoxRegije.getSelectedItem());
-								a.setAkterprodaje((Akterprodaje)comboBoxNM.getSelectedItem());
-								a.setTip("prodavac");
-								aks.kreirajAktera(a);
+								Akterprodaje regmen = (Akterprodaje)comboBoxNM.getSelectedItem();
+								if(!aks.daLiJeNadlezanZaMaxBroj(regmen))
+								{
+									a.setIme(textFieldIme.getText());
+									a.setPrezime(textFieldPrezime.getText());
+									a.setAdresa(textFieldAdresa.getText());
+									a.setBrojtelefona(textFieldBrojTelefona.getText());
+									a.setEmail(textFieldEmail.getText());
+									a.setRegija((Regija) comboBoxRegije.getSelectedItem());
+									a.setAkterprodaje(regmen);									
+									a.setTip("prodavac");
+									aks.kreirajAktera(a);
+									frmDodajizmijeni.dispose();
+								}
+								else JOptionPane.showMessageDialog(null, "Regionalni menadžer " + regmen.toString() + " je već nadležan za maksimalni broj prodavača.");
+								
 							}
 							else
 							{
-								int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
-								if(rez == JOptionPane.YES_OPTION){
-									Akterprodaje ap = aks.dajAktera(id);
+								Akterprodaje ap = aks.dajAktera(id); 						
+								Akterprodaje regmen = (Akterprodaje)comboBoxNM.getSelectedItem();
+								if(!aks.daLiJeNadlezanZaMaxBroj(regmen))
+								{
+									int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+									if(rez == JOptionPane.YES_OPTION){
+																			
 									ap.setIme(textFieldIme.getText());
 									ap.setPrezime(textFieldPrezime.getText());
 									ap.setAdresa(textFieldAdresa.getText());
 									ap.setBrojtelefona(textFieldBrojTelefona.getText());
 									ap.setEmail(textFieldEmail.getText());
 									ap.setRegija((Regija) comboBoxRegije.getSelectedItem());
-									ap.setAkterprodaje((Akterprodaje)comboBoxNM.getSelectedItem());
+									ap.setAkterprodaje(regmen);
 									aks.izmjeniAktera(ap);
+									frmDodajizmijeni.dispose();
+									}
 								}
+								else JOptionPane.showMessageDialog(null, "Regionalni menadžer " + regmen.toString() + " je već nadležan za maksimalni broj prodavača.");
+									
+															
 								
 							}							
-							frmDodajizmijeni.dispose();
+							
 							refreshableRoditelj.refreshajTabeluProdavaci();
+							refreshableRoditelj.refreshajTabeluMenadzeri();
 						}
 						else JOptionPane.showMessageDialog(null, errorMessage);
 						

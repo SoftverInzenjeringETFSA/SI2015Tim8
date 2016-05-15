@@ -108,10 +108,17 @@ public class DodjelaMenadzeraGUI {
 			public void actionPerformed(ActionEvent e) {
 				if(SesijaServis.dajTipKorisnika().equals("sef")){
 					Akterprodaje a = aks.dajAktera(id);
-					a.setAkterprodaje((Akterprodaje)comboBox.getSelectedItem());
-					aks.izmjeniAktera(a);
-					refreshableRoditelj.refreshajTabeluProdavaci();
-					refreshableRoditelj.refreshajTabeluMenadzeri();
+					Akterprodaje regmen = (Akterprodaje)comboBox.getSelectedItem();
+					if(!aks.daLiJeNadlezanZaMaxBroj(regmen))
+					{
+						a.setAkterprodaje((Akterprodaje)comboBox.getSelectedItem());
+						aks.izmjeniAktera(a);
+						refreshableRoditelj.refreshajTabeluProdavaci();
+						refreshableRoditelj.refreshajTabeluMenadzeri();
+						frmDodijeliMenadera.dispose();
+					}
+					else JOptionPane.showMessageDialog(null, "Nadležni menadžer " + regmen.toString() + " je već nadležan za maksimalni broj prodavača" );
+					
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Niste logovani sa odgovarajućim privilegijama za ovu akciju.");
