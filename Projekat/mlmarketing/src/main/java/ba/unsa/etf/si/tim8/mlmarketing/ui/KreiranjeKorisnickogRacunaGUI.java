@@ -142,18 +142,23 @@ public class KreiranjeKorisnickogRacunaGUI {
 						String errorMessage = validirajPolja(validacije);
 						if(errorMessage.equals(""))
 						{
-							k.setIme(textFieldIme.getText());					
-							k.setPrezime(textFieldPrezime.getText());
-							k.setUsername(textFieldKorisnickoIme.getText());
-							k.setAdresa(textFieldAdresa.getText());
-							if(comboBox.getSelectedItem()=="Komercijalista") k.setTip("komercijalista");
-							else k.setTip("sef");
-							k.setTelefon(textFieldTelefon.getText());
-							k.setEmail(textFieldEmail.getText());
-							k.setPassword(passwordFieldSifra.getText());							
-							ns.kreirajNalog(k);
-							refreshableRoditelj.refreshajTabeluKorisnici();
-							frmDodajKorisnika.dispose();
+							if(!ns.zauzetKorisnik(textFieldKorisnickoIme.getText()))
+							{
+								k.setIme(textFieldIme.getText());					
+								k.setPrezime(textFieldPrezime.getText());
+								k.setUsername(textFieldKorisnickoIme.getText());
+								k.setAdresa(textFieldAdresa.getText());
+								if(comboBox.getSelectedItem()=="Komercijalista") k.setTip("komercijalista");
+								else k.setTip("sef");
+								k.setTelefon(textFieldTelefon.getText());
+								k.setEmail(textFieldEmail.getText());
+								k.setPassword(passwordFieldSifra.getText());							
+								ns.kreirajNalog(k);
+								refreshableRoditelj.refreshajTabeluKorisnici();
+								frmDodajKorisnika.dispose();
+							}
+							else JOptionPane.showMessageDialog(null, "Korisnik sa usernameom " + textFieldKorisnickoIme.getText() + " već postoji." );
+							
 						}
 						else JOptionPane.showMessageDialog(null, errorMessage);
 						

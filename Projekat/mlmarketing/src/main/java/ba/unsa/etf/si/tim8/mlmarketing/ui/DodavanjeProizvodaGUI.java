@@ -107,7 +107,7 @@ public class DodavanjeProizvodaGUI {
 					String errorMessage = validirajPolja(validacije);
 					if(errorMessage.equals(""))
 					{
-						boolean exists = daLiPostoji(textFieldNaziv.getText().trim());
+						boolean exists = ps.daLiPostojiProizvod(textFieldNaziv.getText().trim());
 						if(!exists)
 						{
 							p.setNaziv(textFieldNaziv.getText().trim());
@@ -152,16 +152,7 @@ public class DodavanjeProizvodaGUI {
 		
 	}
 	
-	private boolean daLiPostoji(String nazivProizvoda)
-	{
-		ArrayList<Proizvod> proizvodi = ps.dajSveProizvode();
-		for(int i = 0; i < proizvodi.size(); i++)
-		{
-			if(proizvodi.get(i).getNaziv().equals(nazivProizvoda))
-				return true;
-		}
-		return false;
-	}
+	
 	private String validirajPolja(boolean[] validacije)
 	{
 		String errorMessage = "";

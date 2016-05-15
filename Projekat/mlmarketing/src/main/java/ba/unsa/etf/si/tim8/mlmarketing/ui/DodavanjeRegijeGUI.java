@@ -28,6 +28,7 @@ public class DodavanjeRegijeGUI {
 	private JFrame frmDodavanjeRegije;
 	private JTextField textFieldNazivRegije;
 	private JTextField textFieldDrzava;
+	
 
 	/**
 	 * Launch the application.
@@ -98,12 +99,19 @@ public class DodavanjeRegijeGUI {
 						if(errorMessage.equals(""))
 						{
 							RegijaServis r= new RegijaServis(s);
-							Regija nova = new Regija();
-							nova.setIme(textFieldNazivRegije.getText().trim());
-							nova.setDrzava(textFieldDrzava.getText().trim());							
-							r.dodajRegiju(nova);
-							refreshableRoditelj.refreshajTabeluRegije();
-							frmDodavanjeRegije.dispose();
+							if(!r.daLiPostojiRegija(textFieldNazivRegije.getText()))
+							{
+								Regija nova = new Regija();
+								nova.setIme(textFieldNazivRegije.getText().trim());
+								nova.setDrzava(textFieldDrzava.getText().trim());							
+								r.dodajRegiju(nova);
+								refreshableRoditelj.refreshajTabeluRegije();
+								frmDodavanjeRegije.dispose();
+								
+							}
+							else JOptionPane.showMessageDialog(null, "Regija sa nazivom " + textFieldNazivRegije.getText() + " već postoji.");
+							
+							
 						}
 						else JOptionPane.showMessageDialog(null, errorMessage);
 						

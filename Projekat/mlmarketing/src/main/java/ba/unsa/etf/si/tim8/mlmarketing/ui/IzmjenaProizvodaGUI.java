@@ -131,7 +131,7 @@ public class IzmjenaProizvodaGUI {
 						String errorMessage = validirajPolja(validacije);
 						if(errorMessage.equals(""))
 						{
-							if(!daLiPostoji(textFieldNazivProizvoda.getText().trim()))
+							if(!ps.daLiPostojiProizvod(textFieldNazivProizvoda.getText().trim()))
 							{
 								int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
 								if(rez == JOptionPane.YES_OPTION){
@@ -163,16 +163,6 @@ public class IzmjenaProizvodaGUI {
 		frmIzmijeni.getContentPane().add(btnIzmijeniProizvod);
 	}
 	
-	private boolean daLiPostoji(String nazivProizvoda)
-	{
-		ArrayList<Proizvod> proizvodi = ps.dajSveProizvode();
-		for(int i = 0; i < proizvodi.size(); i++)
-		{
-			if(proizvodi.get(i).getNaziv().equals(nazivProizvoda))
-				return true;
-		}
-		return false;
-	}
 	
 	private String validirajPolja(boolean[] validacije)
 	{
