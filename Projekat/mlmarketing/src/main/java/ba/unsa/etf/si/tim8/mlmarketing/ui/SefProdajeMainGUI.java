@@ -510,12 +510,17 @@ public class SefProdajeMainGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(tableProizvodi.getSelectedRow() != -1){
-					int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
-					if(rez == JOptionPane.YES_OPTION){
-						int id = odaberiIdKolonu(tableProizvodi, 4);
-						Proizvod p = ps.dajProizvod(id);
-						ps.obrisiProizvod(p);
-						refreshajTabeluProizvodi();
+					int id = odaberiIdKolonu(tableProizvodi, 4);
+					Proizvod p = ps.dajProizvod(id);
+					if(ps.moguceObrisati(p)){
+						int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+						if(rez == JOptionPane.YES_OPTION){
+							ps.obrisiProizvod(p);
+							refreshajTabeluProizvodi();
+						}
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Nije moguce obrisati proizvod dok se ne fakturisu narudzbe kojim pripada, a koje su potvrđene");
 					}
 					
 				}
