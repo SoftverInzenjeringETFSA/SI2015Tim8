@@ -662,7 +662,7 @@ public class SefProdajeMainGUI {
 				if(tableNarudzbe.getSelectedRow() != -1)
 				{
 					int id = odaberiIdKolonu(tableNarudzbe, 0);
-					PrikazNarudzbaKomGUI pnk = new PrikazNarudzbaKomGUI(s, id);
+					PrikazNarudzbaKomGUI pnk = new PrikazNarudzbaKomGUI(s, id, ref);
 					pnk.startPrikazNarudzbaKom();
 				}
 				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednu narudžbu iz tabele.");

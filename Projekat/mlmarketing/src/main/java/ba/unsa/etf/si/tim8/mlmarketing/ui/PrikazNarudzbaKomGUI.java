@@ -32,6 +32,7 @@ public class PrikazNarudzbaKomGUI {
 	private Session s;
 	private NarudzbaServis ns;
 	private int id;
+	private SefProdajeMainGUI refreshableRoditelj;
 	
 
 	private JFrame frmNarudba;
@@ -48,7 +49,7 @@ public class PrikazNarudzbaKomGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PrikazNarudzbaKomGUI window = new PrikazNarudzbaKomGUI(s, id);
+					PrikazNarudzbaKomGUI window = new PrikazNarudzbaKomGUI(s, id, refreshableRoditelj);
 					window.frmNarudba.setVisible(true);
 				} catch (Exception e) {
 					logger.error(e);
@@ -60,13 +61,15 @@ public class PrikazNarudzbaKomGUI {
 	/**
 	 * Create the application.
 	 */
-	public PrikazNarudzbaKomGUI(Session s, int id) 
+	public PrikazNarudzbaKomGUI(Session s, int id, SefProdajeMainGUI roditelj) 
 	{
 		this.s = s;
 		this.ns = new NarudzbaServis(s);
 		this.id = id;
+		this.refreshableRoditelj = roditelj;
 		initialize();
 	}
+	
 
 	/**
 	 * Initialize the contents of the frame.
@@ -134,7 +137,7 @@ public class PrikazNarudzbaKomGUI {
 		
 		comboBoxStatus = new JComboBox();
 		comboBoxStatus.setEditable(true);
-		comboBoxStatus.setModel(new DefaultComboBoxModel(new String[] {"Potvr\u0111ena", "Odbijena", "Na \u010Dekanju", "Fakturisana"}));
+		comboBoxStatus.setModel(new DefaultComboBoxModel(new String[] {"Potvr\u0111ena", "Odbijena", "Na \u010Dekanju"}));
 		comboBoxStatus.setBounds(159, 342, 145, 22);
 		comboBoxStatus.setEditable(false);
 		frmNarudba.getContentPane().add(comboBoxStatus);
@@ -150,6 +153,11 @@ public class PrikazNarudzbaKomGUI {
 				
 				String status = (String)comboBoxStatus.getSelectedItem();
 				Narudzba n = ns.dajNarudzbu(id);
+				if(n.getStatus().equals(status))
+				{
+					JOptionPane.showMessageDialog(null, "Odabrani status narudžbe je isti kao i trenutni.");
+					return;
+				}
 				if(n.getStatus().equals("Potvrđena") || n.getStatus().equals("Fakturisana"))
 				{
 					JOptionPane.showMessageDialog(null, "Nije moguće mijenjati status narudzbe koja je potvrđena ili fakturisana.");
@@ -160,21 +168,19 @@ public class PrikazNarudzbaKomGUI {
 					JOptionPane.showMessageDialog(null, "Nije moguće promijeniti status narudžbe u fakturisana. Fakturisanje narudžbe obavlja komercijalista.");
 					return;
 				}
+				
 				if(!ns.izmijeniStatusNarudzbe(n, status))
 				{
 					JOptionPane.showMessageDialog(null, "Nije moguće potvrditi odabranu narudžbu jer nema dovoljno proizvoda na stanju.");
 				}
+				
 				else
 				{
-					if(n.getStatus().equals(status))
-					{
-						JOptionPane.showMessageDialog(null, "Odabrani status narudžbe je isti kao i trenutni.");
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(null, "Uspješno ste promijenili status narudžbe.");
-						frmNarudba.dispose();
-					}
+										
+					JOptionPane.showMessageDialog(null, "Uspješno ste promijenili status narudžbe.");
+					refreshableRoditelj.refreshajTabeluNarudzba();
+					frmNarudba.dispose();
+					
 					
 				}
 				//treba dodati refreshovanje tabele narudzbe i refreshovanje tabele proizvodi
