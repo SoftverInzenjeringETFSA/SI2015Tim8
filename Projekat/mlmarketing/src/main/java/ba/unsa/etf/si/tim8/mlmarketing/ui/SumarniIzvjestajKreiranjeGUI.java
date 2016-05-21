@@ -2,12 +2,19 @@ package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import java.awt.EventQueue;
 import java.text.ParseException;
+import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+
+import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
+import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
+import ba.unsa.etf.si.tim8.mlmarketing.services.IzvjestajServis;
 
 import javax.swing.JComboBox;
 import javax.swing.JButton;
@@ -15,10 +22,12 @@ import javax.swing.JFormattedTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class sumarniIzvjestajKreiranjeGUI {
+public class SumarniIzvjestajKreiranjeGUI {
 
 	private JFrame frame;
 	final static Logger logger = Logger.getLogger(PojedinacniIzvjestajKreiranjeGUI.class);
+	private Session s;
+	private IzvjestajServis is;
 	/**
 	 * Launch the application.
 	 */
@@ -26,7 +35,7 @@ public class sumarniIzvjestajKreiranjeGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					sumarniIzvjestajKreiranjeGUI window = new sumarniIzvjestajKreiranjeGUI();
+					SumarniIzvjestajKreiranjeGUI window = new SumarniIzvjestajKreiranjeGUI(s);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					logger.error(e);
@@ -38,7 +47,9 @@ public class sumarniIzvjestajKreiranjeGUI {
 	/**
 	 * Create the application.
 	 */
-	public sumarniIzvjestajKreiranjeGUI() {
+	public SumarniIzvjestajKreiranjeGUI(Session s) {
+		this.s=s;
+		this.is= new IzvjestajServis(s);
 		initialize();
 	}
 
@@ -64,7 +75,7 @@ public class sumarniIzvjestajKreiranjeGUI {
 		lblSumarniIzvjestajZa.setBounds(105, 50, 105, 14);
 		frame.getContentPane().add(lblSumarniIzvjestajZa);
 		
-		JComboBox comboBoxTip = new JComboBox();
+		final JComboBox comboBoxTip = new JComboBox();
 		comboBoxTip.setBounds(233, 47, 105, 20);
 		comboBoxTip.addItem("Proizvodi");
 		comboBoxTip.addItem("Prodavaci");
@@ -77,11 +88,13 @@ public class sumarniIzvjestajKreiranjeGUI {
 		JLabel lblDo = new JLabel("Do:");
 		lblDo.setBounds(252, 116, 28, 14);
 		frame.getContentPane().add(lblDo);
-		
+	
 		JButton btnNewButton = new JButton("Generisi");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				String tip = comboBoxTip.getSelectedItem().toString();
+				IzvjestajPrikazForme izf = new IzvjestajPrikazForme(is.sumarniIzvjesta(new Date(),new Date(),tip));
+				izf.main();
 			}
 		});
 		btnNewButton.setBounds(233, 185, 105, 23);

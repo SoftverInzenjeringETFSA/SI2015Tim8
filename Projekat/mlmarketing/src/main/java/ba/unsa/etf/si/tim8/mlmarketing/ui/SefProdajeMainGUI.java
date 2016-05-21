@@ -710,6 +710,12 @@ public class SefProdajeMainGUI {
 		panel_7.add(btnPojedinacniIzvjestaj);
 		
 		JButton btnSumarniIzvjestaj = new JButton("Sumarni izvjestaj");
+		btnSumarniIzvjestaj.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SumarniIzvjestajKreiranjeGUI skg = new SumarniIzvjestajKreiranjeGUI(s);
+				skg.startSumarni();
+			}
+		});
 		btnSumarniIzvjestaj.setBounds(284, 43, 140, 140);
 		panel_7.add(btnSumarniIzvjestaj);
 		

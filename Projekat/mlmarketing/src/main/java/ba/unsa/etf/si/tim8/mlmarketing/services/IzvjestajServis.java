@@ -168,13 +168,6 @@ public class IzvjestajServis {
 		return d;
 	}
 	
-	public MyTableModel sumarniIzvjestaj(String tip, String mjesec, int godina, int id){
-		if(tip.equals("")){
-			
-		}
-		Object[][]data = new Object[6][];
-		return new MyTableModel(data, new String[]{"",""});
-	}
 	
 	private Date krajnjiDatum(String mjesec,int godina){
 		String pocetak="-28 00:00:01";
@@ -191,7 +184,10 @@ public class IzvjestajServis {
 		return d;
 	}
 
-	public MyTableModel sumarniIzvjesta(String tip, String mjesec, int godina, int id){
+	public MyTableModel sumarniIzvjesta(Date datumPocetni, Date datumKrajnji, String tip){
+		if(tip.equals("Proizvodi")){
+			
+		}
 		Object[][] data=new Object[1][];
 		data[0]=new Object[]{"",""};
 		return new MyTableModel(data, new String[]{"",""});
