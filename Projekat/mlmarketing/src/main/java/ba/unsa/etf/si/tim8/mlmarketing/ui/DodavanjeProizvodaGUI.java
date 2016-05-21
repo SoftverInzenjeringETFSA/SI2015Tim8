@@ -103,7 +103,7 @@ public class DodavanjeProizvodaGUI {
 			public void actionPerformed(ActionEvent e) {
 				if(SesijaServis.dajTipKorisnika().equals("sef")){
 					Proizvod p= new Proizvod();
-					boolean[] validacije = {false, false, false, false};
+					boolean[] validacije = {false, false, false, false, true};
 					String errorMessage = validirajPolja(validacije);
 					if(errorMessage.equals(""))
 					{
@@ -160,13 +160,20 @@ public class DodavanjeProizvodaGUI {
 				"Naziv proizvoda može sadržavati samo slova, brojeve i razmake. (ne može ostati nepopunjen)\n",
 				"Nabavna cijena mora biti broj, ne može biti negativna niti ostati nepopunjena.\n",
 				"Prodajna cijena mora biti broj, ne može biti negativna niti ostati nepopunjena.\n",
-				"Stanje na skladištu mora biti cijeli broj, ne može biti negativno niti može ostati nepopunjeno.\n"
+				"Stanje na skladištu mora biti cijeli broj, ne može biti negativno niti može ostati nepopunjeno.\n",
+				"Nabavna cijena mora biti pozitivan broj"
 		};
 		validacije[0] = ValidacijeServis.validirajNazivProizvoda(textFieldNaziv.getText());
 		validacije[1] = ValidacijeServis.daLiJeDouble(textFieldNabavnaCijena.getText());
 		validacije[2] = ValidacijeServis.daLiJeDouble(textFieldProdajnaCijena.getText());
 		
 		validacije[3] = ValidacijeServis.daLiJeInt(textFieldStanjeNaSkladistu.getText());
+		if(validacije[1])
+		{
+			if(textFieldNabavnaCijena.getText().equals("0") || 
+					textFieldNabavnaCijena.getText().equals("0.0"))
+				validacije[4] = false;
+		}
 		for(int i = 0; i < validacije.length; i++)
 		{
 			if(!validacije[i])

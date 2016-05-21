@@ -220,9 +220,9 @@ public class RegMenadzerDodajIzmjeniGUI {
 	{
 		String errorMessage = "";
 		String[] greske = new String[]{
-				"Ime može sadržavati samo slova (bez razmaka).\n",
-				"Prezime može sadržavati samo slova (bez razmaka).\n",
-				"Telefon može sadržavati samo brojeve (bez razmaka).\n",
+				"Ime može sadržavati samo slova i minimalna dužina je 3 (bez razmaka).\n",
+				"Prezime može sadržavati samo slova i minimalna dužina je 3 (bez razmaka).\n",
+				"Telefon može sadržavati samo brojeve, minimalna dužina je 6 (bez razmaka).\n",
 				"Adresa ne može biti prazna, niti može sadržavati samo razmak\n",
 				"Email mora biti u ispravnom formatu (example@nesto.nesto).\n"
 				

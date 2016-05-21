@@ -103,6 +103,7 @@ public class LoginGUI {
 			public void actionPerformed(ActionEvent e) {
 					if(SesijaServis.prijava(txtUsername.getText(),passwordField.getText())){
 						startUpCheck();
+						JOptionPane.showMessageDialog(null, "Prijava uspješna");
 						if(SesijaServis.dajTipKorisnika().equals("sef")){
 							SefProdajeMainGUI sefmg= new SefProdajeMainGUI(s,ref);
 							sefmg.startSefProdajeMain();}
@@ -111,6 +112,7 @@ public class LoginGUI {
 							komercijalistamg.startKomercijalistaMain();
 						}
 						frmLogin.hide();
+						
 					
 				}
 			}

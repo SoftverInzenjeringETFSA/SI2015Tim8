@@ -166,14 +166,24 @@ public class PrikazNarudzbaKomGUI {
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "Uspješno ste promijenili status narudžbe.");
-					frmNarudba.dispose();
+					if(n.getStatus().equals(status))
+					{
+						JOptionPane.showMessageDialog(null, "Odabrani status narudžbe je isti kao i trenutni.");
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Uspješno ste promijenili status narudžbe.");
+						frmNarudba.dispose();
+					}
+					
 				}
 				//treba dodati refreshovanje tabele narudzbe i refreshovanje tabele proizvodi
 			}
 		});
 		prikaziPodatke();
 		refreshajTabeluProizvodi();
+		
+		
 	}
 	
 	private void prikaziPodatke()
