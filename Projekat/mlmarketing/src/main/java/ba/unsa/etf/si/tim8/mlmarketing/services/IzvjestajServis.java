@@ -187,6 +187,17 @@ public class IzvjestajServis {
 	public MyTableModel sumarniIzvjesta(Date datumPocetni, Date datumKrajnji, String tip){
 		if(tip.equals("Proizvodi")){
 			
+			Criteria cproizvodi = s.createCriteria(Proizvod.class);
+			ProizvodServis ps = new ProizvodServis(s);
+			
+			ArrayList<Proizvod> listaProizvoda = new ArrayList<Proizvod>(cproizvodi.list());
+			Object data[][] = new Object[listaProizvoda.size()+3][];
+			data[0]= new Object[]{"Regija: Sve","","",""};
+			data[1]= new Object[]{"Od:","","Do:", ""};
+			data[2]= new Object[]{"Regija","Broj narucenih"};
+			for(int i = 0;i<listaProizvoda.size();i++){
+				
+			}
 		}
 		Object[][] data=new Object[1][];
 		data[0]=new Object[]{"",""};
