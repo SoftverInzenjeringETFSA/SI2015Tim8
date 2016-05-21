@@ -170,9 +170,45 @@ public class IzvjestajServis {
 		return d;
 	}
 	
+	public Date pocetniDatumSaDanom(int dan, String mjesec,int godina){
+		String stringDan = Integer.toString(dan);
+		if(stringDan.length()==1) stringDan="0"+stringDan;
+		String pocetak="-"+stringDan+" 00:00:01";
+		String datumPocetni = Integer.toString(godina)+"-"+mjesec+pocetak;
+		Date d=new Date();
+		try{
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
+			d = dateFormat.parse(datumPocetni);
+    		System.out.println(d);
+    	}
+    	catch(Exception e){
+    		logger.error(e);
+    	}
+		return d;
+	}
+	
 	
 	private Date krajnjiDatum(String mjesec,int godina){
 		String pocetak="-28 00:00:01";
+		String datumPocetni = Integer.toString(godina)+"-"+mjesec+pocetak;
+		Date d=new Date();
+		try{
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
+			d = dateFormat.parse(datumPocetni);
+    		System.out.println(d);
+    	}
+    	catch(Exception e){
+    		logger.error(e);
+    	}
+		return d;
+	}
+	
+	public Date krajnjiDatumSaDanom(int dan, String mjesec,int godina){
+		
+		String stringDan = Integer.toString(dan);
+		if(stringDan.length()==1) stringDan="0"+stringDan;
+		String pocetak="-"+dan+" 23:59:59";
+		
 		String datumPocetni = Integer.toString(godina)+"-"+mjesec+pocetak;
 		Date d=new Date();
 		try{
@@ -202,7 +238,7 @@ public class IzvjestajServis {
 				Criteria cpf = s.createCriteria(ProizvodFaktura.class);
 				cpf.add(Restrictions.eq("proizvod", listaProizvoda.get(i)));
 				cpf.createAlias("faktura", "f");
-				//cpf.add(Restrictions.between("f.datum", datumPocetni,datumKrajnji));
+				cpf.add(Restrictions.between("f.datum", datumPocetni,datumKrajnji));
 				ArrayList<ProizvodFaktura> listaPFaktura= new ArrayList<ProizvodFaktura>(cpf.list());
 				for(int j= 0; j<listaPFaktura.size();j++) brojBrodanih+=listaPFaktura.get(i).getKolicina();
 				data[3+i]= new Object[]{

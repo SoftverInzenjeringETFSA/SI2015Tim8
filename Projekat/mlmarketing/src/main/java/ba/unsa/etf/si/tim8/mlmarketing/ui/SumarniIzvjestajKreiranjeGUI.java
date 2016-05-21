@@ -24,6 +24,8 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextPane;
+import javax.swing.JTextField;
 
 public class SumarniIzvjestajKreiranjeGUI {
 
@@ -31,6 +33,10 @@ public class SumarniIzvjestajKreiranjeGUI {
 	final static Logger logger = Logger.getLogger(PojedinacniIzvjestajKreiranjeGUI.class);
 	private Session s;
 	private IzvjestajServis is;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
 	/**
 	 * Launch the application.
 	 */
@@ -61,7 +67,7 @@ public class SumarniIzvjestajKreiranjeGUI {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 372, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -85,36 +91,76 @@ public class SumarniIzvjestajKreiranjeGUI {
 		frame.getContentPane().add(comboBoxTip);
 		
 		JLabel lblOd = new JLabel("Od:");
-		lblOd.setBounds(41, 116, 28, 14);
+		lblOd.setBounds(28, 90, 28, 14);
 		frame.getContentPane().add(lblOd);
 		
 		JLabel lblDo = new JLabel("Do:");
-		lblDo.setBounds(252, 116, 28, 14);
+		lblDo.setBounds(218, 90, 28, 14);
 		frame.getContentPane().add(lblDo);
-	
-		
-		
-		final JFormattedTextField formattedTextFieldOd = new JFormattedTextField(datum);
-		formattedTextFieldOd.setColumns(10);
-		formattedTextFieldOd.setText("  .  .    .");
-		formattedTextFieldOd.setBounds(79, 113, 105, 20);
-		frame.getContentPane().add(formattedTextFieldOd);
-		
-		final JFormattedTextField formattedTextFieldDo = new JFormattedTextField(datum);
-		formattedTextFieldDo.setColumns(10);
-		formattedTextFieldDo.setText("  .  .    .");
-		formattedTextFieldDo.setBounds(277, 113, 105, 20);
-		frame.getContentPane().add(formattedTextFieldDo);
 		
 		JButton btnNewButton = new JButton("Generisi");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String tip = comboBoxTip.getSelectedItem().toString();
-				IzvjestajPrikazForme izf = new IzvjestajPrikazForme(is.sumarniIzvjesta(new Date(),new Date(),tip));
+				Date datumPocetni = is.pocetniDatumSaDanom(1, "01", 2012);
+				Date datumKrajnji = is.krajnjiDatumSaDanom(4, "04", 2016);
+				IzvjestajPrikazForme izf = new IzvjestajPrikazForme(is.sumarniIzvjesta(datumPocetni,datumKrajnji,tip));
 				izf.main();
 			}
 		});
-		btnNewButton.setBounds(233, 185, 105, 23);
+		btnNewButton.setBounds(233, 210, 105, 23);
 		frame.getContentPane().add(btnNewButton);
+		
+		JLabel lblDan = new JLabel("Dan:");
+		lblDan.setBounds(20, 115, 28, 14);
+		frame.getContentPane().add(lblDan);
+		
+		JLabel lblMjesec = new JLabel("Mjesec:");
+		lblMjesec.setBounds(10, 140, 38, 14);
+		frame.getContentPane().add(lblMjesec);
+		
+		JLabel lblGodina = new JLabel("Godina:");
+		lblGodina.setBounds(10, 164, 38, 14);
+		frame.getContentPane().add(lblGodina);
+		
+		textField = new JTextField();
+		textField.setBounds(58, 112, 76, 20);
+		frame.getContentPane().add(textField);
+		textField.setColumns(10);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(58, 161, 76, 20);
+		frame.getContentPane().add(textField_1);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(58, 137, 76, 20);
+		frame.getContentPane().add(comboBox);
+		
+		JLabel label = new JLabel("Dan:");
+		label.setBounds(218, 115, 28, 14);
+		frame.getContentPane().add(label);
+		
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		textField_2.setBounds(262, 112, 76, 20);
+		frame.getContentPane().add(textField_2);
+		
+		JComboBox comboBox_1 = new JComboBox();
+		comboBox_1.setBounds(262, 137, 76, 20);
+		frame.getContentPane().add(comboBox_1);
+		
+		textField_3 = new JTextField();
+		textField_3.setColumns(10);
+		textField_3.setBounds(262, 161, 76, 20);
+		frame.getContentPane().add(textField_3);
+		
+		JLabel label_1 = new JLabel("Godina:");
+		label_1.setBounds(208, 164, 38, 14);
+		frame.getContentPane().add(label_1);
+		
+		JLabel label_2 = new JLabel("Mjesec:");
+		label_2.setBounds(208, 140, 38, 14);
+		frame.getContentPane().add(label_2);
 	}
 }
