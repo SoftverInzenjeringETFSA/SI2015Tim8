@@ -1,8 +1,11 @@
 package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import java.awt.EventQueue;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -89,6 +92,20 @@ public class SumarniIzvjestajKreiranjeGUI {
 		lblDo.setBounds(252, 116, 28, 14);
 		frame.getContentPane().add(lblDo);
 	
+		
+		
+		final JFormattedTextField formattedTextFieldOd = new JFormattedTextField(datum);
+		formattedTextFieldOd.setColumns(10);
+		formattedTextFieldOd.setText("  .  .    .");
+		formattedTextFieldOd.setBounds(79, 113, 105, 20);
+		frame.getContentPane().add(formattedTextFieldOd);
+		
+		final JFormattedTextField formattedTextFieldDo = new JFormattedTextField(datum);
+		formattedTextFieldDo.setColumns(10);
+		formattedTextFieldDo.setText("  .  .    .");
+		formattedTextFieldDo.setBounds(277, 113, 105, 20);
+		frame.getContentPane().add(formattedTextFieldDo);
+		
 		JButton btnNewButton = new JButton("Generisi");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -99,17 +116,5 @@ public class SumarniIzvjestajKreiranjeGUI {
 		});
 		btnNewButton.setBounds(233, 185, 105, 23);
 		frame.getContentPane().add(btnNewButton);
-		
-		JFormattedTextField formattedTextFieldOd = new JFormattedTextField(datum);
-		formattedTextFieldOd.setColumns(10);
-		formattedTextFieldOd.setText("  .  .    .");
-		formattedTextFieldOd.setBounds(79, 113, 105, 20);
-		frame.getContentPane().add(formattedTextFieldOd);
-		
-		JFormattedTextField formattedTextFieldDo = new JFormattedTextField(datum);
-		formattedTextFieldDo.setColumns(10);
-		formattedTextFieldDo.setText("  .  .    .");
-		formattedTextFieldDo.setBounds(277, 113, 105, 20);
-		frame.getContentPane().add(formattedTextFieldDo);
 	}
 }

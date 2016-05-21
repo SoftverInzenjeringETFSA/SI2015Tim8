@@ -11,6 +11,8 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+import com.mysql.fabric.xmlrpc.base.Array;
+
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Faktura;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
@@ -194,10 +196,23 @@ public class IzvjestajServis {
 			Object data[][] = new Object[listaProizvoda.size()+3][];
 			data[0]= new Object[]{"Regija: Sve","","",""};
 			data[1]= new Object[]{"Od:","","Do:", ""};
-			data[2]= new Object[]{"Regija","Broj narucenih"};
+			data[2]= new Object[]{"Sifra proizvoda","Ime proizvoda","Broj prodanih","Zarada"};
 			for(int i = 0;i<listaProizvoda.size();i++){
-				
+				int brojBrodanih=0;
+				Criteria cpf = s.createCriteria(ProizvodFaktura.class);
+				cpf.add(Restrictions.eq("proizvod", listaProizvoda.get(i)));
+				cpf.createAlias("faktura", "f");
+				//cpf.add(Restrictions.between("f.datum", datumPocetni,datumKrajnji));
+				ArrayList<ProizvodFaktura> listaPFaktura= new ArrayList<ProizvodFaktura>(cpf.list());
+				for(int j= 0; j<listaPFaktura.size();j++) brojBrodanih+=listaPFaktura.get(i).getKolicina();
+				data[3+i]= new Object[]{
+						listaProizvoda.get(i).getId(),
+						listaProizvoda.get(i).getNaziv(),
+						brojBrodanih,
+						brojBrodanih*listaProizvoda.get(i).getNabavnacijena()
+				};
 			}
+			return new MyTableModel(data, new String[]{"Izvjestaj za prozivode","","",""});
 		}
 		Object[][] data=new Object[1][];
 		data[0]=new Object[]{"",""};

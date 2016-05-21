@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
@@ -90,12 +91,12 @@ public class AkterServis {
 	public ArrayList<Akterprodaje> dajSveAkterePoTipu(String tip){
 		Criteria criteria = s.createCriteria(Akterprodaje.class);	
 	
-		List<Akterprodaje> akteri = (List<Akterprodaje>)criteria.add(Restrictions.eq("tip", tip)).list();
+		List<Akterprodaje> akteri = (List<Akterprodaje>)criteria.add(Restrictions.eq("tip", tip)).addOrder(Order.asc("ime")).list();
 		return new ArrayList<Akterprodaje>(akteri);
 	}
 	
 	public ArrayList<Akterprodaje> dajSveAktere(){
-		Criteria criteria = s.createCriteria(Akterprodaje.class);	
+		Criteria criteria = s.createCriteria(Akterprodaje.class).addOrder(Order.asc("ime"));	
 	
 		List<Akterprodaje> akteri = (List<Akterprodaje>)criteria.list();
 		return new ArrayList<Akterprodaje>(akteri);
