@@ -3,14 +3,14 @@ package ba.unsa.etf.si.tim8.mlmarketing.services;
 public class ValidacijeServis {
 	
 	public static boolean  validirajIme(String ime){
-		if(ime.equals(""))
+		if(ime.equals("") || ime.length()< 3)
 			return false;
 		String pattern = "[a-zA-ZšŠćĆĐđŽžČč]+"; 		
 		return ime.matches(pattern);		
 	}
 	
 	public static boolean validirajPrezime(String prezime){
-		if(prezime.equals(""))
+		if(prezime.equals("") || prezime.length() < 3)
 			return false;
 		String pattern = "[a-zA-ZšŠćĆĐđŽžČč]+"; 		
 		return prezime.matches(pattern);
@@ -76,7 +76,7 @@ public class ValidacijeServis {
 	
 	public static boolean validirajBrojTelefona(String broj)
 	{
-		if(broj.equals(""))
+		if(broj.equals("") || broj.length() < 6)
 			return false;
 		String pattern = "[0-9]+";
 		return broj.matches(pattern);

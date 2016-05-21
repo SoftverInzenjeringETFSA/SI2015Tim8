@@ -115,6 +115,7 @@ public class IzmjenaProizvodaGUI {
 		textFieldNazivProizvoda = new JTextField();
 		textFieldNazivProizvoda.setColumns(10);
 		textFieldNazivProizvoda.setBounds(129, 33, 146, 20);
+		textFieldNazivProizvoda.setEditable(false);
 		frmIzmijeni.getContentPane().add(textFieldNazivProizvoda);
 		
 		JButton btnIzmijeniProizvod = new JButton("Izmijeni proizvod");
@@ -123,35 +124,39 @@ public class IzmjenaProizvodaGUI {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(SesijaServis.dajTipKorisnika().equals("sef")){
-					
-					
+										
 						
 						Proizvod p = ps.dajProizvod(id);
-						boolean[] validacije = {false, false, false, false};
-						String errorMessage = validirajPolja(validacije);
-						if(errorMessage.equals(""))
+						if (p != null)
 						{
-							if(!ps.daLiPostojiProizvod(textFieldNazivProizvoda.getText().trim()))
-							{
-								int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
-								if(rez == JOptionPane.YES_OPTION){
-								p.setNaziv(textFieldNazivProizvoda.getText().trim());
-								p.setNabavnacijena(Double.parseDouble(textFieldNabavnaCijena.getText().trim()));
-								p.setProdajnacijena(Double.parseDouble(textFieldProdajnaCijena.getText().trim()));
-								p.setKolicina(Integer.parseInt(textFieldStanjeSkladista.getText().trim()));
-								ps.izmijeniProizvod(p);
-								refreshableRoditelj.refreshajTabeluProizvodi();
-								frmIzmijeni.dispose();
+							boolean[] validacije = {false, false, false, false};
+							String errorMessage = validirajPolja(validacije);
+							if(errorMessage.equals(""))
+							{						
+									
+									
+										int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+											if(rez == JOptionPane.YES_OPTION){										
+												p.setNabavnacijena(Double.parseDouble(textFieldNabavnaCijena.getText().trim()));
+												p.setProdajnacijena(Double.parseDouble(textFieldProdajnaCijena.getText().trim()));
+												p.setKolicina(Integer.parseInt(textFieldStanjeSkladista.getText().trim()));
+												ps.izmijeniProizvod(p);
+												refreshableRoditelj.refreshajTabeluProizvodi();
+												frmIzmijeni.dispose();
+										}
 							}
-							
-							}
-							else JOptionPane.showMessageDialog(null, "Proizvod " + textFieldNazivProizvoda.getText() + " već postoji." );
+							else JOptionPane.showMessageDialog(null, errorMessage);
 						}
-						else JOptionPane.showMessageDialog(null, errorMessage);
-						
+						else 
+						{
+							JOptionPane.showMessageDialog(null, "Proizvod u međuvremenu obrisan");
+							frmIzmijeni.dispose();
+						}								
+								
+							
+				}					
 					
-					
-				}
+				
 				else {
 					JOptionPane.showMessageDialog(null, "Niste logovani sa odgovarajućim privilegijama za ovu akciju.");
 					frmIzmijeni.dispose();

@@ -100,6 +100,7 @@ public class SefProdajeMainGUI {
 		btnOdjava.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(SesijaServis.odjava()){
+					JOptionPane.showMessageDialog(null, "Odjava sa sistema uspješna");
 					roditelj.otkrij();
 					frmSefProdaje.dispose();
 				}
