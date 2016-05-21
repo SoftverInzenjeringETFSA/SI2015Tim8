@@ -1,7 +1,10 @@
 package ba.unsa.etf.si.tim8.mlmarketing;
 
+import java.util.Date;
+
 import org.hibernate.Session;
 
+import ba.unsa.etf.si.tim8.mlmarketing.services.FileThreadServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 import ba.unsa.etf.si.tim8.mlmarketing.ui.HibernateUtil;
 import ba.unsa.etf.si.tim8.mlmarketing.ui.LoginGUI;
@@ -18,5 +21,9 @@ public class App
 		SesijaServis.instanciraj(session);
         LoginGUI lg = new LoginGUI(session);
         lg.startLogin();
+        Date datum = new Date();
+        if(datum.getDate()==1){
+        FileThreadServis fs = new FileThreadServis("ime",session);
+        fs.start();}
     }
 }
