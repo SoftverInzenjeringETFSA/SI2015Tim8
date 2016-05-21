@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -199,7 +201,9 @@ public class IzvjestajServis {
 	
 	
 	private Date krajnjiDatum(String mjesec,int godina){
-		String pocetak="-28 00:00:01";
+		String zadnjiDan = Integer.toString(ValidacijeServis.dajBrojDana(mjesec));
+		JOptionPane.showMessageDialog(null, zadnjiDan);
+		String pocetak="-"+zadnjiDan+" 00:00:01";
 		String datumPocetni = Integer.toString(godina)+"-"+mjesec+pocetak;
 		Date d=new Date();
 		try{
@@ -238,10 +242,12 @@ public class IzvjestajServis {
 			Criteria cproizvodi = s.createCriteria(Proizvod.class);
 			ProizvodServis ps = new ProizvodServis(s);
 			
+			double ukupnaZarada = 0;
+			
 			ArrayList<Proizvod> listaProizvoda = new ArrayList<Proizvod>(cproizvodi.list());
 			Object data[][] = new Object[listaProizvoda.size()+3][];
 			data[0]= new Object[]{"Regija: Sve","","",""};
-			data[1]= new Object[]{"Od:","","Do:", ""};
+			data[1]= new Object[]{"Od:",datumPocetni,"Do:", datumKrajnji};
 			data[2]= new Object[]{"Sifra proizvoda","Ime proizvoda","Broj prodanih","Zarada"};
 			for(int i = 0;i<listaProizvoda.size();i++){
 				int brojBrodanih=0;
@@ -250,14 +256,16 @@ public class IzvjestajServis {
 				cpf.createAlias("faktura", "f");
 				cpf.add(Restrictions.between("f.datum", datumPocetni,datumKrajnji));
 				ArrayList<ProizvodFaktura> listaPFaktura= new ArrayList<ProizvodFaktura>(cpf.list());
-				for(int j= 0; j<listaPFaktura.size();j++) brojBrodanih+=listaPFaktura.get(i).getKolicina();
+				for(int j= 0; j<listaPFaktura.size();j++) brojBrodanih+=listaPFaktura.get(j).getKolicina();
 				data[3+i]= new Object[]{
 						listaProizvoda.get(i).getId(),
 						listaProizvoda.get(i).getNaziv(),
 						brojBrodanih,
 						brojBrodanih*listaProizvoda.get(i).getNabavnacijena()
 				};
+				ukupnaZarada+=brojBrodanih*listaProizvoda.get(i).getNabavnacijena();
 			}
+			data[listaProizvoda.size()+2]= new Object[]{"Ukupno","","",ukupnaZarada};
 			return new MyTableModel(data, new String[]{"Izvjestaj za prozivode","","",""});
 		}
 		else{
@@ -277,8 +285,11 @@ public class IzvjestajServis {
 				cpfakture.add(Restrictions.between("f.datum", datumPocetni,datumKrajnji));
 				ArrayList<ProizvodFaktura> listaPFaktura = new ArrayList<ProizvodFaktura>(cpfakture.list());
 				for(int j=0;j<listaPFaktura.size();j++){
-					brojProizvoda+=listaPFaktura.get(i).getKolicina();
-					iznosZaIsplatu+=(listaPFaktura.get(i).getProdajnacijena()-listaPFaktura.get(i).getNabavnacijena())*brojProizvoda;
+					brojProizvoda+=listaPFaktura.get(j).getKolicina();
+					/*JOptionPane.showMessageDialog(null, ((listaPFaktura.get(j).getProdajnacijena()-listaPFaktura.get(j).getNabavnacijena())*brojProizvoda));
+					iznosZaIsplatu+=((listaPFaktura.get(j).getProdajnacijena()-listaPFaktura.get(j).getNabavnacijena())*brojProizvoda);*/
+					iznosZaIsplatu+=(listaPFaktura.get(j).getProdajnacijena()*listaPFaktura.get(j).getKolicina());
+					iznosZaIsplatu-=(listaPFaktura.get(j).getNabavnacijena()*listaPFaktura.get(j).getKolicina());
 				}
 				data[2+i]= new Object[]{
 						listaProdavaca.get(i).getId(),
