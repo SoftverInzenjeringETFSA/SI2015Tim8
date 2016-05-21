@@ -147,9 +147,9 @@ public class DodavanjeNarudzbeGUI {
 					if(comboBox_1.getItemCount() > 0)
 					{
 						pn = new ProizvodNarudzba();
-						if(!(ValidacijeServis.daLiJeInt(textField.getText())))
+						if(!(ValidacijeServis.daLiJeInt(textField.getText())) || Integer.parseInt(textField.getText()) <= 0)
 						{
-							JOptionPane.showMessageDialog(null, "Količina proizvoda mora biti cjelobrojna vrijednost. Molimo unesite ponovo.");
+							JOptionPane.showMessageDialog(null, "Količina proizvoda mora biti cjelobrojna vrijednost veća od 0. Molimo unesite ponovo.");
 							textField.setText("");
 							return;
 						}

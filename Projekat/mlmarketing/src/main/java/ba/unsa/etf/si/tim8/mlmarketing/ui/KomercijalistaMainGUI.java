@@ -377,6 +377,7 @@ public class KomercijalistaMainGUI {
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				if(SesijaServis.odjava()){
+					JOptionPane.showMessageDialog(null, "Odjava sa sistema uspješna");
 					roditelj.otkrij();
 					frmKomercijalista.dispose();
 				}

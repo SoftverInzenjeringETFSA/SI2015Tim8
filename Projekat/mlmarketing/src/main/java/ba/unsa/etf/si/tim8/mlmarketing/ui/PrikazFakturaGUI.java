@@ -140,7 +140,8 @@ public class PrikazFakturaGUI {
 		if(prikaz != null)
 		{
 			textFieldId.setText(prikaz.getId().toString());
-			textFieldDatum.setText(prikaz.getDatum().toString());
+			String datum = Integer.toString(prikaz.getDatum().getYear() + 1900) + "-" + Integer.toString(prikaz.getDatum().getMonth() + 1) + "-" + Integer.toString(prikaz.getDatum().getDate()) + " " + Integer.toString(prikaz.getDatum().getHours()) + ":" + Integer.toString(prikaz.getDatum().getMinutes()) + ":" + Integer.toString(prikaz.getDatum().getSeconds()) + ".0";                                          ;
+			textFieldDatum.setText(datum);
 			textFieldNarucilac.setText(prikaz.getImeaktera());
 			textFieldUkupnaCijena.setText(Double.toString(prikaz.getUkupnacijena()));
 			
