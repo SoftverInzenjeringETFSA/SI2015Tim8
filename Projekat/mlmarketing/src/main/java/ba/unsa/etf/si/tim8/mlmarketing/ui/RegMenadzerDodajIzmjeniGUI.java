@@ -174,6 +174,7 @@ public class RegMenadzerDodajIzmjeniGUI {
 							a.setTip("regmen");
 							a.setRegija((Regija)comboBox.getSelectedItem());
 							aks.kreirajAktera(a);
+							JOptionPane.showMessageDialog(null, "Regionalni menadžer uspješno kreiran!");
 						}
 						else{
 							Akterprodaje a = aks.dajAktera(id);
@@ -190,6 +191,7 @@ public class RegMenadzerDodajIzmjeniGUI {
 								a.setTip("regmen");
 								a.setRegija((Regija)comboBox.getSelectedItem());
 								aks.izmjeniAktera(a);
+								JOptionPane.showMessageDialog(null, "Regionalni menadžer uspješno izmijenjen!");
 								}
 							}
 							else JOptionPane.showMessageDialog(null, "Odabrani akter je u međuvremenu obrisan.");

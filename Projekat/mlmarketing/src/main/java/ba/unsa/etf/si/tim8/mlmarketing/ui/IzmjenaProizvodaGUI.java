@@ -141,6 +141,7 @@ public class IzmjenaProizvodaGUI {
 												p.setProdajnacijena(Double.parseDouble(textFieldProdajnaCijena.getText().trim()));
 												p.setKolicina(Integer.parseInt(textFieldStanjeSkladista.getText().trim()));
 												ps.izmijeniProizvod(p);
+												JOptionPane.showMessageDialog(null, "Proizvod uspješno izmijenjen!");
 												refreshableRoditelj.refreshajTabeluProizvodi();
 												frmIzmijeni.dispose();
 										}

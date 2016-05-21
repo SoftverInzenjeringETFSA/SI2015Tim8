@@ -115,6 +115,7 @@ public class DodavanjeProizvodaGUI {
 							p.setNabavnacijena(Double.parseDouble(textFieldNabavnaCijena.getText().trim()));
 							p.setProdajnacijena(Double.parseDouble(textFieldProdajnaCijena.getText().trim()));
 							ps.kreirajProizvod(p);
+							JOptionPane.showMessageDialog(null, "Proizvod uspješno kreiran!");
 							refreshableRoditelj.refreshajTabeluProizvodi();
 							frmDodajProizvod.dispose();
 						}

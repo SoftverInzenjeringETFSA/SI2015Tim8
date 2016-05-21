@@ -150,6 +150,7 @@ public class SefProdajeMainGUI {
 							if(rez == JOptionPane.YES_OPTION){
 								
 								ns.obrisiNalog(id);
+								JOptionPane.showMessageDialog(null, "Korisnički račun uspješno obrisan");
 								refreshajTabeluKorisnici();
 							}						}
 						
@@ -212,6 +213,7 @@ public class SefProdajeMainGUI {
 						if(a.getAkterprodajes().size()==0){
 							int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
 							if(rez == JOptionPane.YES_OPTION){
+								JOptionPane.showMessageDialog(null, "Regionalni menadžer uspješno obrisan!");
 								aks.izbrisiAktera(id);
 								refreshajTabeluMenadzeri();
 							}
@@ -369,6 +371,7 @@ public class SefProdajeMainGUI {
 					if(rez == JOptionPane.YES_OPTION){
 						int id = odaberiIdKolonu(tableProdavaci, 6);
 						aks.izbrisiAktera(id);
+						JOptionPane.showMessageDialog(null, "Prodavač uspješno obrisan!");
 						refreshajTabeluProdavaci();
 					}
 
@@ -407,6 +410,7 @@ public class SefProdajeMainGUI {
 						a.setAkterprodaje(null);
 						a.setTip("regmen");
 						aks.izmjeniAktera(a);
+						JOptionPane.showMessageDialog(null, "Prodavač uspješno promovisan u regionalnog menadžera!");
 						refreshajTabeluProdavaci();
 						refreshajTabeluMenadzeri();
 					}
@@ -526,8 +530,9 @@ public class SefProdajeMainGUI {
 					if(ps.moguceObrisati(p)){
 						int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
 						if(rez == JOptionPane.YES_OPTION){
-							ps.obrisiProizvod(p);
+							ps.obrisiProizvod(p);							
 							refreshajTabeluProizvodi();
+							JOptionPane.showMessageDialog(null, "Proizvod uspješno obrisan!");
 						}
 					}
 					else{
@@ -618,8 +623,10 @@ public class SefProdajeMainGUI {
 					{
 						int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
 						if(rez == JOptionPane.YES_OPTION){
-							rs.obrisi(id);
+							rs.obrisi(id);							
 							refreshajTabeluRegije();
+							JOptionPane.showMessageDialog(null, "Regija uspješno obrisana!");
+							
 						}
 					}
 					

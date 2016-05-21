@@ -105,7 +105,9 @@ public class DodavanjeRegijeGUI {
 								nova.setIme(textFieldNazivRegije.getText().trim());
 								nova.setDrzava(textFieldDrzava.getText().trim());							
 								r.dodajRegiju(nova);
+								
 								refreshableRoditelj.refreshajTabeluRegije();
+								JOptionPane.showMessageDialog(null, "Regija uspješno dodana!");
 								frmDodavanjeRegije.dispose();
 								
 							}

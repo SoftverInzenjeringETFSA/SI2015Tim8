@@ -210,6 +210,7 @@ public class ProdavacDodajIzmjeni {
 									a.setAkterprodaje(regmen);									
 									a.setTip("prodavac");
 									aks.kreirajAktera(a);
+									JOptionPane.showMessageDialog(null, "Prodavač uspješno kreiran!");
 									frmDodajizmijeni.dispose();
 								}
 								else JOptionPane.showMessageDialog(null, "Regionalni menadžer " + regmen.toString() + " je već nadležan za maksimalni broj prodavača.");
@@ -234,6 +235,7 @@ public class ProdavacDodajIzmjeni {
 										ap.setRegija((Regija) comboBoxRegije.getSelectedItem());
 										ap.setAkterprodaje(regmen);
 										aks.izmjeniAktera(ap);
+										JOptionPane.showMessageDialog(null, "Prodavač uspješno izmijenjen!");
 										frmDodajizmijeni.dispose();
 										}
 									}
