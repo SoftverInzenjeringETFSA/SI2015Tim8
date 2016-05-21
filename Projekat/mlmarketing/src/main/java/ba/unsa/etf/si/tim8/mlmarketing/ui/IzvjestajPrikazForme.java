@@ -3,14 +3,19 @@ package ba.unsa.etf.si.tim8.mlmarketing.ui;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
+import ba.unsa.etf.si.tim8.mlmarketing.services.FajlUpisServis;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 
 public class IzvjestajPrikazForme {
@@ -65,6 +70,26 @@ public class IzvjestajPrikazForme {
 		
 		JButton btnSacuvaj = new JButton("Sačuvaj");
 		btnSacuvaj.setBounds(335, 227, 89, 23);
+		btnSacuvaj.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				Date sad = new Date();
+				String stamp = sad.toString();
+				stamp=stamp.replaceAll(" ", "");
+				stamp=stamp.replaceAll(":", "");
+				File f = new File("izvjestaj"+stamp+".xls");
+				  try{
+				    FajlUpisServis.exportTable(table.getModel(), f);
+				    JOptionPane.showMessageDialog(null,"Generisali ste izvjestaj na Desktop Vaseg racunara");
+				  }
+				  catch(Exception e)
+				  {
+				    JOptionPane.showMessageDialog(null,"Doslo je do greske, izvjestaj nije generisan.");
+				    logger.info(e);
+				  }
+				}
+			
+		});
 		frmPrikazIzvjetaja.getContentPane().add(btnSacuvaj);
 		
 		JButton btnOk = new JButton("OK");
