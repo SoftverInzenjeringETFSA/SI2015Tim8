@@ -1,7 +1,11 @@
 package ba.unsa.etf.si.tim8.mlmarketing.services;
 
+import org.apache.log4j.Logger;
+
+import ba.unsa.etf.si.tim8.mlmarketing.ui.PrikazProdavacaMenadzeraGUI;
+
 public class ValidacijeServis {
-	
+	final static Logger logger = Logger.getLogger(ValidacijeServis.class);
 	public static boolean  validirajIme(String ime){
 		if(ime.equals("") || ime.length()< 3)
 			return false;
@@ -112,4 +116,21 @@ public class ValidacijeServis {
 		String pattern = "[a-zA-ZšŠćĆĐđŽžČč ]*";
 		return regija.matches(pattern);
 	}
+	
+	public static int dajBrojDana(String mjesec)
+	{
+		int[] dani = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+		int broj = 0;
+		try{
+			broj = Integer.parseInt(mjesec);
+			
+		}
+		catch(Exception e)
+		{
+			logger.error(e);
+		}
+		return dani[broj];
+	}
+	
+	
 }
