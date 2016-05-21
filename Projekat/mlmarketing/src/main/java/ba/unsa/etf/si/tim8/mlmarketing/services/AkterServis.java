@@ -131,4 +131,6 @@ public class AkterServis {
 			return true;
 		return false;
 	}
+	
+
 }

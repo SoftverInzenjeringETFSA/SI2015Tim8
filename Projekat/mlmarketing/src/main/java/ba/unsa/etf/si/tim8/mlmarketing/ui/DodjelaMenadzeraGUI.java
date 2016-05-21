@@ -109,6 +109,7 @@ public class DodjelaMenadzeraGUI {
 				if(SesijaServis.dajTipKorisnika().equals("sef")){
 					Akterprodaje a = aks.dajAktera(id);
 					Akterprodaje regmen = (Akterprodaje)comboBox.getSelectedItem();
+					
 					if(!aks.daLiJeNadlezanZaMaxBroj(regmen))
 					{
 						a.setAkterprodaje((Akterprodaje)comboBox.getSelectedItem());
