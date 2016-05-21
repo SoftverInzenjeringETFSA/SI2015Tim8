@@ -103,7 +103,7 @@ public class SumarniIzvjestajKreiranjeGUI {
 			public void actionPerformed(ActionEvent arg0) {
 				String tip = comboBoxTip.getSelectedItem().toString();
 				Date datumPocetni = is.pocetniDatumSaDanom(1, "01", 2012);
-				Date datumKrajnji = is.krajnjiDatumSaDanom(4, "04", 2016);
+				Date datumKrajnji = is.krajnjiDatumSaDanom(4, "06", 2016);
 				IzvjestajPrikazForme izf = new IzvjestajPrikazForme(is.sumarniIzvjesta(datumPocetni,datumKrajnji,tip));
 				izf.main();
 			}

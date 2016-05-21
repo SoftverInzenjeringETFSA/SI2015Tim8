@@ -250,8 +250,37 @@ public class IzvjestajServis {
 			}
 			return new MyTableModel(data, new String[]{"Izvjestaj za prozivode","","",""});
 		}
-		Object[][] data=new Object[1][];
-		data[0]=new Object[]{"",""};
-		return new MyTableModel(data, new String[]{"",""});
+		else{
+			
+			AkterServis aks = new AkterServis(s);
+			ArrayList<Akterprodaje> listaProdavaca = aks.dajSveAktere();
+			Object data[][] = new Object[listaProdavaca.size()+3][];
+			data[0]= new Object[]{"Od:","","Do:","",""};
+			data[1]= new Object[]{"ID prodavaca","Ime prodavaca","Broj narucenih artikala", "Regija","Izons za isplatu"};
+			double ukupniIznosZaIsplatu=0;
+			for(int i=0;i<listaProdavaca.size();i++){
+				double iznosZaIsplatu=0;
+				int brojProizvoda = 0;
+				Criteria cpfakture=s.createCriteria(ProizvodFaktura.class);
+				cpfakture.createAlias("faktura", "f");
+				cpfakture.add(Restrictions.eq("f.akterprodaje", listaProdavaca.get(i)));
+				cpfakture.add(Restrictions.between("f.datum", datumPocetni,datumKrajnji));
+				ArrayList<ProizvodFaktura> listaPFaktura = new ArrayList<ProizvodFaktura>(cpfakture.list());
+				for(int j=0;j<listaPFaktura.size();j++){
+					brojProizvoda+=listaPFaktura.get(i).getKolicina();
+					iznosZaIsplatu+=(listaPFaktura.get(i).getProdajnacijena()-listaPFaktura.get(i).getNabavnacijena())*brojProizvoda;
+				}
+				data[2+i]= new Object[]{
+						listaProdavaca.get(i).getId(),
+						listaProdavaca.get(i).toString(),
+						brojProizvoda,
+						listaProdavaca.get(i).getRegija().getIme(),
+						iznosZaIsplatu
+				};
+				ukupniIznosZaIsplatu+=iznosZaIsplatu;
+			}
+			data[listaProdavaca.size()+2]=new Object[]{"Ukupno:","","","",ukupniIznosZaIsplatu};
+			return new MyTableModel(data, new String[]{"Izvjestaj za prodavace","","","",""});
+		}
 	}
 }
