@@ -176,18 +176,24 @@ public class RegMenadzerDodajIzmjeniGUI {
 							aks.kreirajAktera(a);
 						}
 						else{
-							int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
-							if(rez == JOptionPane.YES_OPTION){
 							Akterprodaje a = aks.dajAktera(id);
-							a.setIme(textFieldIme.getText());
-							a.setPrezime(textFieldPrezime.getText());
-							a.setAdresa(textFieldAdresa.getText());
-							a.setBrojtelefona(textFieldBrojTelefona.getText());
-							a.setEmail(textFieldEmail.getText());
-							a.setTip("regmen");
-							a.setRegija((Regija)comboBox.getSelectedItem());
-							aks.izmjeniAktera(a);
+							if(a != null)
+							{
+								int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+								if(rez == JOptionPane.YES_OPTION){
+								
+								a.setIme(textFieldIme.getText());
+								a.setPrezime(textFieldPrezime.getText());
+								a.setAdresa(textFieldAdresa.getText());
+								a.setBrojtelefona(textFieldBrojTelefona.getText());
+								a.setEmail(textFieldEmail.getText());
+								a.setTip("regmen");
+								a.setRegija((Regija)comboBox.getSelectedItem());
+								aks.izmjeniAktera(a);
+								}
 							}
+							else JOptionPane.showMessageDialog(null, "Odabrani akter je u međuvremenu obrisan.");
+							
 						}
 						frmDodajizmijeni.dispose();						
 						refreshableRoditelj.refreshajTabeluMenadzeri();
@@ -220,9 +226,9 @@ public class RegMenadzerDodajIzmjeniGUI {
 	{
 		String errorMessage = "";
 		String[] greske = new String[]{
-				"Ime može sadržavati samo slova i minimalna dužina je 3 (bez razmaka).\n",
-				"Prezime može sadržavati samo slova i minimalna dužina je 3 (bez razmaka).\n",
-				"Telefon može sadržavati samo brojeve, minimalna dužina je 6 (bez razmaka).\n",
+				"Ime može sadržavati samo slova i minimalna dužina je 3 (razmaci nisu dozvoljeni).\n",
+				"Prezime može sadržavati samo slova i minimalna dužina je 3 (razmaci nisu dozvoljeni).\n",
+				"Telefon može sadržavati samo brojeve, minimalna dužina je 6 (razmaci nisu dozvoljeni).\n",
 				"Adresa ne može biti prazna, niti može sadržavati samo razmak\n",
 				"Email mora biti u ispravnom formatu (example@nesto.nesto).\n"
 				

@@ -217,25 +217,30 @@ public class ProdavacDodajIzmjeni {
 							}
 							else
 							{
-								Akterprodaje ap = aks.dajAktera(id); 						
-								Akterprodaje regmen = (Akterprodaje)comboBoxNM.getSelectedItem();
-								if(!aks.daLiJeNadlezanZaMaxBroj(regmen))
+								Akterprodaje ap = aks.dajAktera(id); 	
+								if(ap != null)
 								{
-									int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
-									if(rez == JOptionPane.YES_OPTION){
-																			
-									ap.setIme(textFieldIme.getText());
-									ap.setPrezime(textFieldPrezime.getText());
-									ap.setAdresa(textFieldAdresa.getText());
-									ap.setBrojtelefona(textFieldBrojTelefona.getText());
-									ap.setEmail(textFieldEmail.getText());
-									ap.setRegija((Regija) comboBoxRegije.getSelectedItem());
-									ap.setAkterprodaje(regmen);
-									aks.izmjeniAktera(ap);
-									frmDodajizmijeni.dispose();
+									Akterprodaje regmen = (Akterprodaje)comboBoxNM.getSelectedItem();
+									if(!aks.daLiJeNadlezanZaMaxBroj(regmen))
+									{
+										int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
+										if(rez == JOptionPane.YES_OPTION){
+																				
+										ap.setIme(textFieldIme.getText());
+										ap.setPrezime(textFieldPrezime.getText());
+										ap.setAdresa(textFieldAdresa.getText());
+										ap.setBrojtelefona(textFieldBrojTelefona.getText());
+										ap.setEmail(textFieldEmail.getText());
+										ap.setRegija((Regija) comboBoxRegije.getSelectedItem());
+										ap.setAkterprodaje(regmen);
+										aks.izmjeniAktera(ap);
+										frmDodajizmijeni.dispose();
+										}
 									}
+									else JOptionPane.showMessageDialog(null, "Regionalni menadžer " + regmen.toString() + " je već nadležan za maksimalni broj prodavača.");
 								}
-								else JOptionPane.showMessageDialog(null, "Regionalni menadžer " + regmen.toString() + " je već nadležan za maksimalni broj prodavača.");
+								else JOptionPane.showMessageDialog(null, "Odabrani akter u međuvremenu obrisan.");
+								
 									
 															
 								
@@ -275,9 +280,9 @@ public class ProdavacDodajIzmjeni {
 	{
 		String errorMessage = "";
 		String[] greske = new String[]{
-				"Ime može sadržavati samo slova (bez razmaka).\n",
-				"Prezime može sadržavati samo slova (bez razmaka).\n",
-				"Telefon može sadržavati samo brojeve (bez razmaka).\n",
+				"Ime može sadržavati samo slova i minimalna dužina je 3 (razmaci nisu dozvoljeni).\n",
+				"Prezime može sadržavati samo slova i minimalna dužina je 3 (razmaci nisu dozvoljeni).\n",
+				"Telefon može sadržavati samo brojeve, minimalna dužina je 6 (razmaci nisu dozvoljeni).\n",
 				"Adresa ne može biti prazna, niti može sadržavati samo razmak\n",
 				"Email mora biti u ispravnom formatu (example@nesto.nesto).\n"
 				
