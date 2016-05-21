@@ -110,6 +110,8 @@ public class DodavanjeProizvodaGUI {
 						boolean exists = ps.daLiPostojiProizvod(textFieldNaziv.getText().trim());
 						if(!exists)
 						{
+							s.flush();
+							s.clear();
 							p.setNaziv(textFieldNaziv.getText().trim());
 							p.setKolicina(Integer.parseInt(textFieldStanjeNaSkladistu.getText().trim()));
 							p.setNabavnacijena(Double.parseDouble(textFieldNabavnaCijena.getText().trim()));

@@ -55,8 +55,8 @@ public class IzvjestajServis {
 				for(int i=0;i<niza.length;i++){
 					Faktura[] nizf = niza[i].getFakturas().toArray(new Faktura[niza[i].getFakturas().size()]);
 					for(int j=0;j< nizf.length;j++){
-						bonus+=nizf[i].getUkupnacijena();
-						ProizvodFaktura[] nizpf = nizf[i].getProizvodFakturas().toArray(new ProizvodFaktura[nizf[i].getProizvodFakturas().size()]);
+						bonus+=nizf[j].getUkupnacijena();
+						ProizvodFaktura[] nizpf = nizf[j].getProizvodFakturas().toArray(new ProizvodFaktura[nizf[j].getProizvodFakturas().size()]);
 						for(int k=0;k<nizpf.length;k++) bonus-=nizpf[k].getNabavnacijena()*nizpf[k].getKolicina();
 						
 					}
