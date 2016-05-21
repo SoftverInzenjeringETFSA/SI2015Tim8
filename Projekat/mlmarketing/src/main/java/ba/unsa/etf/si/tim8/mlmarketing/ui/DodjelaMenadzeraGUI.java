@@ -66,6 +66,7 @@ public class DodjelaMenadzeraGUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
 		frmDodijeliMenadera = new JFrame();
 		frmDodijeliMenadera.addWindowListener(new WindowAdapter() {
 			@Override
@@ -114,6 +115,8 @@ public class DodjelaMenadzeraGUI {
 					{
 						a.setAkterprodaje((Akterprodaje)comboBox.getSelectedItem());
 						aks.izmjeniAktera(a);
+						JOptionPane.showMessageDialog(null, "Uspješno izvršena dodjela"
+								+ " nadležnog menadžera" );
 						refreshableRoditelj.refreshajTabeluProdavaci();
 						refreshableRoditelj.refreshajTabeluMenadzeri();
 						frmDodijeliMenadera.dispose();

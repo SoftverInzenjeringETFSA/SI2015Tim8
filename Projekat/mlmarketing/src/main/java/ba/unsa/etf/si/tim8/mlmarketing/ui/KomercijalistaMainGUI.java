@@ -179,7 +179,7 @@ public class KomercijalistaMainGUI {
 				if(table.getSelectedRow() != -1)
 				{
 					int id = odaberiIdKolonu(table, 0);
-					PrikazNarudzbaKomGUI prikaznarudzbe = new PrikazNarudzbaKomGUI(s, id);
+					PrikazNarudzbaKomGUI prikaznarudzbe = new PrikazNarudzbaKomGUI(s, id, null);
 					prikaznarudzbe.startPrikazNarudzbaKom();
 				}
 				else JOptionPane.showMessageDialog(null, "Niste odabrali nijednu narudžbu iz tabele.");
