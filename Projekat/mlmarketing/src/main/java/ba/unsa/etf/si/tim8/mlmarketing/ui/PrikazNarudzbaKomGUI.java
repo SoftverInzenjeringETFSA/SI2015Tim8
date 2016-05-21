@@ -137,14 +137,33 @@ public class PrikazNarudzbaKomGUI {
 		
 		comboBoxStatus = new JComboBox();
 		comboBoxStatus.setEditable(true);
-		comboBoxStatus.setModel(new DefaultComboBoxModel(new String[] {"Potvr\u0111ena", "Odbijena", "Na \u010Dekanju"}));
+		comboBoxStatus.setModel(new DefaultComboBoxModel(new String[] {"Potvr\u0111ena", "Odbijena", "Na \u010Dekanju", "Fakturisana"}));
 		comboBoxStatus.setBounds(159, 342, 145, 22);
 		comboBoxStatus.setEditable(false);
 		frmNarudba.getContentPane().add(comboBoxStatus);
 		
+				
 		JButton btnPromijeniStatus = new JButton("Promijeni status");
 		btnPromijeniStatus.setBounds(127, 391, 177, 23);		
 		frmNarudba.getContentPane().add(btnPromijeniStatus);
+		
+		Narudzba n = ns.dajNarudzbu(id);
+		if(n.getStatus().equals("Potvrđena"))
+		{
+			comboBoxStatus.setEnabled(false);
+			btnPromijeniStatus.hide();
+			
+		}
+		if(n.getStatus().equals("Fakturisana"))
+		{
+			comboBoxStatus.setEnabled(false);
+			btnPromijeniStatus.hide();
+		}
+		else {
+			comboBoxStatus.setModel(new DefaultComboBoxModel(new String[] {"Potvr\u0111ena", "Odbijena", "Na \u010Dekanju"}));
+		}
+		
+		
 		if(!SesijaServis.dajTipKorisnika().equals("sef"))
 			btnPromijeniStatus.setVisible(false);		
 		btnPromijeniStatus.addActionListener(new ActionListener() {
@@ -158,6 +177,8 @@ public class PrikazNarudzbaKomGUI {
 					JOptionPane.showMessageDialog(null, "Odabrani status narudžbe je isti kao i trenutni.");
 					return;
 				}
+				
+				
 				if(n.getStatus().equals("Potvrđena") || n.getStatus().equals("Fakturisana"))
 				{
 					JOptionPane.showMessageDialog(null, "Nije moguće mijenjati status narudzbe koja je potvrđena ili fakturisana.");
