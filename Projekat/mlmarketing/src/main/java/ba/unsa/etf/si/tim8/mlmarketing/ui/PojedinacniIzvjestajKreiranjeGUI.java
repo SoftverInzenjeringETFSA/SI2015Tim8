@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
@@ -164,6 +165,7 @@ public class PojedinacniIzvjestajKreiranjeGUI {
 					}
 					else{
 						id = ((Proizvod)comboBoxProizvodi.getSelectedItem()).getId();
+						JOptionPane.showMessageDialog(null, id);
 					}
 					String tip = comboBoxTip.getSelectedItem().toString();
 					String mjesec = comboBoxMjesec.getSelectedItem().toString();
