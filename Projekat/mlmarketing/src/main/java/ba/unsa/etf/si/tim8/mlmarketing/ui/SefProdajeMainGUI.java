@@ -702,7 +702,6 @@ public class SefProdajeMainGUI {
 		JButton btnPojedinacniIzvjestaj = new JButton("Pojedinacni izvjestaj");
 		btnPojedinacniIzvjestaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				is.pojedinacniIzvjesta("Za isplatu", "05", 2016, 183);
 				PojedinacniIzvjestajKreiranjeGUI pkg = new PojedinacniIzvjestajKreiranjeGUI(s);
 				pkg.startPojedinacniIzvjestaj();
 			}

@@ -22,14 +22,14 @@ public class sumarniIzvjestajKreiranjeGUI {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public void startSumarni() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					sumarniIzvjestajKreiranjeGUI window = new sumarniIzvjestajKreiranjeGUI();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 			}
 		});
