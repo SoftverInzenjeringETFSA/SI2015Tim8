@@ -262,6 +262,13 @@ public class SefProdajeMainGUI {
 				if(tableMenadzeri.getSelectedRow() != -1){
 					int id = odaberiIdKolonu(tableMenadzeri, 5);
 					Akterprodaje a = aks.dajAktera(id);
+					if(aks.dajSveAkterePoTipu("regmen").size() == 1)
+					{
+						JOptionPane.showMessageDialog(null, "Trenutno u sistemu postoji samo "
+						+ "jedan menadžer. Nije ga moguće unazaditi jer ne postoji "
+						+ "druga osoba koja bi bila nadležna za njega.");
+						return;
+					}
 					if(a.getAkterprodajes().size()==0){
 						int rez = JOptionPane.showOptionDialog(null, "Da li ste sigurni?", "Provjera", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]{"Da", "Ne"}, "default");
 						if(rez == JOptionPane.YES_OPTION){
