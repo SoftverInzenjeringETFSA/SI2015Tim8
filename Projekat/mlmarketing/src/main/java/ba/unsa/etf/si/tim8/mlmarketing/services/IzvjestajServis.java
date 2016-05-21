@@ -52,13 +52,23 @@ public class IzvjestajServis {
 			double bonus = 0;
 			if(a.getAkterprodaje()==null){
 				Akterprodaje[] niza = a.getAkterprodajes().toArray(new Akterprodaje[a.getAkterprodajes().size()]);
-				for(int i=0;i<niza.length;i++){
+				for(int i=0;i<niza.length;i++){/*
 					Faktura[] nizf = niza[i].getFakturas().toArray(new Faktura[niza[i].getFakturas().size()]);
 					for(int j=0;j< nizf.length;j++){
 						bonus+=nizf[j].getUkupnacijena();
 						ProizvodFaktura[] nizpf = nizf[j].getProizvodFakturas().toArray(new ProizvodFaktura[nizf[j].getProizvodFakturas().size()]);
 						for(int k=0;k<nizpf.length;k++) bonus-=nizpf[k].getNabavnacijena()*nizpf[k].getKolicina();
 						
+					}*/
+					
+					Criteria cfaktureprodavaca = s.createCriteria(Faktura.class);
+					cfaktureprodavaca.add(Restrictions.between("datum", datePocetak, dateKraj));
+					cfaktureprodavaca.add(Restrictions.eq("akterprodaje", niza[i]));
+					ArrayList<Faktura> faktureprodavacalista = new ArrayList<Faktura>(cfaktureprodavaca.list());
+					for(int j = 0; j<faktureprodavacalista.size();j++){
+						bonus+=faktureprodavacalista.get(j).getUkupnacijena();
+						ProizvodFaktura[] nizpf = faktureprodavacalista.get(j).getProizvodFakturas().toArray(new ProizvodFaktura[faktureprodavacalista.get(j).getProizvodFakturas().size()]);
+						for(int k=0;k<nizpf.length;k++) bonus-=nizpf[k].getNabavnacijena()*nizpf[k].getKolicina();
 					}
 				}
 				bonus*=0.2;

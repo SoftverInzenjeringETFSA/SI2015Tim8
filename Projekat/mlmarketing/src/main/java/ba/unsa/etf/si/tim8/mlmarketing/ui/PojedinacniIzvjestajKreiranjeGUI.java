@@ -161,11 +161,22 @@ public class PojedinacniIzvjestajKreiranjeGUI {
 				if(ValidacijeServis.daLiJeInt(textField.getText())){
 					int id;
 					if(comboBoxMenadzeri.isEnabled()){
-						id = ((Akterprodaje)comboBoxMenadzeri.getSelectedItem()).getId();
+						if(comboBoxMenadzeri.getItemCount()!=0){
+							id = ((Akterprodaje)comboBoxMenadzeri.getSelectedItem()).getId();
+						}
+						else{
+							JOptionPane.showMessageDialog(null, "Lista prodavaca je prazna");
+							return;
+						}
 					}
 					else{
-						id = ((Proizvod)comboBoxProizvodi.getSelectedItem()).getId();
-						JOptionPane.showMessageDialog(null, id);
+						if(comboBoxProizvodi.getItemCount()!=0){
+							id = ((Proizvod)comboBoxProizvodi.getSelectedItem()).getId();
+						}
+						else{
+							JOptionPane.showMessageDialog(null, "Lista proizvoda je prazna");
+							return;
+						}
 					}
 					String tip = comboBoxTip.getSelectedItem().toString();
 					String mjesec = comboBoxMjesec.getSelectedItem().toString();

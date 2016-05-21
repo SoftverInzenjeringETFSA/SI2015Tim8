@@ -80,11 +80,11 @@ public class IzvjestajPrikazForme {
 				File f = new File("izvjestaj"+stamp+".xls");
 				  try{
 				    FajlUpisServis.exportTable(table.getModel(), f);
-				    JOptionPane.showMessageDialog(null,"Generisali ste izvjestaj na Desktop Vaseg racunara");
+				    JOptionPane.showMessageDialog(null,"Izvjestaj je uspjesno sacuvan.");
 				  }
 				  catch(Exception e)
 				  {
-				    JOptionPane.showMessageDialog(null,"Doslo je do greske, izvjestaj nije generisan.");
+				    JOptionPane.showMessageDialog(null,"Doslo je do greske, izvjestaj nije sacuvan.");
 				    logger.info(e);
 				  }
 				}
