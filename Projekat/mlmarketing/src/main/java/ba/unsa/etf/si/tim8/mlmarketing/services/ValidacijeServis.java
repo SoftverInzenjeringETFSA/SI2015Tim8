@@ -1,10 +1,6 @@
 package ba.unsa.etf.si.tim8.mlmarketing.services;
 
-import javax.swing.JOptionPane;
-
 import org.apache.log4j.Logger;
-
-import ba.unsa.etf.si.tim8.mlmarketing.ui.PrikazProdavacaMenadzeraGUI;
 
 public class ValidacijeServis {
 	final static Logger logger = Logger.getLogger(ValidacijeServis.class);

@@ -1,19 +1,13 @@
 package ba.unsa.etf.si.tim8.mlmarketing.servisnitestovi;
 
-import java.util.ArrayList;
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
+
 import org.hibernate.Session;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
-
-import com.mysql.fabric.xmlrpc.base.Array;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
-import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NaloziServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.SesijaServis;
 import ba.unsa.etf.si.tim8.mlmarketing.ui.HibernateUtil;

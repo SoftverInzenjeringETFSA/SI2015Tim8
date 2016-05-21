@@ -4,14 +4,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
-import ba.unsa.etf.si.tim8.mlmarketing.ui.SefProdajeMainGUI;
 
 public class FileThreadServis implements Runnable{
 	 private Thread t;

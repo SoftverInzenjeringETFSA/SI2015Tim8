@@ -1,6 +1,8 @@
 package ba.unsa.etf.si.tim8.mlmarketing.servisnitestovi;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;

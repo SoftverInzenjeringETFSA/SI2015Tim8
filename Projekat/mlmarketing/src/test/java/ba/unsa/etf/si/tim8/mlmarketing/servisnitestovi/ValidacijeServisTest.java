@@ -1,13 +1,10 @@
 package ba.unsa.etf.si.tim8.mlmarketing.servisnitestovi;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 import ba.unsa.etf.si.tim8.mlmarketing.services.ValidacijeServis;
-import org.hibernate.Session;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
 
 public class ValidacijeServisTest {
 	

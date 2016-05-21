@@ -1,32 +1,24 @@
 package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import java.awt.EventQueue;
-import java.text.DateFormat;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
-import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
-import ba.unsa.etf.si.tim8.mlmarketing.models.Proizvod;
 import ba.unsa.etf.si.tim8.mlmarketing.services.IzvjestajServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.ValidacijeServis;
-
-import javax.swing.JComboBox;
-import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JTextPane;
-import javax.swing.JTextField;
 
 public class SumarniIzvjestajKreiranjeGUI {
 

@@ -1,21 +1,20 @@
 package ba.unsa.etf.si.tim8.mlmarketing.servisnitestovi;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
-import ba.unsa.etf.si.tim8.mlmarketing.ui.HibernateUtil;
 import ba.unsa.etf.si.tim8.mlmarketing.services.AkterServis;
 import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;
+import ba.unsa.etf.si.tim8.mlmarketing.ui.HibernateUtil;
 
 public class AkterServisTest {
  Session session;

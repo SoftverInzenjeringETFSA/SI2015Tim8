@@ -2,18 +2,12 @@ package ba.unsa.etf.si.tim8.mlmarketing.services;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-
-import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-
-import com.mysql.fabric.xmlrpc.base.Array;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Faktura;
@@ -202,7 +196,6 @@ public class IzvjestajServis {
 	
 	private Date krajnjiDatum(String mjesec,int godina){
 		String zadnjiDan = Integer.toString(ValidacijeServis.dajBrojDana(mjesec));
-		JOptionPane.showMessageDialog(null, zadnjiDan);
 		String pocetak="-"+zadnjiDan+" 00:00:01";
 		String datumPocetni = Integer.toString(godina)+"-"+mjesec+pocetak;
 		Date d=new Date();
@@ -286,8 +279,6 @@ public class IzvjestajServis {
 				ArrayList<ProizvodFaktura> listaPFaktura = new ArrayList<ProizvodFaktura>(cpfakture.list());
 				for(int j=0;j<listaPFaktura.size();j++){
 					brojProizvoda+=listaPFaktura.get(j).getKolicina();
-					/*JOptionPane.showMessageDialog(null, ((listaPFaktura.get(j).getProdajnacijena()-listaPFaktura.get(j).getNabavnacijena())*brojProizvoda));
-					iznosZaIsplatu+=((listaPFaktura.get(j).getProdajnacijena()-listaPFaktura.get(j).getNabavnacijena())*brojProizvoda);*/
 					iznosZaIsplatu+=(listaPFaktura.get(j).getProdajnacijena()*listaPFaktura.get(j).getKolicina());
 					iznosZaIsplatu-=(listaPFaktura.get(j).getNabavnacijena()*listaPFaktura.get(j).getKolicina());
 				}

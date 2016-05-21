@@ -1,19 +1,19 @@
 package ba.unsa.etf.si.tim8.mlmarketing.servisnitestovi;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+import org.hibernate.Session;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import ba.unsa.etf.si.tim8.mlmarketing.models.Regija;
 import ba.unsa.etf.si.tim8.mlmarketing.services.RegijaServis;
 import ba.unsa.etf.si.tim8.mlmarketing.ui.HibernateUtil;
-
-import static org.junit.Assert.*;
-import java.util.Date;
-import java.util.ArrayList;
-
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
 
 public class RegijaServisTest {
 	Date d = new Date();

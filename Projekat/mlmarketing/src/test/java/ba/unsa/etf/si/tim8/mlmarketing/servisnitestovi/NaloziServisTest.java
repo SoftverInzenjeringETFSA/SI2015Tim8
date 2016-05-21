@@ -1,13 +1,11 @@
 package ba.unsa.etf.si.tim8.mlmarketing.servisnitestovi;
 
 import java.util.ArrayList;
-import static org.junit.Assert.*;
+
 import org.hibernate.Session;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.internal.runners.statements.Fail;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Korisnik;
 import ba.unsa.etf.si.tim8.mlmarketing.services.NaloziServis;

@@ -1,15 +1,15 @@
 package ba.unsa.etf.si.tim8.mlmarketing.servisnitestovi;
 
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.Date;
+
 import org.hibernate.Session;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.Date;
 
 import ba.unsa.etf.si.tim8.mlmarketing.models.Akterprodaje;
 import ba.unsa.etf.si.tim8.mlmarketing.models.Faktura;

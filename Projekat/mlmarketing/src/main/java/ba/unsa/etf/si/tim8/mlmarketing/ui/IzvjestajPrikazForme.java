@@ -1,7 +1,12 @@
 package ba.unsa.etf.si.tim8.mlmarketing.ui;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.Date;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -11,12 +16,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import ba.unsa.etf.si.tim8.mlmarketing.services.FajlUpisServis;
-
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.Date;
-import java.awt.event.ActionEvent;
 
 public class IzvjestajPrikazForme {
 
