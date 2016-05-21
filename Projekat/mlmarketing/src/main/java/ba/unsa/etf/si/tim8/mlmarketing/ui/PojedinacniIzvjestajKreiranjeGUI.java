@@ -169,9 +169,14 @@ public class PojedinacniIzvjestajKreiranjeGUI {
 					}
 					String tip = comboBoxTip.getSelectedItem().toString();
 					String mjesec = comboBoxMjesec.getSelectedItem().toString();
+					
 					IzvjestajPrikazForme izf = new IzvjestajPrikazForme(is.pojedinacniIzvjesta(tip, mjesec,Integer.parseInt(textField.getText()), id));
 					izf.main();
+					
+					
+					
 				}
+				else JOptionPane.showMessageDialog(null, "Unesite validnu godinu!");
 				
 			}
 		});

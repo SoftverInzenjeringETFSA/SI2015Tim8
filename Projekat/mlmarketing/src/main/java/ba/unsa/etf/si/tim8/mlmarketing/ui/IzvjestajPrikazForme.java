@@ -10,6 +10,8 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class IzvjestajPrikazForme {
 
@@ -66,6 +68,11 @@ public class IzvjestajPrikazForme {
 		frmPrikazIzvjetaja.getContentPane().add(btnSacuvaj);
 		
 		JButton btnOk = new JButton("OK");
+		btnOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frmPrikazIzvjetaja.dispose();
+			}
+		});
 		btnOk.setBounds(236, 227, 89, 23);
 		frmPrikazIzvjetaja.getContentPane().add(btnOk);
 	}
